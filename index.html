@@ -18,9 +18,11 @@
 
     :root {
       --black: #000000;
-      --white: #e8e8e8;
-      --muted: #666666;
-      --accent: #39ff14;
+      --white: #ffffff;
+      --muted: #9a9a9a;
+      --dim: #555555;
+      --accent: #0099ff;
+      --accent-glow: rgba(0, 153, 255, 0.35);
     }
 
     html, body {
@@ -41,7 +43,9 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 50% 45%, rgba(255,255,255,0.03) 0%, transparent 70%);
+      background:
+        radial-gradient(ellipse 50% 40% at 50% 42%, rgba(0, 153, 255, 0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 50% 45%, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -67,17 +71,68 @@
       gap: 2.5rem;
     }
 
-    .logo {
-      width: min(420px, 80vw);
-      height: auto;
+    .logo-wrap {
+      position: relative;
       opacity: 0;
       animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    }
+
+    .logo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -20% -10%;
+      background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .logo {
+      position: relative;
+      display: block;
+      width: min(420px, 80vw);
+      aspect-ratio: 840 / 200;
+      /* Use the wordmark shape as an alpha mask so we can fill it
+         with a brushed-metal gradient instead of flat white. */
+      -webkit-mask: url("/assets/apx-logo.png") center / contain no-repeat;
+              mask: url("/assets/apx-logo.png") center / contain no-repeat;
+      /* Metallic silver: alternating bright and shaded bands */
+      background: linear-gradient(
+        176deg,
+        #ffffff 0%,
+        #d6d6d6 16%,
+        #8c8c8c 32%,
+        #f4f4f4 49%,
+        #767676 60%,
+        #b4b4b4 76%,
+        #ececec 100%
+      );
+      opacity: 0.95;
+    }
+
+    /* Sheen highlight that sweeps down the wordmark, tracking the scan line */
+    .logo::after {
+      content: '';
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      top: -60%;
+      height: 55%;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.15) 35%,
+        rgba(255, 255, 255, 0.95) 50%,
+        rgba(255, 255, 255, 0.15) 65%,
+        transparent 100%
+      );
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: sheen 8s linear infinite;
     }
 
     .divider {
       width: 1px;
       height: 48px;
-      background: linear-gradient(to bottom, transparent, var(--muted), transparent);
+      background: linear-gradient(to bottom, transparent, var(--dim), var(--accent), var(--dim), transparent);
       opacity: 0;
       animation: fadeIn 1s ease 0.8s forwards;
     }
@@ -94,6 +149,7 @@
       letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--white);
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
     }
 
     .pronunciation {
@@ -107,7 +163,8 @@
 
     .pronunciation span {
       color: var(--accent);
-      font-weight: 300;
+      font-weight: 400;
+      text-shadow: 0 0 24px var(--accent-glow);
     }
 
     .tagline {
@@ -115,18 +172,31 @@
       font-size: clamp(0.7rem, 1.8vw, 0.8rem);
       font-weight: 200;
       letter-spacing: 0.25em;
-      color: rgba(255,255,255,0.25);
+      color: var(--dim);
       text-transform: uppercase;
     }
 
-    /* Animated scan line */
+    /* Animated laser scan line */
     .scanline {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(57,255,20,0.15), transparent);
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 153, 255, 0.5) 15%,
+        rgba(150, 220, 255, 0.9) 40%,
+        #ffffff 50%,
+        rgba(150, 220, 255, 0.9) 60%,
+        rgba(0, 153, 255, 0.5) 85%,
+        transparent 100%
+      );
+      box-shadow:
+        0 0 8px 1px rgba(120, 200, 255, 0.9),
+        0 0 22px 3px var(--accent-glow),
+        0 0 44px 6px rgba(0, 153, 255, 0.25);
       animation: scan 8s linear infinite;
       pointer-events: none;
       z-index: 2;
@@ -148,6 +218,13 @@
       to { opacity: 1; }
     }
 
+    @keyframes sheen {
+      0%   { top: -60%; opacity: 0; }
+      12%  { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
     @keyframes scan {
       0%   { top: -1px; opacity: 0; }
       5%   { opacity: 1; }
@@ -156,9 +233,13 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .logo, .divider, .title-block, .scanline {
+      .logo-wrap, .divider, .title-block, .scanline {
         animation: none;
         opacity: 1;
+      }
+      .logo::after {
+        animation: none;
+        opacity: 0;
       }
     }
   </style>
@@ -167,20 +248,15 @@
   <div class="scanline" aria-hidden="true"></div>
 
   <main class="page">
-    <img
-      src="/assets/apx-logo.png"
-      alt="APX logo"
-      class="logo"
-      width="840"
-      height="200"
-    >
+    <div class="logo-wrap">
+      <div class="logo" role="img" aria-label="APX logo"></div>
+    </div>
 
     <div class="divider" aria-hidden="true"></div>
 
     <div class="title-block">
-      <h1 class="title">Running Group</h1>
-      <p class="pronunciation">pronounced <span>Apex</span></p>
-      <p class="tagline">Precision · Pace · Community</p>
+      <h1 class="title">APX Running Group</h1>
+      <p class="tagline">Performance · Connection · Growth</p>
     </div>
   </main>
 </body>

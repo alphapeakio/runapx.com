@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "runapx",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", ".", "-l", "3210"],
+      "port": 3210
+    }
+  ]
+}
