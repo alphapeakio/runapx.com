@@ -1,0 +1,8 @@
+{
+  "name": "runapx",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "deploy": "npx wrangler pages deploy . --project-name=runapx"
+  }
+}
