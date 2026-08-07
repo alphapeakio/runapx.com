@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APX — Training Group</title>
   <meta name="description" content="APX Training Group — performance, precision, and ascent.">
-  <link rel="canonical" href="https://runapx.pages.dev/">
-  <meta name="theme-color" content="#000000">
+  <link rel="canonical" href="https://runapx.com/">
+  <meta name="theme-color" content="#f5f7fa">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="/assets/apx-mark.png">
   <link rel="apple-touch-icon" href="/assets/apx-mark.png">
@@ -16,9 +16,9 @@
   <meta property="og:site_name" content="APX Training Group">
   <meta property="og:title" content="APX Training Group">
   <meta property="og:description" content="Performance · Precision · Ascent.">
-  <meta property="og:url" content="https://runapx.pages.dev/">
-  <meta property="og:image" content="https://runapx.pages.dev/assets/og-image.png">
-  <meta property="og:image:secure_url" content="https://runapx.pages.dev/assets/og-image.png">
+  <meta property="og:url" content="https://runapx.com/">
+  <meta property="og:image" content="https://runapx.com/assets/og-image.png">
+  <meta property="og:image:secure_url" content="https://runapx.com/assets/og-image.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="APX Training Group">
   <meta name="twitter:description" content="Performance · Precision · Ascent.">
-  <meta name="twitter:image" content="https://runapx.pages.dev/assets/og-image.png">
+  <meta name="twitter:image" content="https://runapx.com/assets/og-image.png">
   <meta name="twitter:image:alt" content="APX Training Group — Performance · Precision · Ascent">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,12 +41,14 @@
     }
 
     :root {
-      --black: #000000;
-      --white: #ffffff;
-      --muted: #9a9a9a;
-      --dim: #555555;
-      --accent: #0099ff;
-      --accent-glow: rgba(0, 153, 255, 0.35);
+      --bg: #f5f7fa;          /* bright off-white canvas */
+      --bg-sheen: #ffffff;    /* pure white bloom in the centre */
+      --ink: #10151b;         /* near-black for headings */
+      --muted: #5f6772;
+      --dim: #98a2ae;
+      --accent: #0099ff;      /* brand blue — used for glows/fills */
+      --accent-ink: #0068c4;  /* deeper blue that holds contrast on white */
+      --accent-glow: rgba(0, 153, 255, 0.30);
     }
 
     html, body {
@@ -54,22 +56,23 @@
     }
 
     body {
-      background: var(--black);
-      color: var(--white);
+      background: var(--bg);
+      color: var(--ink);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       font-weight: 200;
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Subtle radial glow behind content */
+    /* Bright bloom behind the content: a pool of pure white in the centre
+       fading out to the cooler off-white, with a faint blue wash for depth. */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 50% 40% at 50% 42%, rgba(0, 153, 255, 0.06) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 50% at 50% 45%, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+        radial-gradient(ellipse 58% 48% at 50% 40%, var(--bg-sheen) 0%, rgba(255, 255, 255, 0) 72%),
+        radial-gradient(ellipse 72% 60% at 50% 46%, rgba(0, 153, 255, 0.05) 0%, transparent 74%);
       pointer-events: none;
     }
 
@@ -79,7 +82,7 @@
       position: fixed;
       inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.4;
+      opacity: 0.16;
       pointer-events: none;
     }
 
@@ -109,12 +112,12 @@
       inset: -85% -35%;
       background:
         radial-gradient(ellipse 50% 55% at 50% 50%,
-          rgba(0, 153, 255, 0.10) 0%,
-          rgba(0, 153, 255, 0.05) 30%,
-          rgba(0, 153, 255, 0.015) 52%,
+          rgba(0, 153, 255, 0.13) 0%,
+          rgba(0, 153, 255, 0.07) 30%,
+          rgba(0, 153, 255, 0.02) 52%,
           transparent 72%),
         radial-gradient(ellipse 34% 42% at 50% 47%,
-          rgba(226, 240, 255, 0.09) 0%,
+          rgba(90, 175, 255, 0.08) 0%,
           transparent 62%);
       filter: blur(18px);
       pointer-events: none;
@@ -129,18 +132,18 @@
          with a brushed-metal gradient instead of flat white. */
       -webkit-mask: url("/assets/apx-logo.png") center / contain no-repeat;
               mask: url("/assets/apx-logo.png") center / contain no-repeat;
-      /* Metallic silver: alternating bright and shaded bands */
+      /* Brushed graphite: alternating polished and shaded bands, dark
+         enough to read crisply against the off-white canvas. */
       background: linear-gradient(
         176deg,
-        #ffffff 0%,
-        #d6d6d6 16%,
-        #8c8c8c 32%,
-        #f4f4f4 49%,
-        #767676 60%,
-        #b4b4b4 76%,
-        #ececec 100%
+        #8f9aa8 0%,
+        #39424c 14%,
+        #6b7684 30%,
+        #1f262e 46%,
+        #7e8a97 58%,
+        #2f373f 74%,
+        #5c6674 100%
       );
-      opacity: 0.95;
       overflow: hidden;
     }
 
@@ -185,8 +188,7 @@
       font-weight: 300;
       letter-spacing: 0.35em;
       text-transform: uppercase;
-      color: var(--white);
-      text-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
+      color: var(--ink);
     }
 
     .pronunciation {
@@ -199,9 +201,8 @@
     }
 
     .pronunciation span {
-      color: var(--accent);
+      color: var(--accent-ink);
       font-weight: 400;
-      text-shadow: 0 0 24px var(--accent-glow);
     }
 
     .tagline {
@@ -209,7 +210,7 @@
       font-size: clamp(0.7rem, 1.8vw, 0.8rem);
       font-weight: 200;
       letter-spacing: 0.25em;
-      color: var(--dim);
+      color: var(--muted);
       text-transform: uppercase;
     }
 
@@ -238,14 +239,14 @@
       background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 153, 255, 0.04) 34%,
-        rgba(0, 153, 255, 0.30) 62%,
-        var(--core, rgba(150, 220, 255, 0.78)) 86%,
-        var(--head, #eaf6ff) 100%
+        rgba(0, 153, 255, 0.05) 34%,
+        rgba(0, 145, 245, 0.34) 62%,
+        var(--core, rgba(0, 132, 232, 0.80)) 86%,
+        var(--head, #0072d6) 100%
       );
       filter:
         drop-shadow(0 0 var(--g, 4px) var(--accent-glow))
-        drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 153, 255, 0.22));
+        drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 153, 255, 0.18));
       animation: race var(--dur, 3s) cubic-bezier(0.5, 0, 0.82, 0.3) var(--delay, 0s) infinite;
       will-change: transform, opacity;
     }
@@ -260,8 +261,8 @@
       height: 6px;
       margin-top: -3px;
       border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 0 10px 2px rgba(150, 220, 255, 0.95), 0 0 22px 6px var(--accent-glow);
+      background: var(--accent-ink);
+      box-shadow: 0 0 10px 2px rgba(0, 153, 255, 0.55), 0 0 22px 6px var(--accent-glow);
     }
 
     @keyframes race {
@@ -311,10 +312,10 @@
 <body>
   <!-- Ambient beams for depth, behind the content -->
   <div class="track back" aria-hidden="true">
-    <span class="streak" style="--top:24%; --w:34vw; --h:1px; --dur:3.6s; --delay:.2s; --g:3px; --core:rgba(0,153,255,0.45); --head:rgba(150,220,255,0.85)"></span>
-    <span class="streak" style="--top:41%; --w:28vw; --h:1px; --dur:4.2s; --delay:1.4s; --g:3px; --core:rgba(0,153,255,0.40); --head:rgba(150,220,255,0.75)"></span>
-    <span class="streak" style="--top:63%; --w:40vw; --h:1px; --dur:3.9s; --delay:.7s; --g:3px; --core:rgba(0,153,255,0.45); --head:rgba(150,220,255,0.85)"></span>
-    <span class="streak" style="--top:79%; --w:30vw; --h:1px; --dur:4.6s; --delay:2.1s; --g:3px; --core:rgba(0,153,255,0.38); --head:rgba(150,220,255,0.70)"></span>
+    <span class="streak" style="--top:24%; --w:34vw; --h:1px; --dur:3.6s; --delay:.2s; --g:3px; --core:rgba(0,140,240,0.42); --head:rgba(0,120,215,0.60)"></span>
+    <span class="streak" style="--top:41%; --w:28vw; --h:1px; --dur:4.2s; --delay:1.4s; --g:3px; --core:rgba(0,140,240,0.36); --head:rgba(0,120,215,0.52)"></span>
+    <span class="streak" style="--top:63%; --w:40vw; --h:1px; --dur:3.9s; --delay:.7s; --g:3px; --core:rgba(0,140,240,0.42); --head:rgba(0,120,215,0.60)"></span>
+    <span class="streak" style="--top:79%; --w:30vw; --h:1px; --dur:4.6s; --delay:2.1s; --g:3px; --core:rgba(0,140,240,0.34); --head:rgba(0,120,215,0.48)"></span>
   </div>
 
   <main class="page">
@@ -332,9 +333,9 @@
 
   <!-- Hero lasers that sprint over the composition -->
   <div class="track front" aria-hidden="true">
-    <span class="streak" style="--top:33%; --w:46vw; --h:2px; --dur:2.3s; --delay:.5s; --g:6px; --core:rgba(185,232,255,0.9); --head:#ffffff"></span>
-    <span class="streak" style="--top:50%; --w:40vw; --h:2px; --dur:2.7s; --delay:1.7s; --g:6px; --core:rgba(170,225,255,0.85); --head:#eaf6ff"></span>
-    <span class="streak" style="--top:67%; --w:38vw; --h:2px; --dur:2.5s; --delay:2.9s; --g:6px; --core:rgba(185,232,255,0.9); --head:#ffffff"></span>
+    <span class="streak" style="--top:33%; --w:46vw; --h:2px; --dur:2.3s; --delay:.5s; --g:6px; --core:rgba(0,145,245,0.85); --head:#0068c4"></span>
+    <span class="streak" style="--top:50%; --w:40vw; --h:2px; --dur:2.7s; --delay:1.7s; --g:6px; --core:rgba(0,145,245,0.78); --head:#0072d6"></span>
+    <span class="streak" style="--top:67%; --w:38vw; --h:2px; --dur:2.5s; --delay:2.9s; --g:6px; --core:rgba(0,145,245,0.85); --head:#0068c4"></span>
   </div>
 </body>
 </html>
