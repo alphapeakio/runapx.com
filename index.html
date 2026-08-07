@@ -107,27 +107,29 @@
         #ececec 100%
       );
       opacity: 0.95;
+      overflow: hidden;
     }
 
-    /* Sheen highlight that sweeps down the wordmark, tracking the scan line */
+    /* A glint of light that races across the wordmark — speed / performance. */
     .logo::after {
       content: '';
       position: absolute;
-      left: -10%;
-      right: -10%;
-      top: -60%;
-      height: 55%;
+      top: -20%;
+      bottom: -20%;
+      left: -30%;
+      width: 20%;
       background: linear-gradient(
-        180deg,
+        105deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.15) 35%,
+        rgba(255, 255, 255, 0.15) 40%,
         rgba(255, 255, 255, 0.95) 50%,
-        rgba(255, 255, 255, 0.15) 65%,
+        rgba(255, 255, 255, 0.15) 60%,
         transparent 100%
       );
+      transform: skewX(-18deg);
       mix-blend-mode: screen;
       pointer-events: none;
-      animation: sheen 8s linear infinite;
+      animation: gloss 6s cubic-bezier(0.7, 0, 0.3, 1) infinite;
     }
 
     .divider {
@@ -177,30 +179,62 @@
       text-transform: uppercase;
     }
 
-    /* Animated laser scan line */
-    .scanline {
+    /* ── Race: light beams that sprint across the track ──
+       Each streak has a bright leading head and a motion-blur tail,
+       accelerating left→right at its own pace so they overtake. */
+    .track {
       position: fixed;
-      top: 0;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .track.back  { z-index: 0; }  /* ambient depth, behind the content */
+    .track.front { z-index: 2; }  /* hero lasers, over the content     */
+
+    .streak {
+      position: absolute;
       left: 0;
-      right: 0;
-      height: 2px;
+      top: var(--top, 50%);
+      width: var(--w, 36vw);
+      height: var(--h, 2px);
+      border-radius: 999px;
+      transform-origin: right center;
+      transform: translateX(-55vw);
+      opacity: 0;
       background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 153, 255, 0.5) 15%,
-        rgba(150, 220, 255, 0.9) 40%,
-        #ffffff 50%,
-        rgba(150, 220, 255, 0.9) 60%,
-        rgba(0, 153, 255, 0.5) 85%,
-        transparent 100%
+        rgba(0, 153, 255, 0.04) 34%,
+        rgba(0, 153, 255, 0.30) 62%,
+        var(--core, rgba(150, 220, 255, 0.78)) 86%,
+        var(--head, #eaf6ff) 100%
       );
-      box-shadow:
-        0 0 8px 1px rgba(120, 200, 255, 0.9),
-        0 0 22px 3px var(--accent-glow),
-        0 0 44px 6px rgba(0, 153, 255, 0.25);
-      animation: scan 8s linear infinite;
-      pointer-events: none;
-      z-index: 2;
+      filter:
+        drop-shadow(0 0 var(--g, 4px) var(--accent-glow))
+        drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 153, 255, 0.22));
+      animation: race var(--dur, 3s) cubic-bezier(0.5, 0, 0.82, 0.3) var(--delay, 0s) infinite;
+      will-change: transform, opacity;
+    }
+
+    /* Bright pin-point at the leading edge of each hero beam. */
+    .track.front .streak::after {
+      content: '';
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      margin-top: -3px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 10px 2px rgba(150, 220, 255, 0.95), 0 0 22px 6px var(--accent-glow);
+    }
+
+    @keyframes race {
+      0%   { transform: translateX(-55vw) scaleX(0.65); opacity: 0; }
+      10%  { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { transform: translateX(160vw) scaleX(1.25); opacity: 0; }
     }
 
     @keyframes fadeUp {
@@ -219,34 +253,35 @@
       to { opacity: 1; }
     }
 
-    @keyframes sheen {
-      0%   { top: -60%; opacity: 0; }
-      12%  { opacity: 1; }
-      88%  { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
-    }
-
-    @keyframes scan {
-      0%   { top: -1px; opacity: 0; }
-      5%   { opacity: 1; }
-      95%  { opacity: 1; }
-      100% { top: 100dvh; opacity: 0; }
+    /* Light glint sprinting across the wordmark, with a pause between passes */
+    @keyframes gloss {
+      0%   { left: -30%; opacity: 0; }
+      6%   { opacity: 1; }
+      32%  { left: 120%; opacity: 1; }
+      38%  { left: 120%; opacity: 0; }
+      100% { left: 120%; opacity: 0; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .logo-wrap, .divider, .title-block, .scanline {
+      .logo-wrap, .divider, .title-block {
         animation: none;
         opacity: 1;
       }
-      .logo::after {
-        animation: none;
-        opacity: 0;
+      .logo::after,
+      .track {
+        display: none;
       }
     }
   </style>
 </head>
 <body>
-  <div class="scanline" aria-hidden="true"></div>
+  <!-- Ambient beams for depth, behind the content -->
+  <div class="track back" aria-hidden="true">
+    <span class="streak" style="--top:24%; --w:34vw; --h:1px; --dur:3.6s; --delay:.2s; --g:3px; --core:rgba(0,153,255,0.45); --head:rgba(150,220,255,0.85)"></span>
+    <span class="streak" style="--top:41%; --w:28vw; --h:1px; --dur:4.2s; --delay:1.4s; --g:3px; --core:rgba(0,153,255,0.40); --head:rgba(150,220,255,0.75)"></span>
+    <span class="streak" style="--top:63%; --w:40vw; --h:1px; --dur:3.9s; --delay:.7s; --g:3px; --core:rgba(0,153,255,0.45); --head:rgba(150,220,255,0.85)"></span>
+    <span class="streak" style="--top:79%; --w:30vw; --h:1px; --dur:4.6s; --delay:2.1s; --g:3px; --core:rgba(0,153,255,0.38); --head:rgba(150,220,255,0.70)"></span>
+  </div>
 
   <main class="page">
     <div class="logo-wrap">
@@ -256,9 +291,16 @@
     <div class="divider" aria-hidden="true"></div>
 
     <div class="title-block">
-      <h1 class="title">APX Running Group</h1>
+      <h1 class="title">APX Training Group</h1>
       <p class="tagline">Performance · Connection · Growth</p>
     </div>
   </main>
+
+  <!-- Hero lasers that sprint over the composition -->
+  <div class="track front" aria-hidden="true">
+    <span class="streak" style="--top:33%; --w:46vw; --h:2px; --dur:2.3s; --delay:.5s; --g:6px; --core:rgba(185,232,255,0.9); --head:#ffffff"></span>
+    <span class="streak" style="--top:50%; --w:40vw; --h:2px; --dur:2.7s; --delay:1.7s; --g:6px; --core:rgba(170,225,255,0.85); --head:#eaf6ff"></span>
+    <span class="streak" style="--top:67%; --w:38vw; --h:2px; --dur:2.5s; --delay:2.9s; --g:6px; --core:rgba(185,232,255,0.9); --head:#ffffff"></span>
+  </div>
 </body>
 </html>
