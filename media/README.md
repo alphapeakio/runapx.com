@@ -13,7 +13,7 @@ and blue backgrounds, plus ready-made app icons and social sizes.
 | Accent Blue  | `#0099FF`  | Brand accent, links, highlights      |
 | Off-white    | `#F5F7FA`  | Light background (matches the website)|
 | Metallic     | silver gradient (`#FFFFFF → #767676 → #ECECEC`) | Hero / premium — **dark backgrounds only** |
-| Graphite     | graphite gradient (`#8F9AA8 → #1F262E → #5C6674`) | Hero / premium — **light backgrounds** |
+| Graphite     | brushed silver gradient (`#B9C4D1 → #3B4550 → #808C99`) | Hero / premium — **light backgrounds** |
 | Blue-steel   | blue gradient (`#DFF2FF → #0099FF → #006EBE`)   | Alternate accent lockups |
 
 **Metallic and graphite are a pair.** Metallic is a bright silver, so it

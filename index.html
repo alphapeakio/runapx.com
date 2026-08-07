@@ -43,9 +43,9 @@
     :root {
       --bg: #f5f7fa;          /* bright off-white canvas */
       --bg-sheen: #ffffff;    /* pure white bloom in the centre */
-      --ink: #10151b;         /* near-black for headings */
-      --muted: #5f6772;
-      --dim: #98a2ae;
+      --ink: #0a0e13;         /* near-black for headings */
+      --muted: #3d4650;       /* body/tagline — deliberately high contrast */
+      --dim: #8b96a3;
       --accent: #0099ff;      /* brand blue — used for glows/fills */
       --accent-ink: #0068c4;  /* deeper blue that holds contrast on white */
       --accent-glow: rgba(0, 153, 255, 0.30);
@@ -132,17 +132,18 @@
          with a brushed-metal gradient instead of flat white. */
       -webkit-mask: url("/assets/apx-logo.png") center / contain no-repeat;
               mask: url("/assets/apx-logo.png") center / contain no-repeat;
-      /* Brushed graphite: alternating polished and shaded bands, dark
-         enough to read crisply against the off-white canvas. */
+      /* Brushed silver: lifted well above graphite so it reads as polished
+         metal rather than dark ink, while the shaded bands stay deep enough
+         to hold definition against the off-white canvas. */
       background: linear-gradient(
         176deg,
-        #8f9aa8 0%,
-        #39424c 14%,
-        #6b7684 30%,
-        #1f262e 46%,
-        #7e8a97 58%,
-        #2f373f 74%,
-        #5c6674 100%
+        #b9c4d1 0%,
+        #59646f 14%,
+        #93a0ad 30%,
+        #3b4550 46%,
+        #a9b5c1 58%,
+        #4d5763 74%,
+        #808c99 100%
       );
       overflow: hidden;
     }
@@ -208,7 +209,7 @@
     .tagline {
       margin-top: 1.5rem;
       font-size: clamp(0.7rem, 1.8vw, 0.8rem);
-      font-weight: 200;
+      font-weight: 300;
       letter-spacing: 0.25em;
       color: var(--muted);
       text-transform: uppercase;
