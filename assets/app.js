@@ -83,29 +83,16 @@
     for (var key in attrs) el.setAttribute(key, attrs[key]);
     return el;
   }
-  function crossLine(x1, x2, y) {
-    var el = document.createElementNS(SVGNS, 'rect');
-    el.setAttribute('x', Math.min(x1, x2));
-    el.setAttribute('y', y - 5);
-    el.setAttribute('width', Math.abs(x2 - x1));
-    el.setAttribute('height', 10);
-    el.setAttribute('fill', 'rgba(0,112,200,0.34)');
-    return el;
-  }
   if (trackField) {
-    /* Light theme: a faint blue surface with slightly bluer lane lines,
-       so the oval and its lanes read without white-on-white washout. */
-    trackField.appendChild(stadium(420, { fill: '#dbe8f6' }));        /* track surface */
-    trackField.appendChild(stadium(180, { fill: '#eef4fb' }));        /* infield       */
+    /* Just the lane lines — thin, bright blue, no fill — so the track
+       reads as a light backdrop rather than a darkened surface. */
     var lanes = [195, 225, 255, 285, 315, 345, 375, 405];
     for (var li = 0; li < lanes.length; li++) {
       trackField.appendChild(stadium(lanes[li], {
-        fill: 'none', stroke: 'rgba(0,112,200,0.30)', 'stroke-width': 3.5
+        fill: 'none', stroke: 'rgba(10,160,255,0.5)', 'stroke-width': 2
       }));
     }
-    trackField.appendChild(crossLine(180, 420, -20));                 /* start lines   */
-    trackField.appendChild(crossLine(-420, -180, 20));
-    trackField.style.transform = 'translate(-300px, -280px)';        /* static pose   */
+    trackField.style.transform = 'translate(-300px, -280px)';        /* static pose */
   }
 
   /* Position + bank angle at distance s along the running line. */
@@ -166,8 +153,8 @@
 
     /* ── Aerial track: scrolling runs the lap underfoot ── */
     if (trackField && trackRotor) {
-      var k = LAP / (vh * 3);               /* ~one lap per 3 viewports */
-      var pt = trackAt(window.scrollY * k + elapsed * 30);
+      var k = LAP / (vh * 5);               /* slower: ~one lap per 5 viewports */
+      var pt = trackAt(window.scrollY * k + elapsed * 16);
       trackField.style.transform =
         'translate(' + (-pt.x).toFixed(1) + 'px, ' + (-pt.y).toFixed(1) + 'px)';
       trackRotor.style.transform = 'rotate(' + pt.a.toFixed(2) + 'deg) scale(1.7)';
@@ -181,7 +168,7 @@
         var dist = stair.offsetHeight - vh;           /* pinned travel */
         var scrolled = clamp(-sr.top, 0, dist);
         var prog = dist > 0 ? scrolled / dist : 0;    /* 0..1 through the section */
-        scrollClimb = prog * H * 3.2;                 /* ~3 revolutions of climb */
+        scrollClimb = prog * H * 2.2;                 /* ~2 revolutions of climb */
       }
       var climb = elapsed * 9 + scrollClimb;          /* gentle idle + scroll */
       for (var k = 0; k < treads.length; k++) {

@@ -195,17 +195,24 @@
     }
     @keyframes cue { 0% { top: -55%; } 70% { top: 105%; } 100% { top: 105%; } }
 
-    /* ── Scroll-journey sections: 3D stage ── */
-    main { perspective: 1500px; perspective-origin: 50% 50%; }
+    /* ── Scroll-journey sections ──
+       Each section is tall; the pane is pinned (sticky) in the centre so
+       it holds/dwells for a good stretch of scrolling before releasing. */
     .section {
       position: relative;
       z-index: 1;
-      min-height: 100vh;
+      height: 200vh;              /* dwell length — how long a pane holds */
+    }
+    .pane-hold {
+      position: sticky;
+      top: 0;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10vh 1.5rem;
-      transform-style: preserve-3d;
+      padding: 6vh 1.5rem;
+      perspective: 1500px;
+      perspective-origin: 50% 50%;
     }
 
     /* ── The glass pane — deep frosted glass, no hard edge ── */
@@ -316,19 +323,18 @@
     .stair {
       position: relative;
       z-index: 1;
-      height: 300vh;
+      height: 190vh;
     }
     .stair-pin {
       position: sticky;
       top: 0;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
+      display: grid;
+      place-items: center;
       padding: 6vh 1.5rem;
     }
+    /* stack the stage and its caption so the text sits in the helix centre */
+    .stair-pin > * { grid-area: 1 / 1; }
     .stair-stage {
       position: relative;
       width: min(560px, 90vw);
@@ -376,18 +382,25 @@
       filter: drop-shadow(0 0 8px var(--accent-glow));
       opacity: 0.5;
     }
-    .stair-caption { text-align: center; max-width: 40ch; }
-    .stair-caption .pane-hud { margin-bottom: 1.2rem; }
+    /* caption centred inside the helix, riding the newel post */
+    .stair-caption {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: min(24ch, 74vw);
+      pointer-events: none;
+    }
+    .stair-caption .pane-hud { margin-bottom: 1rem; justify-content: center; }
     .stair-caption h2 {
-      font-size: clamp(1.6rem, 4.4vw, 2.6rem);
+      font-size: clamp(1.4rem, 3.6vw, 2.1rem);
       font-weight: 200;
-      line-height: 1.16;
+      line-height: 1.18;
       color: var(--ink);
     }
     .stair-caption .accent { color: var(--accent-ink); }
     .stair-caption p {
-      margin-top: 1.2rem;
-      font-size: 0.92rem;
+      margin-top: 1rem;
+      font-size: 0.86rem;
       font-weight: 300;
       line-height: 1.7;
       color: var(--muted);
@@ -422,14 +435,16 @@
     .request .arrow { transition: transform 0.35s ease; }
     .request:hover .arrow { transform: translateX(4px); }
 
-    /* ── Footer ── */
+    /* ── Footer — its own clean screen once the last pane clears ── */
     .foot {
       position: relative;
       z-index: 1;
-      padding: 3.5rem 2rem 4rem;
+      min-height: 70vh;
+      padding: 3.5rem 2rem 5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 1rem;
     }
     .foot .logo { width: min(120px, 40vw); }
@@ -444,17 +459,14 @@
     /* No-JS / reduced-motion: static, readable, flat panes */
     .no-js .pane { transform: none !important; opacity: 1 !important; }
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-snap-type: none; }
       .orb, .pane::before { animation: none !important; }
       .pane { transform: none !important; opacity: 1 !important; }
+      /* collapse the dwell so reduced-motion users don't scroll dead space */
+      .section { height: auto; }
+      .pane-hold { position: static; height: auto; min-height: 100vh; }
+      .stair { height: auto; }
+      .stair-pin { position: static; height: auto; min-height: 100vh; }
     }
-
-    /* ── Scroll snap: each pane catches and holds you ──
-       A centred pane sits at its flat resting pose, so its motion
-       settles while you dwell on it. */
-    html { scroll-snap-type: y proximity; scroll-padding: 0; }
-    .hero, .stair { scroll-snap-align: start; }
-    .section { scroll-snap-align: center; }
   </style>
 </head>
 <body>
@@ -504,6 +516,7 @@
   <main>
     <!-- ── Ethos ── -->
     <section class="section" aria-labelledby="ethos-h">
+     <div class="pane-hold">
       <article class="pane" data-tilt data-dir="1">
         <div class="pane-hud"><span class="idx">02</span><span class="tick"></span><span>The Idea</span></div>
         <h2 class="statement" id="ethos-h">
@@ -514,10 +527,12 @@
           are serious about how far this goes.
         </p>
       </article>
+     </div>
     </section>
 
     <!-- ── The Standard ── -->
     <section class="section" aria-labelledby="standard-h">
+     <div class="pane-hold">
       <article class="pane" data-tilt data-dir="-1">
         <div class="pane-hud"><span class="idx">03</span><span class="tick"></span><span>The Standard</span></div>
         <h2 class="statement" id="standard-h">
@@ -528,10 +543,12 @@
           on merit and fit — and it closes when the room is full.
         </p>
       </article>
+     </div>
     </section>
 
     <!-- ── The Method ── -->
     <section class="section" aria-labelledby="method-h">
+     <div class="pane-hold">
       <article class="pane" data-tilt data-dir="1">
         <div class="pane-hud"><span class="idx">04</span><span class="tick"></span><span>The Method</span></div>
         <h2 class="statement" id="method-h">
@@ -545,10 +562,12 @@
           Nothing generic. What we build for an athlete is built from their own numbers.
         </p>
       </article>
+     </div>
     </section>
 
     <!-- ── Invitation / close ── -->
     <section class="section invite" aria-labelledby="invite-h">
+     <div class="pane-hold">
       <article class="pane" data-tilt data-dir="-1">
         <div class="pane-hud"><span class="idx">05</span><span class="tick"></span><span>The Invitation</span></div>
         <h2 class="statement" id="invite-h">
@@ -556,6 +575,7 @@
         </h2>
         <a class="request" href="/apply">Request Consideration <span class="arrow" aria-hidden="true">→</span></a>
       </article>
+     </div>
     </section>
   </main>
 
