@@ -200,23 +200,23 @@
       transform-style: preserve-3d;
     }
 
-    /* ── The glass pane ── */
+    /* ── The glass pane — deep frosted glass, no hard edge ── */
     .pane {
       position: relative;
       width: min(680px, 92vw);
       padding: clamp(2.4rem, 5vw, 4rem);
       text-align: center;
-      border-radius: 26px;
+      border-radius: 30px;
+      /* barely-there fill so it reads as frost, not a white card */
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.26));
-      border: 1px solid var(--glass-edge);
+        linear-gradient(135deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.08));
+      /* no outer border — the edge is a soft highlight + shadow only */
       box-shadow:
-        0 34px 90px -34px rgba(6, 44, 88, 0.32),
-        0 8px 24px -14px rgba(6, 44, 88, 0.20),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        inset 0 -1px 0 rgba(120, 150, 180, 0.22);
-      -webkit-backdrop-filter: blur(22px) saturate(1.5);
-              backdrop-filter: blur(22px) saturate(1.5);
+        0 44px 110px -44px rgba(6, 44, 88, 0.30),
+        0 12px 34px -20px rgba(6, 44, 88, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.60);
+      -webkit-backdrop-filter: blur(34px) saturate(1.7);
+              backdrop-filter: blur(34px) saturate(1.7);
       overflow: hidden;
       transform-style: preserve-3d;
       will-change: transform, opacity;
@@ -228,7 +228,7 @@
       top: -60%; left: -30%;
       width: 45%; height: 220%;
       background: linear-gradient(
-        105deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+        105deg, transparent 0%, rgba(255, 255, 255, 0.42) 50%, transparent 100%);
       transform: skewX(-16deg);
       mix-blend-mode: screen;
       pointer-events: none;
@@ -239,14 +239,6 @@
       12% { opacity: 1; }
       45% { left: 120%; opacity: 0; }
       100% { left: 120%; opacity: 0; }
-    }
-    /* faint inner grid line on the glass — techy detail */
-    .pane::after {
-      content: '';
-      position: absolute; inset: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(0, 130, 230, 0.10);
-      pointer-events: none;
     }
 
     .pane-hud {
@@ -311,17 +303,23 @@
       color: var(--dim);
     }
 
-    /* ── Spiral staircase (the centerpiece) ── */
+    /* ── Spiral staircase — the opening scroll-driven ascent ──
+       A tall section with a pinned stage: scrolling climbs the helix. */
     .stair {
       position: relative;
       z-index: 1;
-      min-height: 130vh;
+      height: 300vh;
+    }
+    .stair-pin {
+      position: sticky;
+      top: 0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2.5rem;
-      padding: 8vh 1.5rem;
+      gap: 2rem;
+      padding: 6vh 1.5rem;
     }
     .stair-stage {
       position: relative;
@@ -451,14 +449,6 @@
     <span class="orb c"></span>
   </div>
 
-  <!-- Ambient beams for depth, behind the content -->
-  <div class="track back" aria-hidden="true">
-    <span class="streak" style="--top:24%; --w:34vw; --h:1px; --dur:3.6s; --delay:.2s; --g:3px; --core:rgba(0,158,255,0.48); --head:rgba(0,153,255,0.70)"></span>
-    <span class="streak" style="--top:41%; --w:28vw; --h:1px; --dur:4.2s; --delay:1.4s; --g:3px; --core:rgba(0,158,255,0.42); --head:rgba(0,153,255,0.62)"></span>
-    <span class="streak" style="--top:63%; --w:40vw; --h:1px; --dur:3.9s; --delay:.7s; --g:3px; --core:rgba(0,158,255,0.48); --head:rgba(0,153,255,0.70)"></span>
-    <span class="streak" style="--top:79%; --w:30vw; --h:1px; --dur:4.6s; --delay:2.1s; --g:3px; --core:rgba(0,158,255,0.40); --head:rgba(0,153,255,0.58)"></span>
-  </div>
-
   <a class="corner-cta" href="/apply">Request Consideration</a>
 
   <!-- ── Hero ── -->
@@ -477,18 +467,25 @@
     </div>
   </header>
 
-  <!-- Hero lasers that sprint over the composition -->
-  <div class="track front" aria-hidden="true">
-    <span class="streak" style="--top:33%; --w:46vw; --h:2px; --dur:2.3s; --delay:.5s; --g:6px; --core:rgba(0,163,255,0.92); --head:#0099ff"></span>
-    <span class="streak" style="--top:50%; --w:40vw; --h:2px; --dur:2.7s; --delay:1.7s; --g:6px; --core:rgba(0,163,255,0.85); --head:#00a0ff"></span>
-    <span class="streak" style="--top:67%; --w:38vw; --h:2px; --dur:2.5s; --delay:2.9s; --g:6px; --core:rgba(0,163,255,0.92); --head:#0099ff"></span>
-  </div>
+  <!-- ── The Ascent: first thing they see on scroll ── -->
+  <section class="stair" aria-labelledby="ascent-h">
+    <div class="stair-pin">
+      <div class="stair-stage" aria-hidden="true">
+        <div class="helix" id="helix"></div>
+      </div>
+      <div class="stair-caption">
+        <div class="pane-hud"><span class="idx">01</span><span class="tick"></span><span>The Ascent</span></div>
+        <h2 id="ascent-h">Progress is a climb, <span class="accent">not a leap.</span></h2>
+        <p>Keep scrolling. Turn by turn, the standard rises.</p>
+      </div>
+    </div>
+  </section>
 
   <main>
     <!-- ── Ethos ── -->
     <section class="section" aria-labelledby="ethos-h">
       <article class="pane" data-tilt data-dir="1">
-        <div class="pane-hud"><span class="idx">01</span><span class="tick"></span><span>The Idea</span></div>
+        <div class="pane-hud"><span class="idx">02</span><span class="tick"></span><span>The Idea</span></div>
         <h2 class="statement" id="ethos-h">
           Potential needs the right <span class="accent">environment</span> to become performance.
         </h2>
@@ -502,7 +499,7 @@
     <!-- ── The Standard ── -->
     <section class="section" aria-labelledby="standard-h">
       <article class="pane" data-tilt data-dir="-1">
-        <div class="pane-hud"><span class="idx">02</span><span class="tick"></span><span>The Standard</span></div>
+        <div class="pane-hud"><span class="idx">03</span><span class="tick"></span><span>The Standard</span></div>
         <h2 class="statement" id="standard-h">
           The roster is kept small <span class="accent">on purpose.</span>
         </h2>
@@ -516,7 +513,7 @@
     <!-- ── The Method ── -->
     <section class="section" aria-labelledby="method-h">
       <article class="pane" data-tilt data-dir="1">
-        <div class="pane-hud"><span class="idx">03</span><span class="tick"></span><span>The Method</span></div>
+        <div class="pane-hud"><span class="idx">04</span><span class="tick"></span><span>The Method</span></div>
         <h2 class="statement" id="method-h">
           Every stride measured. Every race <span class="accent">read.</span>
         </h2>
@@ -528,18 +525,6 @@
           Nothing generic. What we build for an athlete is built from their own numbers.
         </p>
       </article>
-    </section>
-
-    <!-- ── Spiral staircase centerpiece ── -->
-    <section class="stair" aria-labelledby="ascent-h">
-      <div class="stair-stage" aria-hidden="true">
-        <div class="helix" id="helix"></div>
-      </div>
-      <div class="stair-caption">
-        <div class="pane-hud"><span class="idx">04</span><span class="tick"></span><span>The Ascent</span></div>
-        <h2 id="ascent-h">One step at a time — <span class="accent">upward.</span></h2>
-        <p>Progress here is a climb, not a leap. Turn by turn, the standard rises.</p>
-      </div>
     </section>
 
     <!-- ── Invitation / close ── -->

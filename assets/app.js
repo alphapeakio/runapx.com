@@ -1,13 +1,15 @@
 /* ─────────────────────────────────────────────────────────────
    APX — home motion engine (vanilla, no framework, no deps)
-   Enhancement only. With JS off, panes are flat and readable and the
-   CSS ambience still plays. This adds:
-     · scroll-linked 3D on each glass pane — it turns, weaves side to
-       side, and recedes as it passes through the viewport
-     · a rotating spiral-staircase helix, wound tighter by scrolling
-     · a cursor / scroll driven light that the frosted glass refracts
+   Enhancement only. With JS off, panes are flat and readable and a
+   static spiral staircase is shown. This adds:
+     · a scroll-driven ASCENT — the spiral staircase climbs upward as
+       you scroll down, the opening moment before any content
+     · scroll-linked 3D on each frosted pane — it turns, weaves side to
+       side, and recedes as it crosses the viewport
+     · a cursor / scroll driven light the frosted glass refracts
      · the corner CTA fading in past the hero
-   All motion is disabled under prefers-reduced-motion.
+   All motion is disabled under prefers-reduced-motion, and the whole
+   loop self-pauses while the tab is hidden.
    ───────────────────────────────────────────────────────────── */
 (function () {
   'use strict';
@@ -17,7 +19,7 @@
 
   var root = document.documentElement;
 
-  /* ── Corner CTA reveal (works even without the motion loop) ── */
+  /* ── Corner CTA reveal ── */
   var corner = document.querySelector('.corner-cta');
   var hero = document.querySelector('.hero');
   if (corner && hero) {
@@ -30,21 +32,30 @@
     }
   }
 
-  /* ── Build the spiral staircase ── */
+  /* ── Build the spiral staircase ──
+     N treads on a helix; a full wrap is exactly 360° so the loop is
+     seamless. We set a static pose here (used when motion is off) and
+     drive it per-frame below when motion is on. */
   var helix = document.getElementById('helix');
-  var TREADS = 16;
-  var STEP_ANGLE = 30;   /* degrees between treads */
-  var STEP_RISE = 30;    /* px each tread climbs */
+  var N = 18;             /* treads */
+  var RISE = 30;          /* px of climb per tread */
+  var RADIUS = 190;       /* px from the newel post */
+  var STEP = 360 / N;     /* degrees between treads → seamless wrap */
+  var TILT = 66;          /* how flat each tread lies */
+  var H = N * RISE;       /* full helix height */
+  var treads = [];
+
   if (helix) {
     var frag = document.createDocumentFragment();
-    for (var i = 0; i < TREADS; i++) {
+    for (var i = 0; i < N; i++) {
       var t = document.createElement('span');
       t.className = 'tread';
-      t.style.setProperty('--a', (i * STEP_ANGLE) + 'deg');
-      t.style.setProperty('--y', ((i - TREADS / 2) * -STEP_RISE) + 'px');
-      /* nearer-to-front treads read brighter */
-      t.style.opacity = (0.45 + 0.55 * (i / TREADS)).toFixed(2);
+      var y0 = i * RISE;
+      t.style.setProperty('--a', (i * STEP) + 'deg');
+      t.style.setProperty('--y', (H / 2 - y0).toFixed(1) + 'px');
+      t.style.opacity = (0.14 + 0.86 * Math.sin(Math.PI * (y0 / H))).toFixed(3);
       frag.appendChild(t);
+      treads.push(t);
     }
     helix.appendChild(frag);
   }
@@ -52,7 +63,7 @@
   if (reduce) return; /* everything below is pure motion */
 
   var panes = Array.prototype.slice.call(document.querySelectorAll('[data-tilt]'));
-  var stairStage = document.querySelector('.stair-stage');
+  var stair = document.querySelector('.stair');
 
   /* cursor light target + eased current, in % */
   var mx = 50, my = 40, cmx = 50, cmy = 40;
@@ -65,6 +76,7 @@
   }
 
   function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+  function mod(n, m) { return ((n % m) + m) % m; }
 
   var vh = window.innerHeight;
   window.addEventListener('resize', function () { vh = window.innerHeight; }, { passive: true });
@@ -75,7 +87,7 @@
     if (t0 === null) t0 = ts;
     var elapsed = (ts - t0) / 1000; /* seconds */
 
-    /* eased cursor light for the body bloom + section light fields */
+    /* eased cursor light for the body bloom */
     cmx += (mx - cmx) * 0.08;
     cmy += (my - cmy) * 0.08;
     root.style.setProperty('--mx', cmx.toFixed(2) + '%');
@@ -83,11 +95,33 @@
 
     var center = vh / 2;
 
-    /* ── Panes: turn + weave + recede as they cross the viewport ── */
+    /* ── The Ascent: scrolling down climbs the staircase up ── */
+    if (helix && treads.length) {
+      var scrollClimb = 0;
+      if (stair) {
+        var sr = stair.getBoundingClientRect();
+        var dist = stair.offsetHeight - vh;           /* pinned travel */
+        var scrolled = clamp(-sr.top, 0, dist);
+        var prog = dist > 0 ? scrolled / dist : 0;    /* 0..1 through the section */
+        scrollClimb = prog * H * 3.2;                 /* ~3 revolutions of climb */
+      }
+      var climb = elapsed * 9 + scrollClimb;          /* gentle idle + scroll */
+      for (var k = 0; k < treads.length; k++) {
+        var y = mod(k * RISE + climb, H);             /* rises, wraps seamlessly */
+        var ang = (y / RISE) * STEP;
+        var op = Math.sin(Math.PI * (y / H));         /* fade at the wrap points */
+        treads[k].style.transform =
+          'rotateY(' + ang.toFixed(2) + 'deg) translateZ(' + RADIUS + 'px) ' +
+          'translateY(' + (H / 2 - y).toFixed(1) + 'px) rotateX(' + TILT + 'deg)';
+        treads[k].style.opacity = (0.10 + 0.90 * op).toFixed(3);
+      }
+    }
+
+    /* ── Frosted panes: turn + weave + recede as they cross the view ── */
     for (var i = 0; i < panes.length; i++) {
       var el = panes[i];
       var r = el.getBoundingClientRect();
-      if (r.bottom < -200 || r.top > vh + 200) continue; /* offscreen: skip */
+      if (r.bottom < -200 || r.top > vh + 200) continue;
 
       var mid = r.top + r.height / 2;
       var p = clamp((mid - center) / center, -1, 1); /* +1 below, -1 above */
@@ -95,27 +129,14 @@
 
       var rotY = (dir * p * 26).toFixed(2);
       var rotX = (-p * 7).toFixed(2);
-      /* smooth horizontal arc — centred when the pane is centred */
-      var tx = (dir * Math.sin(p * Math.PI / 2) * 7).toFixed(2);
+      var tx = (dir * Math.sin(p * Math.PI / 2) * 7).toFixed(2); /* centred at centre */
       var tz = (-Math.abs(p) * 170).toFixed(0);
-      var op = (1 - Math.abs(p) * 0.4).toFixed(3);
+      var op2 = (1 - Math.abs(p) * 0.4).toFixed(3);
 
       el.style.transform =
         'translateX(' + tx + 'vw) translateZ(' + tz + 'px) ' +
         'rotateY(' + rotY + 'deg) rotateX(' + rotX + 'deg)';
-      el.style.opacity = op;
-    }
-
-    /* ── Staircase: always turning, wound faster by scroll ── */
-    if (helix) {
-      var spin = elapsed * 12; /* deg/sec ambient rotation */
-      if (stairStage) {
-        var sr = stairStage.getBoundingClientRect();
-        /* how far the stage has travelled through the viewport, -1..1 */
-        var sp = clamp((sr.top + sr.height / 2 - center) / (vh), -1, 1);
-        spin += sp * 220; /* scrolling climbs/descends the spiral */
-      }
-      helix.style.transform = 'rotateX(-12deg) rotateY(' + spin.toFixed(2) + 'deg)';
+      el.style.opacity = op2;
     }
 
     requestAnimationFrame(frame);
