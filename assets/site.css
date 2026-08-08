@@ -114,7 +114,7 @@ body::after {
   aspect-ratio: 1212 / 316;
   -webkit-mask: url("/assets/apx-logo.png") center / contain no-repeat;
           mask: url("/assets/apx-logo.png") center / contain no-repeat;
-  background: var(--silver);
+  background: #0a0e13;   /* black branding */
   overflow: hidden;
 }
 
@@ -129,9 +129,9 @@ body::after {
   background: linear-gradient(
     105deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.15) 40%,
-    rgba(255, 255, 255, 0.95) 50%,
-    rgba(255, 255, 255, 0.15) 60%,
+    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0.06) 60%,
     transparent 100%
   );
   transform: skewX(-18deg);

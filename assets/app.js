@@ -37,54 +37,23 @@
      seamless. We set a static pose here (used when motion is off) and
      drive it per-frame below when motion is on. */
   var helix = document.getElementById('helix');
-  var OV_N = 22;                        /* treads around the oval        */
-  var OV_CR = 95;                       /* curve radius (x)              */
-  var OV_SL = 150;                      /* straight length (z)           */
-  var OV_CURVE = Math.PI * OV_CR;       /* one curve's arc length        */
-  var OV_P = 2 * OV_SL + 2 * OV_CURVE;  /* oval perimeter                */
-  var OV_SPACING = OV_P / OV_N;
-  var OV_TILT = 70;                     /* how flat each tread lies       */
-  var LOOP_H = 150;                     /* vertical rise over one lap     */
+  var N = 18;             /* treads */
+  var RISE = 30;          /* px of climb per tread */
+  var RADIUS = 190;       /* px from the newel post */
+  var STEP = 360 / N;     /* degrees between treads → seamless wrap */
+  var TILT = 66;          /* how flat each tread lies */
+  var H = N * RISE;       /* full helix height */
   var treads = [];
-
-  function wrapP(p) { return ((p % OV_P) + OV_P) % OV_P; }
-
-  /* Point + tangent on the oval (track-shaped) footprint, in the
-     horizontal x/z plane. */
-  function ovalAt(p) {
-    p = wrapP(p);
-    var x, z, phi;
-    if (p < OV_SL) {                              /* right straight */
-      x = OV_CR; z = -OV_SL / 2 + p; phi = 0;
-    } else if (p < OV_SL + OV_CURVE) {            /* far curve      */
-      var a = (p - OV_SL) / OV_CR;
-      x = OV_CR * Math.cos(a); z = OV_SL / 2 + OV_CR * Math.sin(a); phi = a;
-    } else if (p < 2 * OV_SL + OV_CURVE) {        /* left straight  */
-      x = -OV_CR; z = OV_SL / 2 - (p - (OV_SL + OV_CURVE)); phi = Math.PI;
-    } else {                                      /* near curve     */
-      var a2 = (p - (2 * OV_SL + OV_CURVE)) / OV_CR;
-      x = -OV_CR * Math.cos(a2); z = -OV_SL / 2 - OV_CR * Math.sin(a2); phi = Math.PI + a2;
-    }
-    return { x: x, z: z, phi: phi * 180 / Math.PI };
-  }
-
-  /* Full 3D transform for a tread at perimeter position p — placed on
-     the oval, raised by its height in the current lap, laid flat. */
-  function treadTransform(p) {
-    var o = ovalAt(p);
-    var h = wrapP(p) / OV_P * LOOP_H - LOOP_H / 2;
-    return 'translate3d(' + o.x.toFixed(1) + 'px,' + (-h).toFixed(1) + 'px,' + o.z.toFixed(1) + 'px) ' +
-           'rotateY(' + o.phi.toFixed(1) + 'deg) rotateX(' + OV_TILT + 'deg)';
-  }
 
   if (helix) {
     var frag = document.createDocumentFragment();
-    for (var i = 0; i < OV_N; i++) {
+    for (var i = 0; i < N; i++) {
       var t = document.createElement('span');
       t.className = 'tread';
-      var p0 = i * OV_SPACING;
-      t.style.transform = treadTransform(p0);
-      t.style.opacity = (0.12 + 0.88 * Math.sin(Math.PI * (wrapP(p0) / OV_P))).toFixed(3);
+      var y0 = i * RISE;
+      t.style.setProperty('--a', (i * STEP) + 'deg');
+      t.style.setProperty('--y', (H / 2 - y0).toFixed(1) + 'px');
+      t.style.opacity = (0.14 + 0.86 * Math.sin(Math.PI * (y0 / H))).toFixed(3);
       frag.appendChild(t);
       treads.push(t);
     }
@@ -192,18 +161,17 @@
       stairProg = dist > 0 ? clamp(-sr.top, 0, dist) / dist : 0;
     }
 
-    /* ── The Ascent: an oval track that rises from the bottom and turns
-       upward, then hands off to the background track. ── */
+    /* ── The Ascent: the spiral staircase climbs as you scroll ── */
     if (helix && treads.length) {
-      var enter = clamp(stairProg / 0.32, 0, 1);       /* lift up from the bottom */
-      var stageH = stairStage ? stairStage.clientHeight : 420;
-      var baseY = (1 - enter) * stageH * 0.55;
-      helix.style.transform = 'rotateX(-22deg) translateY(' + baseY.toFixed(1) + 'px)';
-      var climb = stairProg * OV_P * 1.6 + elapsed * 18; /* travel the oval + idle */
+      var climb = elapsed * 9 + stairProg * H * 2.2;   /* idle + scroll climb */
       for (var k = 0; k < treads.length; k++) {
-        var pp = k * OV_SPACING + climb;
-        treads[k].style.transform = treadTransform(pp);
-        treads[k].style.opacity = (0.10 + 0.90 * Math.sin(Math.PI * (wrapP(pp) / OV_P))).toFixed(3);
+        var y = mod(k * RISE + climb, H);              /* rises, wraps seamlessly */
+        var ang = (y / RISE) * STEP;
+        var op = Math.sin(Math.PI * (y / H));          /* fade at the wrap points */
+        treads[k].style.transform =
+          'rotateY(' + ang.toFixed(2) + 'deg) translateZ(' + RADIUS + 'px) ' +
+          'translateY(' + (H / 2 - y).toFixed(1) + 'px) rotateX(' + TILT + 'deg)';
+        treads[k].style.opacity = (0.10 + 0.90 * op).toFixed(3);
       }
     }
 

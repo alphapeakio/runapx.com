@@ -348,62 +348,53 @@
       position: absolute;
       inset: 0;
       transform-style: preserve-3d;
-      transform: rotateX(-22deg);      /* app.js drives the rest */
+      transform: rotateX(-12deg) rotateY(0deg);
       will-change: transform;
     }
     .tread {
       position: absolute;
       left: 50%; top: 50%;
-      width: 64px; height: 28px;
-      margin: -14px 0 0 -32px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, rgba(223, 242, 255, 0.60), rgba(255, 255, 255, 0.14));
+      width: 190px; height: 52px;
+      margin: -26px 0 0 -95px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(223, 242, 255, 0.55), rgba(255, 255, 255, 0.12));
       border: 1px solid rgba(255, 255, 255, 0.6);
       box-shadow:
         0 14px 34px -10px rgba(0, 92, 175, 0.34),
         inset 0 1px 0 rgba(255, 255, 255, 0.85);
-      /* transform + opacity are set per-tread by app.js */
+      transform:
+        rotateY(var(--a)) translateZ(190px)
+        translateY(var(--y)) rotateX(66deg);
       transform-style: preserve-3d;
     }
     .tread::before {
       content: '';
       position: absolute; inset: 0;
-      border-radius: 8px;
+      border-radius: 13px;
       background: linear-gradient(90deg, transparent, rgba(0, 163, 255, 0.16), transparent);
     }
-    /* soft glow at the oval's centre, behind the caption */
+    /* the glowing newel post the treads wind around */
     .stair-stage::after {
       content: '';
       position: absolute;
-      inset: 22% 18%;
-      background: radial-gradient(ellipse at 50% 50%, var(--accent-glow), transparent 70%);
-      filter: blur(24px);
+      left: 50%; top: 8%;
+      width: 2px; height: 84%;
+      margin-left: -1px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      filter: drop-shadow(0 0 8px var(--accent-glow));
       opacity: 0.5;
       pointer-events: none;
     }
-    /* caption centred inside the helix, riding the newel post */
+    /* caption centred in the helix, same width/presence as the panes */
     .stair-caption {
       position: relative;
       z-index: 2;
+      width: min(680px, 92vw);
       text-align: center;
-      width: min(24ch, 74vw);
       pointer-events: none;
     }
-    .stair-caption .pane-hud { margin-bottom: 1rem; justify-content: center; }
-    .stair-caption h2 {
-      font-size: clamp(1.4rem, 3.6vw, 2.1rem);
-      font-weight: 200;
-      line-height: 1.18;
-      color: var(--ink);
-    }
+    .stair-caption .pane-hud { margin-bottom: 1.8rem; justify-content: center; }
     .stair-caption .accent { color: var(--accent-ink); }
-    .stair-caption p {
-      margin-top: 1rem;
-      font-size: 0.86rem;
-      font-weight: 300;
-      line-height: 1.7;
-      color: var(--muted);
-    }
 
     /* ── Invitation / close ── */
     .invite .pane { text-align: center; }
@@ -446,7 +437,7 @@
       justify-content: center;
       gap: 1rem;
     }
-    .foot .logo { width: min(120px, 40vw); }
+    .foot .logo { width: min(200px, 55vw); }
     .foot .foot-line {
       font-family: var(--mono);
       font-size: 0.6rem;
@@ -507,8 +498,8 @@
       </div>
       <div class="stair-caption">
         <div class="pane-hud"><span class="idx">01</span><span class="tick"></span><span>The Ascent</span></div>
-        <h2 id="ascent-h">Progress is a climb, <span class="accent">not a leap.</span></h2>
-        <p>Keep scrolling. Turn by turn, the standard rises.</p>
+        <h2 class="statement" id="ascent-h">Progress is a climb, <span class="accent">not a leap.</span></h2>
+        <p class="subline">Keep scrolling. Turn by turn, the standard rises.</p>
       </div>
     </div>
   </section>
