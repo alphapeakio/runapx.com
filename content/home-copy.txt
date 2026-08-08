@@ -1,0 +1,92 @@
+==============================================================
+APX — HOME PAGE COPY  (working doc for editing the language)
+==============================================================
+
+How to use this file:
+- Edit the text after each label. Keep the labels/structure intact.
+- HEADLINE = the large statement (keep it short — a phrase, not a paragraph).
+- SUBLINE  = the smaller supporting line under it (1–2 sentences).
+- EYEBROW  = the small uppercase tag above the headline.
+- ACCENT   = the words shown in blue inside the headline (must appear
+             verbatim within the HEADLINE text).
+- Tell me when you're done and I'll apply the changes to the site.
+
+
+--------------------------------------------------------------
+HERO  (the landing screen)
+--------------------------------------------------------------
+WORDMARK:      APX Training Group        (rendered as the logo)
+TAGLINE:       Performance · Precision · Ascent
+
+
+--------------------------------------------------------------
+SECTION 01 — THE ASCENT  (the spiral staircase / intro)
+--------------------------------------------------------------
+EYEBROW:       The Ascent
+HEADLINE:      Progress is a climb, not a leap.
+ACCENT:        not a leap.
+SUBLINE:       Keep scrolling. Turn by turn, the standard rises.
+
+
+--------------------------------------------------------------
+SECTION 02 — THE IDEA
+--------------------------------------------------------------
+EYEBROW:       The Idea
+HEADLINE:      Potential needs the right environment to become performance.
+ACCENT:        environment
+SUBLINE:       A private distance group. Measured, not guessed. Built for
+               the few who are serious about how far this goes.
+
+
+--------------------------------------------------------------
+SECTION 03 — THE STANDARD
+--------------------------------------------------------------
+EYEBROW:       The Standard
+HEADLINE:      The roster is kept small on purpose.
+ACCENT:        on purpose.
+SUBLINE:       Every athlete is known. Every plan is their own. Admission
+               is reviewed on merit and fit — and it closes when the room
+               is full.
+
+
+--------------------------------------------------------------
+SECTION 04 — THE METHOD
+--------------------------------------------------------------
+EYEBROW:       The Method
+HEADLINE:      Every stride measured. Every race read.
+ACCENT:        read.
+CAPABILITY 1:  RSLTS        (label:) Progression
+CAPABILITY 2:  AlphaPeak    (label:) Form
+SUBLINE:       Nothing generic. What we build for an athlete is built from
+               their own numbers.
+
+
+--------------------------------------------------------------
+SECTION 05 — THE INVITATION  (closing)
+--------------------------------------------------------------
+EYEBROW:       The Invitation
+HEADLINE:      Admission is considered, not sold.
+ACCENT:        considered,
+BUTTON:        Request Consideration
+
+
+--------------------------------------------------------------
+FOOTER
+--------------------------------------------------------------
+WORDMARK:      APX Training Group        (rendered as the logo)
+
+
+--------------------------------------------------------------
+PERSISTENT LINK (top-right corner, appears after the hero)
+--------------------------------------------------------------
+LINK:          Request Consideration
+
+
+==============================================================
+LINK-PREVIEW / SEO COPY  (shows in browser tab, iMessage, Slack, etc.)
+==============================================================
+BROWSER TAB TITLE:   APX — Training Group
+META DESCRIPTION:    APX Training Group — a private distance training group.
+                     Performance, precision, and ascent.
+SHARE TITLE:         APX Training Group
+SHARE DESCRIPTION:   Performance · Precision · Ascent.
