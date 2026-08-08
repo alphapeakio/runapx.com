@@ -326,6 +326,7 @@
       position: relative;
       z-index: 1;
       height: 200vh;             /* same dwell as a content pane */
+      margin-top: -30vh;         /* pull up so the helix peeks under the hero */
     }
     .stair-pin {
       position: sticky;
@@ -339,9 +340,9 @@
     .stair-pin > * { grid-area: 1 / 1; }
     .stair-stage {
       position: relative;
-      width: min(560px, 90vw);
-      height: min(560px, 74vh);
-      perspective: 1200px;
+      width: min(780px, 96vw);
+      height: min(880px, 96vh);
+      perspective: 1500px;
       perspective-origin: 50% 42%;
     }
     .helix {
@@ -354,23 +355,23 @@
     .tread {
       position: absolute;
       left: 50%; top: 50%;
-      width: 190px; height: 52px;
-      margin: -26px 0 0 -95px;
-      border-radius: 13px;
+      width: 300px; height: 60px;
+      margin: -30px 0 0 -150px;
+      border-radius: 15px;
       background: linear-gradient(135deg, rgba(223, 242, 255, 0.55), rgba(255, 255, 255, 0.12));
       border: 1px solid rgba(255, 255, 255, 0.6);
       box-shadow:
         0 14px 34px -10px rgba(0, 92, 175, 0.34),
         inset 0 1px 0 rgba(255, 255, 255, 0.85);
       transform:
-        rotateY(var(--a)) translateZ(190px)
+        rotateY(var(--a)) translateZ(300px)
         translateY(var(--y)) rotateX(66deg);
       transform-style: preserve-3d;
     }
     .tread::before {
       content: '';
       position: absolute; inset: 0;
-      border-radius: 13px;
+      border-radius: 15px;
       background: linear-gradient(90deg, transparent, rgba(0, 163, 255, 0.16), transparent);
     }
     /* the glowing newel post the treads wind around */
@@ -483,10 +484,6 @@
     <div class="title-block">
       <h1 class="title">APX Training Group</h1>
       <p class="tagline">Performance · Precision · Ascent</p>
-    </div>
-    <div class="scroll-cue" aria-hidden="true">
-      <div class="line"></div>
-      <span>Scroll</span>
     </div>
   </header>
 

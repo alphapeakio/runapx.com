@@ -37,9 +37,9 @@
      seamless. We set a static pose here (used when motion is off) and
      drive it per-frame below when motion is on. */
   var helix = document.getElementById('helix');
-  var N = 18;             /* treads */
-  var RISE = 30;          /* px of climb per tread */
-  var RADIUS = 190;       /* px from the newel post */
+  var N = 26;             /* treads */
+  var RISE = 46;          /* px of climb per tread → a much taller column */
+  var RADIUS = 300;       /* px from the newel post → a wider helix */
   var STEP = 360 / N;     /* degrees between treads → seamless wrap */
   var TILT = 66;          /* how flat each tread lies */
   var H = N * RISE;       /* full helix height */
