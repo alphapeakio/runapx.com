@@ -153,17 +153,10 @@
 
     var center = vh / 2;
 
-    /* Progress through the pinned staircase section, 0..1. */
-    var stairProg = 0;
-    if (stair) {
-      var sr = stair.getBoundingClientRect();
-      var dist = stair.offsetHeight - vh;
-      stairProg = dist > 0 ? clamp(-sr.top, 0, dist) / dist : 0;
-    }
-
-    /* ── The Ascent: the spiral staircase climbs as you scroll ── */
+    /* ── The Ascent: the spiral staircase turns slowly on its own —
+       no scroll-linked acceleration. ── */
     if (helix && treads.length) {
-      var climb = elapsed * 9 + stairProg * H * 2.2;   /* idle + scroll climb */
+      var climb = elapsed * 16;                        /* steady, gentle climb */
       for (var k = 0; k < treads.length; k++) {
         var y = mod(k * RISE + climb, H);              /* rises, wraps seamlessly */
         var ang = (y / RISE) * STEP;
@@ -175,12 +168,12 @@
       }
     }
 
-    /* ── Aerial background track: hidden during the helix intro, fades
-       in once you scroll past it, then runs the lap underfoot. ── */
+    /* ── Aerial background track: stays fully hidden until the helix has
+       scrolled off the screen, so the two never overlap. ── */
     if (trackView && stair) {
       var stairEnd = stair.offsetTop + stair.offsetHeight;
       trackView.style.opacity =
-        clamp((window.scrollY - (stairEnd - vh)) / (vh * 0.6), 0, 1).toFixed(3);
+        clamp((window.scrollY - stairEnd) / (vh * 0.5), 0, 1).toFixed(3);
     }
     if (trackField && trackRotor) {
       var kk = LAP / (vh * 5);               /* slower: ~one lap per 5 viewports */
