@@ -46,23 +46,31 @@
       --glass-edge: rgba(255, 255, 255, 0.72);
     }
 
-    /* ── Techy backdrop: fine grid + drifting light orbs ──
-       The orbs give the frosted glass something coloured to refract. */
-    .grid-bg {
+    /* ── Aerial running track backdrop ──
+       A top-down oval; app.js pans it along the lane and banks it
+       through the turns so the page reads as laps run underfoot.
+       The frosted glass refracts the lane lines as they pass. */
+    .track-view {
       position: fixed;
-      inset: -2px;
+      inset: 0;
       z-index: 0;
+      overflow: hidden;
       pointer-events: none;
-      background-image:
-        linear-gradient(rgba(0, 120, 210, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 120, 210, 0.05) 1px, transparent 1px);
-      background-size: 46px 46px;
-      -webkit-mask: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 78%);
-              mask: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 78%);
-      animation: gridDrift 24s linear infinite;
+      -webkit-mask: radial-gradient(ellipse 88% 82% at 50% 45%, #000 42%, transparent 84%);
+              mask: radial-gradient(ellipse 88% 82% at 50% 45%, #000 42%, transparent 84%);
     }
-    @keyframes gridDrift {
-      to { background-position: 46px 46px, 46px 46px; }
+    .track-rotor {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 0; height: 0;
+      transform: scale(1.7);
+      will-change: transform;
+    }
+    .track-field {
+      position: absolute;
+      left: -450px; top: -720px;
+      width: 900px; height: 1440px;
+      will-change: transform;
     }
 
     .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -70,7 +78,7 @@
       position: absolute;
       border-radius: 50%;
       filter: blur(48px);
-      opacity: 0.6;
+      opacity: 0.45;
       will-change: transform;
     }
     .orb.a {
@@ -436,13 +444,25 @@
     /* No-JS / reduced-motion: static, readable, flat panes */
     .no-js .pane { transform: none !important; opacity: 1 !important; }
     @media (prefers-reduced-motion: reduce) {
-      .grid-bg, .orb, .pane::before, .helix { animation: none !important; }
+      html { scroll-snap-type: none; }
+      .orb, .pane::before { animation: none !important; }
       .pane { transform: none !important; opacity: 1 !important; }
     }
+
+    /* ── Scroll snap: each pane catches and holds you ──
+       A centred pane sits at its flat resting pose, so its motion
+       settles while you dwell on it. */
+    html { scroll-snap-type: y proximity; scroll-padding: 0; }
+    .hero, .stair { scroll-snap-align: start; }
+    .section { scroll-snap-align: center; }
   </style>
 </head>
 <body>
-  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="track-view" aria-hidden="true">
+    <div class="track-rotor" id="trackRotor">
+      <svg class="track-field" id="trackField" viewBox="-450 -720 900 1440" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
   <div class="orbs" aria-hidden="true">
     <span class="orb a"></span>
     <span class="orb b"></span>

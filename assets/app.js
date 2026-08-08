@@ -60,6 +60,75 @@
     helix.appendChild(frag);
   }
 
+  /* ── Build the aerial running track ──
+     Lanes are concentric stadium rects; app.js pans/banks the field
+     along the running line each frame. Drawn now so it also shows
+     (static) under reduced motion. */
+  var trackField = document.getElementById('trackField');
+  var trackRotor = document.getElementById('trackRotor');
+  var RR = 300;                       /* running-line radius   */
+  var LL = 560;                       /* straight length       */
+  var CURVE = Math.PI * RR;           /* one turn's arc length  */
+  var LAP = 2 * LL + 2 * CURVE;       /* full perimeter         */
+  var SVGNS = 'http://www.w3.org/2000/svg';
+
+  function stadium(r, attrs) {
+    var el = document.createElementNS(SVGNS, 'rect');
+    el.setAttribute('x', -r);
+    el.setAttribute('y', -(LL / 2 + r));
+    el.setAttribute('width', 2 * r);
+    el.setAttribute('height', LL + 2 * r);
+    el.setAttribute('rx', r);
+    el.setAttribute('ry', r);
+    for (var key in attrs) el.setAttribute(key, attrs[key]);
+    return el;
+  }
+  function crossLine(x1, x2, y) {
+    var el = document.createElementNS(SVGNS, 'rect');
+    el.setAttribute('x', Math.min(x1, x2));
+    el.setAttribute('y', y - 5);
+    el.setAttribute('width', Math.abs(x2 - x1));
+    el.setAttribute('height', 10);
+    el.setAttribute('fill', 'rgba(0,112,200,0.34)');
+    return el;
+  }
+  if (trackField) {
+    /* Light theme: a faint blue surface with slightly bluer lane lines,
+       so the oval and its lanes read without white-on-white washout. */
+    trackField.appendChild(stadium(420, { fill: '#dbe8f6' }));        /* track surface */
+    trackField.appendChild(stadium(180, { fill: '#eef4fb' }));        /* infield       */
+    var lanes = [195, 225, 255, 285, 315, 345, 375, 405];
+    for (var li = 0; li < lanes.length; li++) {
+      trackField.appendChild(stadium(lanes[li], {
+        fill: 'none', stroke: 'rgba(0,112,200,0.30)', 'stroke-width': 3.5
+      }));
+    }
+    trackField.appendChild(crossLine(180, 420, -20));                 /* start lines   */
+    trackField.appendChild(crossLine(-420, -180, 20));
+    trackField.style.transform = 'translate(-300px, -280px)';        /* static pose   */
+  }
+
+  /* Position + bank angle at distance s along the running line. */
+  function trackAt(s) {
+    s = ((s % LAP) + LAP) % LAP;
+    var x, y, tx, ty, u, psi;
+    if (s < LL) {                              /* right straight, up   */
+      x = RR; y = LL / 2 - s; tx = 0; ty = -1;
+    } else if (s < LL + CURVE) {               /* top turn             */
+      u = s - LL; psi = -(u / RR);
+      x = RR * Math.cos(psi); y = -LL / 2 + RR * Math.sin(psi);
+      tx = Math.sin(psi); ty = -Math.cos(psi);
+    } else if (s < 2 * LL + CURVE) {           /* left straight, down  */
+      u = s - (LL + CURVE); x = -RR; y = -LL / 2 + u; tx = 0; ty = 1;
+    } else {                                   /* bottom turn          */
+      u = s - (2 * LL + CURVE); psi = Math.PI - (u / RR);
+      x = RR * Math.cos(psi); y = LL / 2 + RR * Math.sin(psi);
+      tx = Math.sin(psi); ty = -Math.cos(psi);
+    }
+    var phi = Math.atan2(ty, tx) * 180 / Math.PI;
+    return { x: x, y: y, a: -90 - phi };       /* a rotates travel to screen-up */
+  }
+
   if (reduce) return; /* everything below is pure motion */
 
   var panes = Array.prototype.slice.call(document.querySelectorAll('[data-tilt]'));
@@ -94,6 +163,15 @@
     root.style.setProperty('--my', cmy.toFixed(2) + '%');
 
     var center = vh / 2;
+
+    /* ── Aerial track: scrolling runs the lap underfoot ── */
+    if (trackField && trackRotor) {
+      var k = LAP / (vh * 3);               /* ~one lap per 3 viewports */
+      var pt = trackAt(window.scrollY * k + elapsed * 30);
+      trackField.style.transform =
+        'translate(' + (-pt.x).toFixed(1) + 'px, ' + (-pt.y).toFixed(1) + 'px)';
+      trackRotor.style.transform = 'rotate(' + pt.a.toFixed(2) + 'deg) scale(1.7)';
+    }
 
     /* ── The Ascent: scrolling down climbs the staircase up ── */
     if (helix && treads.length) {
