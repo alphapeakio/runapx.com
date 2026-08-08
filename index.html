@@ -56,9 +56,11 @@
       z-index: 0;
       overflow: hidden;
       pointer-events: none;
+      opacity: 0;                 /* app.js fades it in after the helix intro */
       -webkit-mask: radial-gradient(ellipse 88% 82% at 50% 45%, #000 42%, transparent 84%);
               mask: radial-gradient(ellipse 88% 82% at 50% 45%, #000 42%, transparent 84%);
     }
+    .no-js .track-view { opacity: 1; }
     .track-rotor {
       position: absolute;
       left: 50%; top: 50%;
@@ -346,41 +348,38 @@
       position: absolute;
       inset: 0;
       transform-style: preserve-3d;
-      transform: rotateX(-12deg) rotateY(0deg);
+      transform: rotateX(-22deg);      /* app.js drives the rest */
       will-change: transform;
     }
     .tread {
       position: absolute;
       left: 50%; top: 50%;
-      width: 190px; height: 52px;
-      margin: -26px 0 0 -95px;
-      border-radius: 13px;
-      background: linear-gradient(135deg, rgba(223, 242, 255, 0.55), rgba(255, 255, 255, 0.12));
+      width: 64px; height: 28px;
+      margin: -14px 0 0 -32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(223, 242, 255, 0.60), rgba(255, 255, 255, 0.14));
       border: 1px solid rgba(255, 255, 255, 0.6);
       box-shadow:
         0 14px 34px -10px rgba(0, 92, 175, 0.34),
         inset 0 1px 0 rgba(255, 255, 255, 0.85);
-      transform:
-        rotateY(var(--a)) translateZ(190px)
-        translateY(var(--y)) rotateX(66deg);
+      /* transform + opacity are set per-tread by app.js */
       transform-style: preserve-3d;
     }
     .tread::before {
       content: '';
       position: absolute; inset: 0;
-      border-radius: 13px;
+      border-radius: 8px;
       background: linear-gradient(90deg, transparent, rgba(0, 163, 255, 0.16), transparent);
     }
-    /* the glowing newel post the treads wind around */
+    /* soft glow at the oval's centre, behind the caption */
     .stair-stage::after {
       content: '';
       position: absolute;
-      left: 50%; top: 8%;
-      width: 2px; height: 84%;
-      margin-left: -1px;
-      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-      filter: drop-shadow(0 0 8px var(--accent-glow));
+      inset: 22% 18%;
+      background: radial-gradient(ellipse at 50% 50%, var(--accent-glow), transparent 70%);
+      filter: blur(24px);
       opacity: 0.5;
+      pointer-events: none;
     }
     /* caption centred inside the helix, riding the newel post */
     .stair-caption {
@@ -461,6 +460,7 @@
     @media (prefers-reduced-motion: reduce) {
       .orb, .pane::before { animation: none !important; }
       .pane { transform: none !important; opacity: 1 !important; }
+      .track-view { opacity: 1 !important; }
       /* collapse the dwell so reduced-motion users don't scroll dead space */
       .section { height: auto; }
       .pane-hold { position: static; height: auto; min-height: 100vh; }
