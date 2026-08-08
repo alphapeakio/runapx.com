@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APX — Training Group</title>
-  <meta name="description" content="APX Training Group — performance, precision, and ascent.">
+  <meta name="description" content="APX Training Group — a private distance training group. Performance, precision, ascent.">
   <link rel="canonical" href="https://runapx.com/">
   <meta name="theme-color" content="#f5f7fa">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -30,63 +30,35 @@
   <meta name="twitter:description" content="Performance · Precision · Ascent.">
   <meta name="twitter:image" content="https://runapx.com/assets/og-image.png?v=2">
   <meta name="twitter:image:alt" content="APX Training Group — Performance · Precision · Ascent">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <!-- Flip no-js → js before paint so scroll-reveals only hide when JS can animate them. -->
+  <script>document.documentElement.classList.remove('no-js');</script>
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg: #f5f7fa;          /* bright off-white canvas */
-      --bg-sheen: #ffffff;    /* pure white bloom in the centre */
-      --ink: #0a0e13;         /* near-black for headings */
-      --muted: #3d4650;       /* body/tagline — deliberately high contrast */
-      --dim: #8b96a3;
-      --accent: #0099ff;      /* brand blue — used for glows/fills */
-      --accent-ink: #0072d8;  /* deeper blue that holds contrast on white (4.6:1) */
-      --accent-glow: rgba(0, 163, 255, 0.38);
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-weight: 200;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Bright bloom behind the content: a pool of pure white in the centre
-       fading out to the cooler off-white, with a faint blue wash for depth. */
-    body::before {
-      content: '';
+    /* ── Home layout ── */
+    .corner-cta {
       position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 58% 48% at 50% 40%, var(--bg-sheen) 0%, rgba(255, 255, 255, 0) 72%),
-        radial-gradient(ellipse 72% 60% at 50% 46%, rgba(0, 153, 255, 0.05) 0%, transparent 74%);
+      top: 1.6rem;
+      right: 1.8rem;
+      z-index: 5;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.8s ease 0.2s, color 0.3s ease;
       pointer-events: none;
     }
+    .corner-cta.show { opacity: 1; pointer-events: auto; }
+    .corner-cta:hover { color: var(--accent-ink); }
 
-    /* Fine grain texture */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.16;
-      pointer-events: none;
-    }
-
-    .page {
+    /* Full-viewport hero, exactly as before */
+    .hero {
       position: relative;
       z-index: 1;
       min-height: 100dvh;
@@ -97,93 +69,19 @@
       padding: 2rem;
       gap: 2.5rem;
     }
-
-    .logo-wrap {
-      position: relative;
+    .hero .logo-wrap {
       opacity: 0;
       animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     }
-
-    /* Soft ambient light behind the wordmark — wide, diffuse and blurred
-       so it reads as a gentle bloom rather than a hard blue disc. */
-    .logo-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -85% -35%;
-      background:
-        radial-gradient(ellipse 50% 55% at 50% 50%,
-          rgba(0, 163, 255, 0.16) 0%,
-          rgba(0, 163, 255, 0.09) 30%,
-          rgba(0, 163, 255, 0.03) 52%,
-          transparent 72%),
-        radial-gradient(ellipse 34% 42% at 50% 47%,
-          rgba(70, 180, 255, 0.10) 0%,
-          transparent 62%);
-      filter: blur(18px);
-      pointer-events: none;
-    }
-
-    .logo {
-      position: relative;
-      display: block;
-      width: min(420px, 80vw);
-      aspect-ratio: 1212 / 316;
-      /* Use the wordmark shape as an alpha mask so we can fill it
-         with a brushed-metal gradient instead of flat white. */
-      -webkit-mask: url("/assets/apx-logo.png") center / contain no-repeat;
-              mask: url("/assets/apx-logo.png") center / contain no-repeat;
-      /* Brushed silver: lifted well above graphite so it reads as polished
-         metal rather than dark ink, while the shaded bands stay deep enough
-         to hold definition against the off-white canvas. */
-      background: linear-gradient(
-        176deg,
-        #b9c4d1 0%,
-        #59646f 14%,
-        #93a0ad 30%,
-        #3b4550 46%,
-        #a9b5c1 58%,
-        #4d5763 74%,
-        #808c99 100%
-      );
-      overflow: hidden;
-    }
-
-    /* A glint of light that races across the wordmark — speed / performance. */
-    .logo::after {
-      content: '';
-      position: absolute;
-      top: -20%;
-      bottom: -20%;
-      left: -30%;
-      width: 20%;
-      background: linear-gradient(
-        105deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.15) 40%,
-        rgba(255, 255, 255, 0.95) 50%,
-        rgba(255, 255, 255, 0.15) 60%,
-        transparent 100%
-      );
-      transform: skewX(-18deg);
-      mix-blend-mode: screen;
-      pointer-events: none;
-      animation: gloss 6s cubic-bezier(0.7, 0, 0.3, 1) infinite;
-    }
-
-    .divider {
-      width: 1px;
-      height: 48px;
-      background: linear-gradient(to bottom, transparent, var(--dim), var(--accent), var(--dim), transparent);
+    .hero .divider {
       opacity: 0;
       animation: fadeIn 1s ease 0.8s forwards;
     }
-
     .title-block {
       text-align: center;
       opacity: 0;
       animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
     }
-
     .title {
       font-size: clamp(1.1rem, 3vw, 1.5rem);
       font-weight: 300;
@@ -191,21 +89,6 @@
       text-transform: uppercase;
       color: var(--ink);
     }
-
-    .pronunciation {
-      margin-top: 0.75rem;
-      font-size: clamp(0.75rem, 2vw, 0.875rem);
-      font-weight: 200;
-      letter-spacing: 0.2em;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .pronunciation span {
-      color: var(--accent-ink);
-      font-weight: 400;
-    }
-
     .tagline {
       margin-top: 1.5rem;
       font-size: clamp(0.7rem, 1.8vw, 0.8rem);
@@ -215,98 +98,181 @@
       text-transform: uppercase;
     }
 
-    /* ── Race: light beams that sprint across the track ──
-       Each streak has a bright leading head and a motion-blur tail,
-       accelerating left→right at its own pace so they overtake. */
-    .track {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .track.back  { z-index: 0; }  /* ambient depth, behind the content */
-    .track.front { z-index: 2; }  /* hero lasers, over the content     */
-
-    .streak {
+    /* Scroll cue at the foot of the hero */
+    .scroll-cue {
       position: absolute;
-      left: 0;
-      top: var(--top, 50%);
-      width: var(--w, 36vw);
-      height: var(--h, 2px);
-      border-radius: 999px;
-      transform-origin: right center;
-      transform: translateX(-55vw);
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
       opacity: 0;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(0, 163, 255, 0.05) 38%,
-        rgba(0, 163, 255, 0.38) 68%,
-        var(--core, rgba(0, 158, 255, 0.88)) 88%,
-        var(--head, #0099ff) 100%
-      );
-      filter:
-        drop-shadow(0 0 var(--g, 4px) var(--accent-glow))
-        drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 163, 255, 0.22));
-      animation: race var(--dur, 3s) cubic-bezier(0.5, 0, 0.82, 0.3) var(--delay, 0s) infinite;
-      will-change: transform, opacity;
+      animation: fadeIn 1.2s ease 1.8s forwards;
     }
-
-    /* Bright pin-point at the leading edge of each hero beam. */
-    .track.front .streak::after {
+    .scroll-cue span {
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .scroll-cue .line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--dim), transparent);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-cue .line::after {
       content: '';
       position: absolute;
-      right: -2px;
-      top: 50%;
-      width: 6px;
-      height: 6px;
-      margin-top: -3px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px 2px rgba(0, 163, 255, 0.65), 0 0 22px 6px var(--accent-glow);
+      left: 0;
+      top: -50%;
+      width: 1px;
+      height: 50%;
+      background: linear-gradient(to bottom, transparent, var(--accent));
+      animation: cue 2.4s ease-in-out infinite;
+    }
+    @keyframes cue {
+      0%   { top: -55%; }
+      70%  { top: 105%; }
+      100% { top: 105%; }
     }
 
-    @keyframes race {
-      0%   { transform: translateX(-55vw) scaleX(0.65); opacity: 0; }
-      10%  { opacity: 1; }
-      88%  { opacity: 1; }
-      100% { transform: translateX(160vw) scaleX(1.25); opacity: 0; }
+    /* ── Scroll-journey sections ── */
+    .section {
+      position: relative;
+      z-index: 1;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8vh 2rem;
+    }
+    .eyebrow {
+      font-size: 0.66rem;
+      font-weight: 400;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
+      margin-bottom: 1.8rem;
+    }
+    .statement {
+      max-width: 20ch;
+      font-size: clamp(1.9rem, 5.6vw, 3.6rem);
+      font-weight: 200;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .statement .accent { color: var(--accent-ink); }
+    .subline {
+      margin-top: 2rem;
+      max-width: 46ch;
+      font-size: clamp(0.86rem, 1.9vw, 1.02rem);
+      font-weight: 300;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      color: var(--muted);
     }
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* Section 3 — the two named capabilities, kept deliberately spare */
+    .marks {
+      margin-top: 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(2rem, 7vw, 5.5rem);
+    }
+    .mark {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .mark .name {
+      font-size: clamp(1rem, 2.4vw, 1.35rem);
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .mark .role {
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dim);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    /* Signature cursor-reactive light pane for The Method */
+    .lightfield {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(
+        circle 40vmax at var(--mx) var(--my),
+        rgba(0, 153, 255, 0.10) 0%,
+        rgba(0, 153, 255, 0.04) 32%,
+        transparent 60%);
+      opacity: 0;
+      transition: opacity 1.2s ease;
     }
+    .section.in-view .lightfield { opacity: 1; }
 
-    /* Light glint sprinting across the wordmark, with a pause between passes */
-    @keyframes gloss {
-      0%   { left: -30%; opacity: 0; }
-      6%   { opacity: 1; }
-      32%  { left: 120%; opacity: 1; }
-      38%  { left: 120%; opacity: 0; }
-      100% { left: 120%; opacity: 0; }
+    /* ── Invitation / close ── */
+    .invite { gap: 0; }
+    .invite .statement { margin-bottom: 2.6rem; }
+    .request {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 1.05rem 2.4rem;
+      border: 1px solid rgba(0, 114, 216, 0.4);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(4px);
+      transition: border-color 0.35s ease, background 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
     }
+    .request:hover {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.75);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -12px var(--accent-glow);
+    }
+    .request .arrow { transition: transform 0.35s ease; }
+    .request:hover .arrow { transform: translateX(4px); }
 
-    @media (prefers-reduced-motion: reduce) {
-      .logo-wrap, .divider, .title-block {
-        animation: none;
-        opacity: 1;
-      }
-      .logo::after,
-      .track {
-        display: none;
-      }
+    /* ── Footer ── */
+    .foot {
+      position: relative;
+      z-index: 1;
+      padding: 3.5rem 2rem 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .foot .logo {
+      width: min(120px, 40vw);
+    }
+    .foot .foot-line {
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--dim);
     }
   </style>
 </head>
@@ -319,7 +285,10 @@
     <span class="streak" style="--top:79%; --w:30vw; --h:1px; --dur:4.6s; --delay:2.1s; --g:3px; --core:rgba(0,158,255,0.40); --head:rgba(0,153,255,0.58)"></span>
   </div>
 
-  <main class="page">
+  <a class="corner-cta" href="/apply">Request Consideration</a>
+
+  <!-- ── Hero ── -->
+  <header class="hero">
     <div class="logo-wrap">
       <div class="logo" role="img" aria-label="APX logo"></div>
     </div>
@@ -330,7 +299,12 @@
       <h1 class="title">APX Training Group</h1>
       <p class="tagline">Performance · Precision · Ascent</p>
     </div>
-  </main>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <div class="line"></div>
+      <span>Scroll</span>
+    </div>
+  </header>
 
   <!-- Hero lasers that sprint over the composition -->
   <div class="track front" aria-hidden="true">
@@ -338,5 +312,71 @@
     <span class="streak" style="--top:50%; --w:40vw; --h:2px; --dur:2.7s; --delay:1.7s; --g:6px; --core:rgba(0,163,255,0.85); --head:#00a0ff"></span>
     <span class="streak" style="--top:67%; --w:38vw; --h:2px; --dur:2.5s; --delay:2.9s; --g:6px; --core:rgba(0,163,255,0.92); --head:#0099ff"></span>
   </div>
+
+  <main>
+    <!-- ── Ethos ── -->
+    <section class="section" aria-labelledby="ethos-h">
+      <p class="eyebrow reveal">The Idea</p>
+      <h2 class="statement reveal" id="ethos-h" style="--reveal-delay:.08s">
+        Potential needs the right <span class="accent">environment</span> to become performance.
+      </h2>
+      <p class="subline reveal" style="--reveal-delay:.18s">
+        A private distance group. Measured, not guessed. Built for the few who
+        are serious about how far this goes.
+      </p>
+    </section>
+
+    <!-- ── The Standard (selectivity, no numbers) ── -->
+    <section class="section" aria-labelledby="standard-h">
+      <p class="eyebrow reveal">The Standard</p>
+      <h2 class="statement reveal" id="standard-h" style="--reveal-delay:.08s">
+        The roster is kept small <span class="accent">on purpose.</span>
+      </h2>
+      <p class="subline reveal" style="--reveal-delay:.18s">
+        Every athlete is known. Every plan is their own. Admission is reviewed
+        on merit and fit — and it closes when the room is full.
+      </p>
+    </section>
+
+    <!-- ── The Method (mystique around the technology) ── -->
+    <section class="section" aria-labelledby="method-h">
+      <div class="lightfield" aria-hidden="true"></div>
+      <p class="eyebrow reveal">The Method</p>
+      <h2 class="statement reveal" id="method-h" style="--reveal-delay:.08s">
+        Every stride measured. Every race <span class="accent">read.</span>
+      </h2>
+      <div class="marks reveal" style="--reveal-delay:.2s">
+        <div class="mark">
+          <span class="name">RSLTS</span>
+          <span class="role">Progression</span>
+        </div>
+        <div class="mark">
+          <span class="name">AlphaPeak</span>
+          <span class="role">Form</span>
+        </div>
+      </div>
+      <p class="subline reveal" style="--reveal-delay:.3s">
+        Nothing generic. What we build for an athlete is built from their own numbers.
+      </p>
+    </section>
+
+    <!-- ── Invitation / close ── -->
+    <section class="section invite" aria-labelledby="invite-h">
+      <h2 class="statement reveal" id="invite-h">
+        Admission is <span class="accent">considered,</span> not sold.
+      </h2>
+      <a class="request reveal" href="/apply" style="--reveal-delay:.12s">
+        Request Consideration
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="logo" role="img" aria-label="APX"></div>
+    <p class="foot-line">APX Training Group</p>
+  </footer>
+
+  <script src="/assets/app.js" defer></script>
 </body>
 </html>

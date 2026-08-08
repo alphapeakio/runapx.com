@@ -1,0 +1,255 @@
+/* ─────────────────────────────────────────────────────────────
+   APX — shared foundation
+   Tokens, base, ambient light (grain + bloom), the racing beams,
+   the brushed-silver wordmark, and scroll-reveal utilities.
+   Linked by both index.html and apply/index.html so the two pages
+   never drift. Page-specific layout stays inline in each page.
+   ───────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f5f7fa;          /* bright off-white canvas */
+  --bg-sheen: #ffffff;    /* pure white bloom in the centre */
+  --ink: #0a0e13;         /* near-black for headings */
+  --muted: #3d4650;       /* body/tagline — deliberately high contrast */
+  --dim: #8b96a3;
+  --accent: #0099ff;      /* brand blue — used for glows/fills */
+  --accent-ink: #0072d8;  /* deeper blue that holds contrast on white (4.6:1) */
+  --accent-glow: rgba(0, 163, 255, 0.38);
+
+  /* brushed silver used to fill the wordmark mask */
+  --silver: linear-gradient(
+    176deg,
+    #b9c4d1 0%,
+    #59646f 14%,
+    #93a0ad 30%,
+    #3b4550 46%,
+    #a9b5c1 58%,
+    #4d5763 74%,
+    #808c99 100%
+  );
+
+  /* cursor light position, driven by app.js (falls back to centre) */
+  --mx: 50%;
+  --my: 40%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 200;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* Bright bloom behind the content: a pool of pure white in the centre
+   fading out to the cooler off-white, with a faint blue wash for depth.
+   Anchored to the cursor light so it drifts as you move. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 46% 40% at var(--mx) var(--my), var(--bg-sheen) 0%, rgba(255, 255, 255, 0) 72%),
+    radial-gradient(ellipse 58% 48% at 50% 40%, var(--bg-sheen) 0%, rgba(255, 255, 255, 0) 72%),
+    radial-gradient(ellipse 72% 60% at 50% 46%, rgba(0, 153, 255, 0.05) 0%, transparent 74%);
+  pointer-events: none;
+  transition: background-position 0.3s ease-out;
+}
+
+/* Fine grain texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+/* ── The brushed-silver wordmark ── */
+.logo-wrap {
+  position: relative;
+}
+
+/* Soft ambient light behind the wordmark — wide, diffuse and blurred
+   so it reads as a gentle bloom rather than a hard blue disc. */
+.logo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -85% -35%;
+  background:
+    radial-gradient(ellipse 50% 55% at 50% 50%,
+      rgba(0, 163, 255, 0.16) 0%,
+      rgba(0, 163, 255, 0.09) 30%,
+      rgba(0, 163, 255, 0.03) 52%,
+      transparent 72%),
+    radial-gradient(ellipse 34% 42% at 50% 47%,
+      rgba(70, 180, 255, 0.10) 0%,
+      transparent 62%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+.logo {
+  position: relative;
+  display: block;
+  width: min(420px, 80vw);
+  aspect-ratio: 1212 / 316;
+  -webkit-mask: url("/assets/apx-logo.png") center / contain no-repeat;
+          mask: url("/assets/apx-logo.png") center / contain no-repeat;
+  background: var(--silver);
+  overflow: hidden;
+}
+
+/* A glint of light that races across the wordmark — speed / performance. */
+.logo::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -30%;
+  width: 20%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 40%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 255, 255, 0.15) 60%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: gloss 6s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+.divider {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, var(--dim), var(--accent), var(--dim), transparent);
+}
+
+/* ── Race: light beams that sprint across the track ──
+   Each streak has a bright leading head and a motion-blur tail,
+   accelerating left→right at its own pace so they overtake. */
+.track {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.track.back  { z-index: 0; }  /* ambient depth, behind the content */
+.track.front { z-index: 2; }  /* hero lasers, over the content     */
+
+.streak {
+  position: absolute;
+  left: 0;
+  top: var(--top, 50%);
+  width: var(--w, 36vw);
+  height: var(--h, 2px);
+  border-radius: 999px;
+  transform-origin: right center;
+  transform: translateX(-55vw);
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 163, 255, 0.05) 38%,
+    rgba(0, 163, 255, 0.38) 68%,
+    var(--core, rgba(0, 158, 255, 0.88)) 88%,
+    var(--head, #0099ff) 100%
+  );
+  filter:
+    drop-shadow(0 0 var(--g, 4px) var(--accent-glow))
+    drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 163, 255, 0.22));
+  animation: race var(--dur, 3s) cubic-bezier(0.5, 0, 0.82, 0.3) var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+/* Bright pin-point at the leading edge of each hero beam. */
+.track.front .streak::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px 2px rgba(0, 163, 255, 0.65), 0 0 22px 6px var(--accent-glow);
+}
+
+/* ── Scroll-reveal utility (enhanced by app.js) ──
+   Elements start hidden; app.js adds .in-view when they enter the
+   viewport. With no JS, the .no-js body rule keeps everything visible. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.no-js .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Shared keyframes ── */
+@keyframes race {
+  0%   { transform: translateX(-55vw) scaleX(0.65); opacity: 0; }
+  10%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateX(160vw) scaleX(1.25); opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Light glint sprinting across the wordmark, with a pause between passes */
+@keyframes gloss {
+  0%   { left: -30%; opacity: 0; }
+  6%   { opacity: 1; }
+  32%  { left: 120%; opacity: 1; }
+  38%  { left: 120%; opacity: 0; }
+  100% { left: 120%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .logo::after,
+  .track { display: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  body::before { transition: none; }
+  *, *::before, *::after { animation: none !important; }
+}

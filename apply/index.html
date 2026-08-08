@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APX — Request Consideration</title>
+  <meta name="description" content="Request consideration for APX Training Group.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://runapx.com/apply">
+  <meta name="theme-color" content="#f5f7fa">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="/assets/apx-mark.png">
+  <link rel="apple-touch-icon" href="/assets/apx-mark.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="APX Training Group">
+  <meta property="og:title" content="APX — Request Consideration">
+  <meta property="og:description" content="Admission is considered, not sold.">
+  <meta property="og:url" content="https://runapx.com/apply">
+  <meta property="og:image" content="https://runapx.com/assets/og-image.png?v=2">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script>document.documentElement.classList.remove('no-js');</script>
+  <style>
+    body { overflow-x: hidden; }
+
+    .backlink {
+      position: fixed;
+      top: 1.6rem;
+      left: 1.8rem;
+      z-index: 5;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .backlink:hover { color: var(--accent-ink); }
+    .backlink .arrow { transition: transform 0.3s ease; display: inline-block; }
+    .backlink:hover .arrow { transform: translateX(-3px); }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 660px;
+      margin: 0 auto;
+      padding: clamp(6rem, 14vh, 9rem) 1.5rem 6rem;
+    }
+
+    .apply-head {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .apply-head .logo {
+      width: min(150px, 46vw);
+      margin: 0 auto 2rem;
+    }
+    .apply-head .eyebrow {
+      font-size: 0.66rem;
+      font-weight: 400;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
+      margin-bottom: 1.2rem;
+    }
+    .apply-head h1 {
+      font-size: clamp(1.7rem, 5vw, 2.6rem);
+      font-weight: 200;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .apply-head p {
+      margin: 1.4rem auto 0;
+      max-width: 48ch;
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    fieldset {
+      border: 0;
+      border-top: 1px solid rgba(139, 150, 163, 0.28);
+      padding: 2.6rem 0 0.4rem;
+      margin: 0;
+    }
+    legend {
+      padding: 0;
+      font-size: 0.66rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
+      margin-bottom: 0.4rem;
+    }
+    .legend-note {
+      font-size: 0.82rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--dim);
+      margin-bottom: 1.8rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6rem 1.4rem;
+    }
+    .field { display: flex; flex-direction: column; gap: 0.55rem; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    label .opt {
+      color: var(--dim);
+      text-transform: none;
+      letter-spacing: 0.02em;
+      font-weight: 300;
+    }
+    .req { color: var(--accent-ink); }
+
+    input, select, textarea {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(139, 150, 163, 0.4);
+      border-radius: 10px;
+      padding: 0.8rem 0.95rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    textarea { resize: vertical; min-height: 6.5rem; line-height: 1.6; }
+    select {
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b96a3' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.95rem center;
+      padding-right: 2.4rem;
+    }
+    input::placeholder, textarea::placeholder { color: var(--dim); font-weight: 200; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.14);
+    }
+    .hint {
+      font-size: 0.74rem;
+      font-weight: 300;
+      color: var(--dim);
+      line-height: 1.5;
+    }
+
+    /* honeypot — visually and semantically hidden from people */
+    .gotcha {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-top: 0.4rem;
+    }
+    .consent input {
+      width: 1.15rem;
+      height: 1.15rem;
+      margin-top: 0.15rem;
+      flex: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .consent input:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='10' viewBox='0 0 12 10'%3E%3Cpath d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .consent label {
+      text-transform: none;
+      letter-spacing: 0.01em;
+      font-size: 0.86rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .actions {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.1rem;
+    }
+    button[type="submit"] {
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1.05rem 2.6rem;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(180deg, #16a3ff, var(--accent-ink));
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 34px -12px var(--accent-glow);
+    }
+    button[type="submit"]:disabled {
+      opacity: 0.55;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+    .form-note {
+      font-size: 0.74rem;
+      font-weight: 300;
+      color: var(--dim);
+      text-align: center;
+      max-width: 44ch;
+      line-height: 1.6;
+    }
+    .form-error {
+      display: none;
+      color: #c0392b;
+      font-size: 0.82rem;
+      font-weight: 300;
+      text-align: center;
+    }
+    .form-error.show { display: block; }
+
+    /* Success state */
+    .done {
+      display: none;
+      text-align: center;
+      padding: clamp(6rem, 20vh, 10rem) 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .done.show { display: block; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .done .logo { width: min(150px, 46vw); margin: 0 auto 2.4rem; }
+    .done h2 {
+      font-size: clamp(1.6rem, 4.5vw, 2.3rem);
+      font-weight: 200;
+      color: var(--ink);
+      margin-bottom: 1.3rem;
+    }
+    .done p {
+      max-width: 42ch;
+      margin: 0 auto 2.2rem;
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+    .done a {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
+      text-decoration: none;
+    }
+    .done a:hover { color: var(--accent); }
+
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; }
+      .backlink { top: 1.1rem; left: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="track back" aria-hidden="true">
+    <span class="streak" style="--top:30%; --w:30vw; --h:1px; --dur:4.4s; --delay:.6s; --g:3px; --core:rgba(0,158,255,0.40); --head:rgba(0,153,255,0.58)"></span>
+    <span class="streak" style="--top:72%; --w:26vw; --h:1px; --dur:5s; --delay:2.2s; --g:3px; --core:rgba(0,158,255,0.36); --head:rgba(0,153,255,0.52)"></span>
+  </div>
+
+  <a class="backlink" href="/"><span class="arrow">←</span> APX</a>
+
+  <div class="wrap" id="formWrap">
+    <div class="apply-head">
+      <div class="logo" role="img" aria-label="APX"></div>
+      <p class="eyebrow">Request Consideration</p>
+      <h1>Tell us who you are.</h1>
+      <p>
+        Admission is by review. The more clearly we can see an athlete — the marks,
+        the trajectory, the intent — the better the conversation that follows.
+        Take your time. Every field you can verify helps.
+      </p>
+    </div>
+
+    <form id="applyForm" novalidate>
+      <!-- honeypot: leave empty; bots fill it -->
+      <div class="gotcha" aria-hidden="true">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+      </div>
+      <input type="hidden" name="started_at" id="started_at" value="">
+
+      <!-- 1 · The Athlete -->
+      <fieldset>
+        <legend>01 · The Athlete</legend>
+        <div class="grid">
+          <div class="field full">
+            <label for="athlete_name">Full name <span class="req">*</span></label>
+            <input type="text" id="athlete_name" name="athlete_name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="grad_year">Graduation year <span class="req">*</span></label>
+            <input type="number" id="grad_year" name="grad_year" min="2025" max="2035" placeholder="e.g. 2028" required>
+          </div>
+          <div class="field">
+            <label for="grade">Current grade <span class="req">*</span></label>
+            <select id="grade" name="grade" required>
+              <option value="" selected disabled>Select</option>
+              <option>9th</option>
+              <option>10th</option>
+              <option>11th</option>
+              <option>12th</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="gender">Competes as <span class="req">*</span></label>
+            <select id="gender" name="gender" required>
+              <option value="" selected disabled>Select</option>
+              <option>Boys</option>
+              <option>Girls</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="school">School <span class="req">*</span></label>
+            <input type="text" id="school" name="school" required>
+          </div>
+          <div class="field">
+            <label for="city">City <span class="req">*</span></label>
+            <input type="text" id="city" name="city" autocomplete="address-level2" required>
+          </div>
+          <div class="field">
+            <label for="state">State / Region <span class="req">*</span></label>
+            <input type="text" id="state" name="state" autocomplete="address-level1" required>
+          </div>
+          <div class="field">
+            <label for="athlete_email">Athlete email <span class="req">*</span></label>
+            <input type="email" id="athlete_email" name="athlete_email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="athlete_phone">Athlete phone <span class="opt">(optional)</span></label>
+            <input type="tel" id="athlete_phone" name="athlete_phone" autocomplete="tel">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 2 · Parent / Guardian -->
+      <fieldset>
+        <legend>02 · Parent / Guardian</legend>
+        <p class="legend-note">A parent or guardian must be reachable for any athlete under 18.</p>
+        <div class="grid">
+          <div class="field">
+            <label for="guardian_name">Name <span class="req">*</span></label>
+            <input type="text" id="guardian_name" name="guardian_name" required>
+          </div>
+          <div class="field">
+            <label for="guardian_relation">Relationship <span class="req">*</span></label>
+            <input type="text" id="guardian_relation" name="guardian_relation" placeholder="e.g. Mother" required>
+          </div>
+          <div class="field">
+            <label for="guardian_email">Email <span class="req">*</span></label>
+            <input type="email" id="guardian_email" name="guardian_email" required>
+          </div>
+          <div class="field">
+            <label for="guardian_phone">Phone <span class="req">*</span></label>
+            <input type="tel" id="guardian_phone" name="guardian_phone" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 3 · Performance -->
+      <fieldset>
+        <legend>03 · Performance</legend>
+        <p class="legend-note">Give us marks we can look up. A verifiable time tells us far more than a rounded one.</p>
+        <div class="grid">
+          <div class="field full">
+            <label for="events">Primary event(s) <span class="req">*</span></label>
+            <input type="text" id="events" name="events" placeholder="e.g. 1600m, 3200m" required>
+          </div>
+          <div class="field full">
+            <label for="best_marks">Best verified marks <span class="req">*</span></label>
+            <textarea id="best_marks" name="best_marks" placeholder="One per line — event · time · meet · date &#10;e.g. 1600m · 4:38 · State Qualifier · May 2025" required></textarea>
+            <span class="hint">Include the meet name and date for each mark so we can confirm it.</span>
+          </div>
+          <div class="field full">
+            <label for="results_link">Link to published results / profile <span class="req">*</span></label>
+            <input type="url" id="results_link" name="results_link" placeholder="Athletic.net, MileSplit, or a meet results page" required>
+          </div>
+          <div class="field">
+            <label for="weekly_volume">Current weekly volume <span class="opt">(optional)</span></label>
+            <input type="text" id="weekly_volume" name="weekly_volume" placeholder="e.g. ~35 mi / week">
+          </div>
+          <div class="field">
+            <label for="years_running">Years training <span class="opt">(optional)</span></label>
+            <input type="text" id="years_running" name="years_running" placeholder="e.g. 3">
+          </div>
+          <div class="field full">
+            <label for="other_sports">Other sports <span class="opt">(optional)</span></label>
+            <input type="text" id="other_sports" name="other_sports">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 4 · Commitment & Fit -->
+      <fieldset>
+        <legend>04 · Commitment &amp; Fit</legend>
+        <p class="legend-note">There are no right answers here — only honest ones.</p>
+        <div class="grid">
+          <div class="field full">
+            <label for="why">Why APX? <span class="req">*</span></label>
+            <textarea id="why" name="why" placeholder="What draws you to this, in your own words." required></textarea>
+          </div>
+          <div class="field full">
+            <label for="goals">Your goals — this season and beyond <span class="req">*</span></label>
+            <textarea id="goals" name="goals" required></textarea>
+          </div>
+          <div class="field">
+            <label for="college">Intend to run in college? <span class="req">*</span></label>
+            <select id="college" name="college" required>
+              <option value="" selected disabled>Select</option>
+              <option>Yes</option>
+              <option>Undecided</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="commit">Ready for year-round commitment? <span class="req">*</span></label>
+            <select id="commit" name="commit" required>
+              <option value="" selected disabled>Select</option>
+              <option>Yes — fully</option>
+              <option>Mostly — some conflicts</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="travel">Willing to travel for camps &amp; competition? <span class="req">*</span></label>
+            <select id="travel" name="travel" required>
+              <option value="" selected disabled>Select</option>
+              <option>Yes</option>
+              <option>Depends</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="format">Training preference <span class="req">*</span></label>
+            <select id="format" name="format" required>
+              <option value="" selected disabled>Select</option>
+              <option>In-person</option>
+              <option>Remote</option>
+              <option>Either</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="constraints">Anything that could limit full commitment? <span class="opt">(optional)</span></label>
+            <textarea id="constraints" name="constraints" placeholder="Injuries, other obligations, timing — whatever we should know."></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 5 · Verification & References -->
+      <fieldset>
+        <legend>05 · Verification &amp; References</legend>
+        <div class="grid">
+          <div class="field">
+            <label for="coach_name">Current / former coach <span class="req">*</span></label>
+            <input type="text" id="coach_name" name="coach_name" required>
+          </div>
+          <div class="field">
+            <label for="coach_contact">Coach contact <span class="req">*</span></label>
+            <input type="text" id="coach_contact" name="coach_contact" placeholder="Email or phone" required>
+          </div>
+          <div class="field full">
+            <label for="video_link">Link to race footage or highlight <span class="opt">(optional, encouraged)</span></label>
+            <input type="url" id="video_link" name="video_link" placeholder="YouTube, Hudl, Drive…">
+          </div>
+          <div class="field full">
+            <label for="referral">How did you hear about APX? <span class="opt">(optional)</span></label>
+            <input type="text" id="referral" name="referral">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 6 · Consent -->
+      <fieldset>
+        <legend>06 · Consent</legend>
+        <div class="consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <label for="consent">
+            I confirm this information is accurate, and — as the athlete or their
+            parent/guardian — I consent to APX reviewing this application and
+            contacting me about it. <span class="req">*</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <p class="form-error" id="formError"></p>
+        <button type="submit" id="submitBtn">Submit for Consideration</button>
+        <p class="form-note">We review every application personally. Expect a reply only if there is a fit.</p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Success state -->
+  <div class="done" id="done">
+    <div class="logo" role="img" aria-label="APX"></div>
+    <h2>Received.</h2>
+    <p>
+      Your application is with us. Consideration is by review — we reach out to
+      the athletes we want to see. Watch your inbox.
+    </p>
+    <a href="/">← Return</a>
+  </div>
+
+  <script src="/assets/apply.js" defer></script>
+</body>
+</html>
