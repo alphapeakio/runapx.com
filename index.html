@@ -47,8 +47,8 @@
       --muted: #3d4650;       /* body/tagline — deliberately high contrast */
       --dim: #8b96a3;
       --accent: #0099ff;      /* brand blue — used for glows/fills */
-      --accent-ink: #0068c4;  /* deeper blue that holds contrast on white */
-      --accent-glow: rgba(0, 153, 255, 0.30);
+      --accent-ink: #0072d8;  /* deeper blue that holds contrast on white (4.6:1) */
+      --accent-glow: rgba(0, 163, 255, 0.38);
     }
 
     html, body {
@@ -112,12 +112,12 @@
       inset: -85% -35%;
       background:
         radial-gradient(ellipse 50% 55% at 50% 50%,
-          rgba(0, 153, 255, 0.13) 0%,
-          rgba(0, 153, 255, 0.07) 30%,
-          rgba(0, 153, 255, 0.02) 52%,
+          rgba(0, 163, 255, 0.16) 0%,
+          rgba(0, 163, 255, 0.09) 30%,
+          rgba(0, 163, 255, 0.03) 52%,
           transparent 72%),
         radial-gradient(ellipse 34% 42% at 50% 47%,
-          rgba(90, 175, 255, 0.08) 0%,
+          rgba(70, 180, 255, 0.10) 0%,
           transparent 62%);
       filter: blur(18px);
       pointer-events: none;
@@ -240,14 +240,14 @@
       background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 153, 255, 0.05) 34%,
-        rgba(0, 145, 245, 0.34) 62%,
-        var(--core, rgba(0, 132, 232, 0.80)) 86%,
-        var(--head, #0072d6) 100%
+        rgba(0, 163, 255, 0.05) 38%,
+        rgba(0, 163, 255, 0.38) 68%,
+        var(--core, rgba(0, 158, 255, 0.88)) 88%,
+        var(--head, #0099ff) 100%
       );
       filter:
         drop-shadow(0 0 var(--g, 4px) var(--accent-glow))
-        drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 153, 255, 0.18));
+        drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 163, 255, 0.22));
       animation: race var(--dur, 3s) cubic-bezier(0.5, 0, 0.82, 0.3) var(--delay, 0s) infinite;
       will-change: transform, opacity;
     }
@@ -262,8 +262,8 @@
       height: 6px;
       margin-top: -3px;
       border-radius: 50%;
-      background: var(--accent-ink);
-      box-shadow: 0 0 10px 2px rgba(0, 153, 255, 0.55), 0 0 22px 6px var(--accent-glow);
+      background: var(--accent);
+      box-shadow: 0 0 10px 2px rgba(0, 163, 255, 0.65), 0 0 22px 6px var(--accent-glow);
     }
 
     @keyframes race {
@@ -313,10 +313,10 @@
 <body>
   <!-- Ambient beams for depth, behind the content -->
   <div class="track back" aria-hidden="true">
-    <span class="streak" style="--top:24%; --w:34vw; --h:1px; --dur:3.6s; --delay:.2s; --g:3px; --core:rgba(0,140,240,0.42); --head:rgba(0,120,215,0.60)"></span>
-    <span class="streak" style="--top:41%; --w:28vw; --h:1px; --dur:4.2s; --delay:1.4s; --g:3px; --core:rgba(0,140,240,0.36); --head:rgba(0,120,215,0.52)"></span>
-    <span class="streak" style="--top:63%; --w:40vw; --h:1px; --dur:3.9s; --delay:.7s; --g:3px; --core:rgba(0,140,240,0.42); --head:rgba(0,120,215,0.60)"></span>
-    <span class="streak" style="--top:79%; --w:30vw; --h:1px; --dur:4.6s; --delay:2.1s; --g:3px; --core:rgba(0,140,240,0.34); --head:rgba(0,120,215,0.48)"></span>
+    <span class="streak" style="--top:24%; --w:34vw; --h:1px; --dur:3.6s; --delay:.2s; --g:3px; --core:rgba(0,158,255,0.48); --head:rgba(0,153,255,0.70)"></span>
+    <span class="streak" style="--top:41%; --w:28vw; --h:1px; --dur:4.2s; --delay:1.4s; --g:3px; --core:rgba(0,158,255,0.42); --head:rgba(0,153,255,0.62)"></span>
+    <span class="streak" style="--top:63%; --w:40vw; --h:1px; --dur:3.9s; --delay:.7s; --g:3px; --core:rgba(0,158,255,0.48); --head:rgba(0,153,255,0.70)"></span>
+    <span class="streak" style="--top:79%; --w:30vw; --h:1px; --dur:4.6s; --delay:2.1s; --g:3px; --core:rgba(0,158,255,0.40); --head:rgba(0,153,255,0.58)"></span>
   </div>
 
   <main class="page">
@@ -334,9 +334,9 @@
 
   <!-- Hero lasers that sprint over the composition -->
   <div class="track front" aria-hidden="true">
-    <span class="streak" style="--top:33%; --w:46vw; --h:2px; --dur:2.3s; --delay:.5s; --g:6px; --core:rgba(0,145,245,0.85); --head:#0068c4"></span>
-    <span class="streak" style="--top:50%; --w:40vw; --h:2px; --dur:2.7s; --delay:1.7s; --g:6px; --core:rgba(0,145,245,0.78); --head:#0072d6"></span>
-    <span class="streak" style="--top:67%; --w:38vw; --h:2px; --dur:2.5s; --delay:2.9s; --g:6px; --core:rgba(0,145,245,0.85); --head:#0068c4"></span>
+    <span class="streak" style="--top:33%; --w:46vw; --h:2px; --dur:2.3s; --delay:.5s; --g:6px; --core:rgba(0,163,255,0.92); --head:#0099ff"></span>
+    <span class="streak" style="--top:50%; --w:40vw; --h:2px; --dur:2.7s; --delay:1.7s; --g:6px; --core:rgba(0,163,255,0.85); --head:#00a0ff"></span>
+    <span class="streak" style="--top:67%; --w:38vw; --h:2px; --dur:2.5s; --delay:2.9s; --g:6px; --core:rgba(0,163,255,0.92); --head:#0099ff"></span>
   </div>
 </body>
 </html>
