@@ -35,17 +35,72 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
-  <!-- Flip no-js → js before paint so scroll-reveals only hide when JS can animate them. -->
+  <!-- Flip no-js → js before paint so 3D panes only transform when JS can drive them. -->
   <script>document.documentElement.classList.remove('no-js');</script>
   <style>
-    /* ── Home layout ── */
+    body { overflow-x: clip; }
+
+    /* Monospace for the techy HUD labels — system stack, no extra load. */
+    :root {
+      --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+      --glass-edge: rgba(255, 255, 255, 0.72);
+    }
+
+    /* ── Techy backdrop: fine grid + drifting light orbs ──
+       The orbs give the frosted glass something coloured to refract. */
+    .grid-bg {
+      position: fixed;
+      inset: -2px;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 120, 210, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 120, 210, 0.05) 1px, transparent 1px);
+      background-size: 46px 46px;
+      -webkit-mask: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 78%);
+              mask: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 78%);
+      animation: gridDrift 24s linear infinite;
+    }
+    @keyframes gridDrift {
+      to { background-position: 46px 46px, 46px 46px; }
+    }
+
+    .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(48px);
+      opacity: 0.6;
+      will-change: transform;
+    }
+    .orb.a {
+      width: 46vw; height: 46vw; left: -8vw; top: 8vh;
+      background: radial-gradient(circle at 40% 40%, rgba(0, 163, 255, 0.30), transparent 66%);
+      animation: float1 26s ease-in-out infinite;
+    }
+    .orb.b {
+      width: 40vw; height: 40vw; right: -6vw; top: 44vh;
+      background: radial-gradient(circle at 55% 45%, rgba(60, 190, 255, 0.24), transparent 66%);
+      animation: float2 32s ease-in-out infinite;
+    }
+    .orb.c {
+      width: 34vw; height: 34vw; left: 28vw; bottom: -8vh;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 130, 230, 0.20), transparent 66%);
+      animation: float3 38s ease-in-out infinite;
+    }
+    @keyframes float1 { 50% { transform: translate(8vw, 6vh) scale(1.12); } }
+    @keyframes float2 { 50% { transform: translate(-7vw, -5vh) scale(1.1); } }
+    @keyframes float3 { 50% { transform: translate(5vw, -8vh) scale(1.15); } }
+
+    /* ── Persistent corner CTA ── */
     .corner-cta {
       position: fixed;
       top: 1.6rem;
       right: 1.8rem;
-      z-index: 5;
-      font-size: 0.7rem;
-      font-weight: 300;
+      z-index: 6;
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 400;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--muted);
@@ -57,7 +112,7 @@
     .corner-cta.show { opacity: 1; pointer-events: auto; }
     .corner-cta:hover { color: var(--accent-ink); }
 
-    /* Full-viewport hero, exactly as before */
+    /* ── Hero (preserved) ── */
     .hero {
       position: relative;
       z-index: 1;
@@ -98,7 +153,6 @@
       text-transform: uppercase;
     }
 
-    /* Scroll cue at the foot of the hero */
     .scroll-cue {
       position: absolute;
       bottom: 2.2rem;
@@ -112,142 +166,250 @@
       animation: fadeIn 1.2s ease 1.8s forwards;
     }
     .scroll-cue span {
-      font-size: 0.6rem;
-      font-weight: 300;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 400;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--dim);
     }
     .scroll-cue .line {
-      width: 1px;
-      height: 40px;
+      width: 1px; height: 40px;
       background: linear-gradient(to bottom, var(--dim), transparent);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
     .scroll-cue .line::after {
       content: '';
-      position: absolute;
-      left: 0;
-      top: -50%;
-      width: 1px;
-      height: 50%;
+      position: absolute; left: 0; top: -50%;
+      width: 1px; height: 50%;
       background: linear-gradient(to bottom, transparent, var(--accent));
       animation: cue 2.4s ease-in-out infinite;
     }
-    @keyframes cue {
-      0%   { top: -55%; }
-      70%  { top: 105%; }
-      100% { top: 105%; }
-    }
+    @keyframes cue { 0% { top: -55%; } 70% { top: 105%; } 100% { top: 105%; } }
 
-    /* ── Scroll-journey sections ── */
+    /* ── Scroll-journey sections: 3D stage ── */
+    main { perspective: 1500px; perspective-origin: 50% 50%; }
     .section {
       position: relative;
       z-index: 1;
-      min-height: 92vh;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 8vh 2rem;
+      padding: 10vh 1.5rem;
+      transform-style: preserve-3d;
     }
-    .eyebrow {
-      font-size: 0.66rem;
-      font-weight: 400;
-      letter-spacing: 0.34em;
+
+    /* ── The glass pane ── */
+    .pane {
+      position: relative;
+      width: min(680px, 92vw);
+      padding: clamp(2.4rem, 5vw, 4rem);
+      text-align: center;
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.26));
+      border: 1px solid var(--glass-edge);
+      box-shadow:
+        0 34px 90px -34px rgba(6, 44, 88, 0.32),
+        0 8px 24px -14px rgba(6, 44, 88, 0.20),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(120, 150, 180, 0.22);
+      -webkit-backdrop-filter: blur(22px) saturate(1.5);
+              backdrop-filter: blur(22px) saturate(1.5);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
+    }
+    /* moving specular sheen across the glass */
+    .pane::before {
+      content: '';
+      position: absolute;
+      top: -60%; left: -30%;
+      width: 45%; height: 220%;
+      background: linear-gradient(
+        105deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+      transform: skewX(-16deg);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: paneSheen 9s ease-in-out infinite;
+    }
+    @keyframes paneSheen {
+      0% { left: -40%; opacity: 0; }
+      12% { opacity: 1; }
+      45% { left: 120%; opacity: 0; }
+      100% { left: 120%; opacity: 0; }
+    }
+    /* faint inner grid line on the glass — techy detail */
+    .pane::after {
+      content: '';
+      position: absolute; inset: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(0, 130, 230, 0.10);
+      pointer-events: none;
+    }
+
+    .pane-hud {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--accent-ink);
-      margin-bottom: 1.8rem;
     }
+    .pane-hud .idx { opacity: 0.6; }
+    .pane-hud .tick {
+      flex: none;
+      width: 26px; height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
     .statement {
       max-width: 20ch;
-      font-size: clamp(1.9rem, 5.6vw, 3.6rem);
+      margin: 0 auto;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
       font-weight: 200;
-      line-height: 1.12;
+      line-height: 1.14;
       letter-spacing: -0.01em;
       color: var(--ink);
     }
     .statement .accent { color: var(--accent-ink); }
     .subline {
-      margin-top: 2rem;
+      margin: 1.8rem auto 0;
       max-width: 46ch;
       font-size: clamp(0.86rem, 1.9vw, 1.02rem);
       font-weight: 300;
       line-height: 1.7;
-      letter-spacing: 0.02em;
       color: var(--muted);
     }
 
-    /* Section 3 — the two named capabilities, kept deliberately spare */
+    /* named capabilities inside the Method pane */
     .marks {
-      margin-top: 3rem;
+      margin-top: 2.4rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: clamp(2rem, 7vw, 5.5rem);
+      gap: clamp(1.6rem, 6vw, 4rem);
     }
-    .mark {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.55rem;
-    }
+    .mark { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
     .mark .name {
-      font-size: clamp(1rem, 2.4vw, 1.35rem);
+      font-size: clamp(1rem, 2.4vw, 1.3rem);
       font-weight: 300;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
       color: var(--ink);
     }
     .mark .role {
-      font-size: 0.68rem;
-      font-weight: 300;
+      font-family: var(--mono);
+      font-size: 0.62rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--dim);
     }
 
-    /* Signature cursor-reactive light pane for The Method */
-    .lightfield {
+    /* ── Spiral staircase (the centerpiece) ── */
+    .stair {
+      position: relative;
+      z-index: 1;
+      min-height: 130vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 8vh 1.5rem;
+    }
+    .stair-stage {
+      position: relative;
+      width: min(560px, 90vw);
+      height: min(560px, 74vh);
+      perspective: 1200px;
+      perspective-origin: 50% 42%;
+    }
+    .helix {
       position: absolute;
       inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(
-        circle 40vmax at var(--mx) var(--my),
-        rgba(0, 153, 255, 0.10) 0%,
-        rgba(0, 153, 255, 0.04) 32%,
-        transparent 60%);
-      opacity: 0;
-      transition: opacity 1.2s ease;
+      transform-style: preserve-3d;
+      transform: rotateX(-12deg) rotateY(0deg);
+      will-change: transform;
     }
-    .section.in-view .lightfield { opacity: 1; }
+    .tread {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 190px; height: 52px;
+      margin: -26px 0 0 -95px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(223, 242, 255, 0.55), rgba(255, 255, 255, 0.12));
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow:
+        0 14px 34px -10px rgba(0, 92, 175, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      transform:
+        rotateY(var(--a)) translateZ(190px)
+        translateY(var(--y)) rotateX(66deg);
+      transform-style: preserve-3d;
+    }
+    .tread::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 13px;
+      background: linear-gradient(90deg, transparent, rgba(0, 163, 255, 0.16), transparent);
+    }
+    /* the glowing newel post the treads wind around */
+    .stair-stage::after {
+      content: '';
+      position: absolute;
+      left: 50%; top: 8%;
+      width: 2px; height: 84%;
+      margin-left: -1px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      filter: drop-shadow(0 0 8px var(--accent-glow));
+      opacity: 0.5;
+    }
+    .stair-caption { text-align: center; max-width: 40ch; }
+    .stair-caption .pane-hud { margin-bottom: 1.2rem; }
+    .stair-caption h2 {
+      font-size: clamp(1.6rem, 4.4vw, 2.6rem);
+      font-weight: 200;
+      line-height: 1.16;
+      color: var(--ink);
+    }
+    .stair-caption .accent { color: var(--accent-ink); }
+    .stair-caption p {
+      margin-top: 1.2rem;
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+    }
 
     /* ── Invitation / close ── */
-    .invite { gap: 0; }
-    .invite .statement { margin-bottom: 2.6rem; }
+    .invite .pane { text-align: center; }
     .request {
       display: inline-flex;
       align-items: center;
       gap: 0.9rem;
+      margin-top: 2.4rem;
       padding: 1.05rem 2.4rem;
       border: 1px solid rgba(0, 114, 216, 0.4);
       border-radius: 999px;
-      font-size: 0.72rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
       font-weight: 400;
       letter-spacing: 0.26em;
       text-transform: uppercase;
       color: var(--accent-ink);
       text-decoration: none;
       background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(4px);
       transition: border-color 0.35s ease, background 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
     }
     .request:hover {
       border-color: var(--accent);
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.8);
       transform: translateY(-2px);
       box-shadow: 0 10px 30px -12px var(--accent-glow);
     }
@@ -264,19 +426,31 @@
       align-items: center;
       gap: 1rem;
     }
-    .foot .logo {
-      width: min(120px, 40vw);
-    }
+    .foot .logo { width: min(120px, 40vw); }
     .foot .foot-line {
-      font-size: 0.62rem;
-      font-weight: 300;
+      font-family: var(--mono);
+      font-size: 0.6rem;
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--dim);
     }
+
+    /* No-JS / reduced-motion: static, readable, flat panes */
+    .no-js .pane { transform: none !important; opacity: 1 !important; }
+    @media (prefers-reduced-motion: reduce) {
+      .grid-bg, .orb, .pane::before, .helix { animation: none !important; }
+      .pane { transform: none !important; opacity: 1 !important; }
+    }
   </style>
 </head>
 <body>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="orbs" aria-hidden="true">
+    <span class="orb a"></span>
+    <span class="orb b"></span>
+    <span class="orb c"></span>
+  </div>
+
   <!-- Ambient beams for depth, behind the content -->
   <div class="track back" aria-hidden="true">
     <span class="streak" style="--top:24%; --w:34vw; --h:1px; --dur:3.6s; --delay:.2s; --g:3px; --core:rgba(0,158,255,0.48); --head:rgba(0,153,255,0.70)"></span>
@@ -292,14 +466,11 @@
     <div class="logo-wrap">
       <div class="logo" role="img" aria-label="APX logo"></div>
     </div>
-
     <div class="divider" aria-hidden="true"></div>
-
     <div class="title-block">
       <h1 class="title">APX Training Group</h1>
       <p class="tagline">Performance · Precision · Ascent</p>
     </div>
-
     <div class="scroll-cue" aria-hidden="true">
       <div class="line"></div>
       <span>Scroll</span>
@@ -316,59 +487,70 @@
   <main>
     <!-- ── Ethos ── -->
     <section class="section" aria-labelledby="ethos-h">
-      <p class="eyebrow reveal">The Idea</p>
-      <h2 class="statement reveal" id="ethos-h" style="--reveal-delay:.08s">
-        Potential needs the right <span class="accent">environment</span> to become performance.
-      </h2>
-      <p class="subline reveal" style="--reveal-delay:.18s">
-        A private distance group. Measured, not guessed. Built for the few who
-        are serious about how far this goes.
-      </p>
+      <article class="pane" data-tilt data-dir="1">
+        <div class="pane-hud"><span class="idx">01</span><span class="tick"></span><span>The Idea</span></div>
+        <h2 class="statement" id="ethos-h">
+          Potential needs the right <span class="accent">environment</span> to become performance.
+        </h2>
+        <p class="subline">
+          A private distance group. Measured, not guessed. Built for the few who
+          are serious about how far this goes.
+        </p>
+      </article>
     </section>
 
-    <!-- ── The Standard (selectivity, no numbers) ── -->
+    <!-- ── The Standard ── -->
     <section class="section" aria-labelledby="standard-h">
-      <p class="eyebrow reveal">The Standard</p>
-      <h2 class="statement reveal" id="standard-h" style="--reveal-delay:.08s">
-        The roster is kept small <span class="accent">on purpose.</span>
-      </h2>
-      <p class="subline reveal" style="--reveal-delay:.18s">
-        Every athlete is known. Every plan is their own. Admission is reviewed
-        on merit and fit — and it closes when the room is full.
-      </p>
+      <article class="pane" data-tilt data-dir="-1">
+        <div class="pane-hud"><span class="idx">02</span><span class="tick"></span><span>The Standard</span></div>
+        <h2 class="statement" id="standard-h">
+          The roster is kept small <span class="accent">on purpose.</span>
+        </h2>
+        <p class="subline">
+          Every athlete is known. Every plan is their own. Admission is reviewed
+          on merit and fit — and it closes when the room is full.
+        </p>
+      </article>
     </section>
 
-    <!-- ── The Method (mystique around the technology) ── -->
+    <!-- ── The Method ── -->
     <section class="section" aria-labelledby="method-h">
-      <div class="lightfield" aria-hidden="true"></div>
-      <p class="eyebrow reveal">The Method</p>
-      <h2 class="statement reveal" id="method-h" style="--reveal-delay:.08s">
-        Every stride measured. Every race <span class="accent">read.</span>
-      </h2>
-      <div class="marks reveal" style="--reveal-delay:.2s">
-        <div class="mark">
-          <span class="name">RSLTS</span>
-          <span class="role">Progression</span>
+      <article class="pane" data-tilt data-dir="1">
+        <div class="pane-hud"><span class="idx">03</span><span class="tick"></span><span>The Method</span></div>
+        <h2 class="statement" id="method-h">
+          Every stride measured. Every race <span class="accent">read.</span>
+        </h2>
+        <div class="marks">
+          <div class="mark"><span class="name">RSLTS</span><span class="role">Progression</span></div>
+          <div class="mark"><span class="name">AlphaPeak</span><span class="role">Form</span></div>
         </div>
-        <div class="mark">
-          <span class="name">AlphaPeak</span>
-          <span class="role">Form</span>
-        </div>
+        <p class="subline">
+          Nothing generic. What we build for an athlete is built from their own numbers.
+        </p>
+      </article>
+    </section>
+
+    <!-- ── Spiral staircase centerpiece ── -->
+    <section class="stair" aria-labelledby="ascent-h">
+      <div class="stair-stage" aria-hidden="true">
+        <div class="helix" id="helix"></div>
       </div>
-      <p class="subline reveal" style="--reveal-delay:.3s">
-        Nothing generic. What we build for an athlete is built from their own numbers.
-      </p>
+      <div class="stair-caption">
+        <div class="pane-hud"><span class="idx">04</span><span class="tick"></span><span>The Ascent</span></div>
+        <h2 id="ascent-h">One step at a time — <span class="accent">upward.</span></h2>
+        <p>Progress here is a climb, not a leap. Turn by turn, the standard rises.</p>
+      </div>
     </section>
 
     <!-- ── Invitation / close ── -->
     <section class="section invite" aria-labelledby="invite-h">
-      <h2 class="statement reveal" id="invite-h">
-        Admission is <span class="accent">considered,</span> not sold.
-      </h2>
-      <a class="request reveal" href="/apply" style="--reveal-delay:.12s">
-        Request Consideration
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
+      <article class="pane" data-tilt data-dir="-1">
+        <div class="pane-hud"><span class="idx">05</span><span class="tick"></span><span>The Invitation</span></div>
+        <h2 class="statement" id="invite-h">
+          Admission is <span class="accent">considered,</span> not sold.
+        </h2>
+        <a class="request" href="/apply">Request Consideration <span class="arrow" aria-hidden="true">→</span></a>
+      </article>
     </section>
   </main>
 
