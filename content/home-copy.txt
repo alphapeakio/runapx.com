@@ -20,7 +20,7 @@ TAGLINE:       Performance · Precision · Ascent
 
 
 --------------------------------------------------------------
-SECTION 01 — THE ASCENT  (the spiral staircase / intro)
+SECTION 01 — THE ASCENT  (opening pane, over the track)
 --------------------------------------------------------------
 EYEBROW:       The Ascent
 HEADLINE:      Good becomes great here. Great keeps climbing.
@@ -58,12 +58,8 @@ EYEBROW:       The Method
 HEADLINE:      Every stride measured. Every race read.
 ACCENT:        read.
 CAPABILITY 1:  Progression   (label:) Tracked
-               Every session and every race, held against the plan.
 CAPABILITY 2:  Mechanics     (label:) Measured
-               Movement read frame by frame, corrected by name.
-SUBLINE:       We work at the edge of what technology can measure, so
-               nothing is left to guesswork. Progress is engineered,
-               not hoped for.
+SUBLINE:       Nothing is left to guesswork.
 
 
 --------------------------------------------------------------

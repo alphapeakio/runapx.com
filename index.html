@@ -56,11 +56,13 @@
       z-index: 0;
       overflow: hidden;
       pointer-events: none;
-      opacity: 0;                 /* app.js fades it in after the helix intro */
-      -webkit-mask: radial-gradient(ellipse 88% 82% at 50% 45%, #000 42%, transparent 84%);
-              mask: radial-gradient(ellipse 88% 82% at 50% 45%, #000 42%, transparent 84%);
+      /* weighted toward the bottom so the track begins at the foot of the
+         hero (inviting the scroll) and runs beneath the panes below */
+      -webkit-mask: radial-gradient(ellipse 140% 62% at 50% 100%, #000 34%, transparent 82%);
+              mask: radial-gradient(ellipse 140% 62% at 50% 100%, #000 34%, transparent 82%);
+      /* a soft gleam so the polished lanes catch the light */
+      filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.5));
     }
-    .no-js .track-view { opacity: 1; }
     .track-rotor {
       position: absolute;
       left: 50%; top: 50%;
@@ -327,84 +329,6 @@
       color: var(--dim);
     }
 
-    /* ── Spiral staircase — the opening scroll-driven ascent ──
-       A tall section with a pinned stage: scrolling climbs the helix. */
-    .stair {
-      position: relative;
-      z-index: 1;
-      height: 200vh;             /* same dwell as a content pane */
-      margin-top: -35vh;         /* pull up so the helix peeks under the hero */
-    }
-    .stair-pin {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 6vh 1.5rem;
-    }
-    /* stack the stage and its caption so the text sits in the helix centre */
-    .stair-pin > * { grid-area: 1 / 1; }
-    .stair-stage {
-      position: relative;
-      width: min(600px, 92vw);
-      height: min(600px, 76vh);
-      perspective: 1200px;
-      perspective-origin: 50% 42%;
-    }
-    .helix {
-      position: absolute;
-      inset: 0;
-      transform-style: preserve-3d;
-      transform: rotateX(-12deg) rotateY(0deg);
-      will-change: transform;
-    }
-    .tread {
-      position: absolute;
-      left: 50%; top: 50%;
-      width: 190px; height: 52px;
-      margin: -26px 0 0 -95px;
-      border-radius: 13px;
-      background: linear-gradient(135deg, rgba(238, 241, 245, 0.55), rgba(255, 255, 255, 0.12));
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      box-shadow:
-        0 14px 34px -10px rgba(40, 46, 54, 0.30),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      /* transform set per-tread by app.js (responsive); this is the fallback */
-      transform:
-        rotateY(var(--a)) translateZ(190px)
-        translateY(var(--y)) rotateX(66deg);
-      transform-style: preserve-3d;
-    }
-    .tread::before {
-      content: '';
-      position: absolute; inset: 0;
-      border-radius: 13px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
-    }
-    /* the glowing newel post the treads wind around */
-    .stair-stage::after {
-      content: '';
-      position: absolute;
-      left: 50%; top: 8%;
-      width: 2px; height: 84%;
-      margin-left: -1px;
-      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-      filter: drop-shadow(0 0 8px var(--accent-glow));
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    /* caption centred in the helix, same width/presence as the panes */
-    .stair-caption {
-      position: relative;
-      z-index: 2;
-      width: min(680px, 92vw);
-      text-align: center;
-      pointer-events: none;
-    }
-    .stair-caption .pane-hud { margin-bottom: 1.8rem; justify-content: center; }
-    /* .accent styled globally in site.css */
-
     /* ── Invitation / close ── */
     .invite .pane { text-align: center; }
     .request {
@@ -460,12 +384,9 @@
     @media (prefers-reduced-motion: reduce) {
       .orb, .pane::before { animation: none !important; }
       .pane { transform: none !important; opacity: 1 !important; }
-      .track-view { opacity: 1 !important; }
       /* collapse the dwell so reduced-motion users don't scroll dead space */
       .section { height: auto; }
       .pane-hold { position: static; height: auto; min-height: 100vh; }
-      .stair { height: auto; }
-      .stair-pin { position: static; height: auto; min-height: 100vh; }
     }
   </style>
 </head>
@@ -495,21 +416,21 @@
     </div>
   </header>
 
-  <!-- ── The Ascent: first thing they see on scroll ── -->
-  <section class="stair" aria-labelledby="ascent-h">
-    <div class="stair-pin">
-      <div class="stair-stage" aria-hidden="true">
-        <div class="helix" id="helix"></div>
-      </div>
-      <div class="stair-caption">
+  <main>
+    <!-- ── The Ascent ── -->
+    <section class="section" aria-labelledby="ascent-h">
+     <div class="pane-hold">
+      <article class="pane" data-tilt data-dir="-1">
         <div class="pane-hud"><span class="idx">01</span><span class="tick"></span><span>The Ascent</span></div>
         <h2 class="statement" id="ascent-h">Good becomes great here. <span class="accent">Great keeps climbing.</span></h2>
-        <p class="subline">APX exists for distance athletes with more in them — and the will to find it. Turn by turn, the standard rises.</p>
-      </div>
-    </div>
-  </section>
+        <p class="subline">
+          APX exists for distance athletes with more in them — and the will
+          to find it. Turn by turn, the standard rises.
+        </p>
+      </article>
+     </div>
+    </section>
 
-  <main>
     <!-- ── Ethos ── -->
     <section class="section" aria-labelledby="ethos-h">
      <div class="pane-hold">
@@ -556,18 +477,13 @@
           <div class="mark">
             <span class="name">Progression</span>
             <span class="role">Tracked</span>
-            <span class="mark-desc">Every session and every race, held against the plan.</span>
           </div>
           <div class="mark">
             <span class="name">Mechanics</span>
             <span class="role">Measured</span>
-            <span class="mark-desc">Movement read frame by frame, corrected by name.</span>
           </div>
         </div>
-        <p class="subline">
-          We work at the edge of what technology can measure, so nothing is left
-          to guesswork. Progress is engineered, not hoped for.
-        </p>
+        <p class="subline">Nothing is left to guesswork.</p>
       </article>
      </div>
     </section>
@@ -595,6 +511,6 @@
     <p class="foot-line">APX Training Group</p>
   </footer>
 
-  <script src="/assets/app.js?v=5" defer></script>
+  <script src="/assets/app.js?v=6" defer></script>
 </body>
 </html>

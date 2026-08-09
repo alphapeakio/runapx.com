@@ -1,9 +1,9 @@
 /* ─────────────────────────────────────────────────────────────
    APX — home motion engine (vanilla, no framework, no deps)
    Enhancement only. With JS off, panes are flat and readable and a
-   static spiral staircase is shown. This adds:
-     · a scroll-driven ASCENT — the spiral staircase climbs upward as
-       you scroll down, the opening moment before any content
+   static aerial track is shown. This adds:
+     · an aerial running track that pans down the straight and banks
+       through the turns as you scroll — laps run underfoot
      · scroll-linked 3D on each frosted pane — it turns, weaves side to
        side, and recedes as it crosses the viewport
      · a cursor / scroll driven light the frosted glass refracts
@@ -32,53 +32,10 @@
     }
   }
 
-  /* ── Build the spiral staircase ──
-     N treads on a helix; a full wrap is exactly 360° so the loop is
-     seamless. We set a static pose here (used when motion is off) and
-     drive it per-frame below when motion is on. */
-  var helix = document.getElementById('helix');
-  var N = 26;             /* treads → a taller column */
-  var RISE = 38;          /* px of climb per tread */
-  var RADIUS = 190;       /* px from the newel post (original good width) */
-  var STEP = 360 / N;     /* degrees between treads → seamless wrap */
-  var TILT = 66;          /* how flat each tread lies */
-  var H = N * RISE;       /* full helix height */
-  var treads = [];
-
-  /* Responsive scale so the helix fits small screens — full size on
-     desktop, shrinking down toward mobile. */
-  function helixScale() {
-    var w = window.innerWidth || 1000;
-    return Math.max(0.5, Math.min(1, w / 960));
-  }
-
-  /* Transform for a tread whose base is at height y (px up the column). */
-  function treadTransform(y, hs) {
-    return 'rotateY(' + ((y / RISE) * STEP).toFixed(2) + 'deg) ' +
-           'translateZ(' + (RADIUS * hs).toFixed(1) + 'px) ' +
-           'translateY(' + ((H / 2 - y) * hs).toFixed(1) + 'px) ' +
-           'rotateX(' + TILT + 'deg) scale(' + hs.toFixed(3) + ')';
-  }
-
-  if (helix) {
-    var hs0 = helixScale();
-    var frag = document.createDocumentFragment();
-    for (var i = 0; i < N; i++) {
-      var t = document.createElement('span');
-      t.className = 'tread';
-      var y0 = i * RISE;
-      t.style.transform = treadTransform(y0, hs0);
-      t.style.opacity = (0.14 + 0.86 * Math.sin(Math.PI * (y0 / H))).toFixed(3);
-      frag.appendChild(t);
-      treads.push(t);
-    }
-    helix.appendChild(frag);
-  }
-
   /* ── Build the aerial running track ──
-     Lanes are concentric stadium rects; app.js pans/banks the field
-     along the running line each frame. Drawn now so it also shows
-     (static) under reduced motion. */
+     Lanes are concentric stadium rects with a shiny platinum gradient
+     stroke; app.js pans/banks the field along the running line each
+     frame. Drawn now so it also shows (static) under reduced motion. */
   var trackField = document.getElementById('trackField');
   var trackRotor = document.getElementById('trackRotor');
   var RR = 300;                       /* running-line radius   */
@@ -99,12 +56,31 @@
     return el;
   }
   if (trackField) {
-    /* Just the lane lines — thin, bright blue, no fill — so the track
-       reads as a light backdrop rather than a darkened surface. */
+    /* A polished metallic gradient so each lane catches the light. */
+    var defs = document.createElementNS(SVGNS, 'defs');
+    var grad = document.createElementNS(SVGNS, 'linearGradient');
+    grad.setAttribute('id', 'laneShine');
+    grad.setAttribute('x1', '0'); grad.setAttribute('y1', '0');
+    grad.setAttribute('x2', '1'); grad.setAttribute('y2', '1');
+    [
+      ['0%',   'rgba(150,160,174,0.55)'],
+      ['36%',  'rgba(220,228,238,0.90)'],
+      ['50%',  'rgba(255,255,255,0.98)'],
+      ['64%',  'rgba(220,228,238,0.90)'],
+      ['100%', 'rgba(140,151,166,0.55)']
+    ].forEach(function (s) {
+      var st = document.createElementNS(SVGNS, 'stop');
+      st.setAttribute('offset', s[0]);
+      st.setAttribute('stop-color', s[1]);
+      grad.appendChild(st);
+    });
+    defs.appendChild(grad);
+    trackField.appendChild(defs);
+
     var lanes = [195, 225, 255, 285, 315, 345, 375, 405];
     for (var li = 0; li < lanes.length; li++) {
       trackField.appendChild(stadium(lanes[li], {
-        fill: 'none', stroke: 'rgba(120,131,146,0.5)', 'stroke-width': 2
+        fill: 'none', stroke: 'url(#laneShine)', 'stroke-width': 2.5
       }));
     }
     trackField.style.transform = 'translate(-300px, -280px)';        /* static pose */
@@ -134,9 +110,6 @@
   if (reduce) return; /* everything below is pure motion */
 
   var panes = Array.prototype.slice.call(document.querySelectorAll('[data-tilt]'));
-  var stair = document.querySelector('.stair');
-  var stairStage = document.querySelector('.stair-stage');
-  var trackView = document.querySelector('.track-view');
 
   /* cursor light target + eased current, in % */
   var mx = 50, my = 40, cmx = 50, cmy = 40;
@@ -149,7 +122,6 @@
   }
 
   function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
-  function mod(n, m) { return ((n % m) + m) % m; }
 
   var vh = window.innerHeight;
   window.addEventListener('resize', function () { vh = window.innerHeight; }, { passive: true });
@@ -168,28 +140,9 @@
 
     var center = vh / 2;
 
-    /* ── The Ascent: the spiral staircase turns slowly on its own —
-       no scroll-linked acceleration. ── */
-    if (helix && treads.length) {
-      var climb = elapsed * 16;                        /* steady, gentle climb */
-      var hs = helixScale();                           /* responsive size */
-      for (var k = 0; k < treads.length; k++) {
-        var y = mod(k * RISE + climb, H);              /* rises, wraps seamlessly */
-        var op = Math.sin(Math.PI * (y / H));          /* fade at the wrap points */
-        treads[k].style.transform = treadTransform(y, hs);
-        treads[k].style.opacity = (0.10 + 0.90 * op).toFixed(3);
-      }
-    }
-
-    /* ── Aerial background track: stays fully hidden until the helix has
-       scrolled off the screen, so the two never overlap. ── */
-    if (trackView && stair) {
-      var stairEnd = stair.offsetTop + stair.offsetHeight;
-      trackView.style.opacity =
-        clamp((window.scrollY - stairEnd) / (vh * 0.5), 0, 1).toFixed(3);
-    }
+    /* ── Aerial track: scrolling runs the lap underfoot ── */
     if (trackField && trackRotor) {
-      var kk = LAP / (vh * 5);               /* slower: ~one lap per 5 viewports */
+      var kk = LAP / (vh * 5);               /* ~one lap per 5 viewports */
       var pt = trackAt(window.scrollY * kk + elapsed * 16);
       trackField.style.transform =
         'translate(' + (-pt.x).toFixed(1) + 'px, ' + (-pt.y).toFixed(1) + 'px)';
