@@ -194,12 +194,25 @@ body::after {
   mix-blend-mode: screen;
   opacity: 0;
 }
-/* outgoing — glass frosts over the page before we navigate */
-.glass-veil--covering { animation: veilCover 0.52s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.glass-veil--covering::after { animation: veilShine 0.6s ease-out both; }
-/* incoming — glass clears to reveal the loaded page */
-.entering .glass-veil { animation: veilReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.entering .glass-veil::after { animation: veilShine 0.8s ease-out both; }
+/* glass frosts over (cover) then clears (reveal) — smooth, eased */
+.glass-veil--covering { animation: veilCover 0.62s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.glass-veil--covering::after { animation: veilShine 0.7s ease-out both; }
+.glass-veil--clearing { animation: veilReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.glass-veil--clearing::after { animation: veilShine 0.9s ease-out both; }
+/* standalone /apply page reveal on arrival */
+.entering .glass-veil { animation: veilReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.entering .glass-veil::after { animation: veilShine 0.9s ease-out both; }
+
+/* ── In-place application overlay (opened from the home page) ── */
+.apply-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg);
+}
+html.apply-open, html.apply-open body { overflow: hidden; }
 
 @keyframes veilCover {
   from { opacity: 0; -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px); }
