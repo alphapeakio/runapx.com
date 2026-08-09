@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APX — Training Group</title>
-  <meta name="description" content="APX Training Group — a private distance training group. Performance, precision, ascent.">
+  <meta name="description" content="APX Training Group — a private distance training group. A small roster, individual focus, and an environment built to produce high-performance athletes.">
   <link rel="canonical" href="https://runapx.com/">
   <meta name="theme-color" content="#f5f7fa">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -15,7 +15,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="APX Training Group">
   <meta property="og:title" content="APX Training Group">
-  <meta property="og:description" content="Performance · Precision · Ascent.">
+  <meta property="og:description" content="Performance · Precision · Ascent. A team, a culture, and a standard. Membership by consideration.">
   <meta property="og:url" content="https://runapx.com/">
   <meta property="og:image" content="https://runapx.com/assets/og-image.png?v=2">
   <meta property="og:image:secure_url" content="https://runapx.com/assets/og-image.png?v=2">
@@ -27,7 +27,7 @@
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="APX Training Group">
-  <meta name="twitter:description" content="Performance · Precision · Ascent.">
+  <meta name="twitter:description" content="Performance · Precision · Ascent. A team, a culture, and a standard. Membership by consideration.">
   <meta name="twitter:image" content="https://runapx.com/assets/og-image.png?v=2">
   <meta name="twitter:image:alt" content="APX Training Group — Performance · Precision · Ascent">
 
@@ -65,7 +65,7 @@
       position: absolute;
       left: 50%; top: 50%;
       width: 0; height: 0;
-      transform: scale(1.7);
+      transform: scale(2.05);
       will-change: transform;
     }
     .track-field {
@@ -304,7 +304,14 @@
       justify-content: center;
       gap: clamp(1.6rem, 6vw, 4rem);
     }
-    .mark { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .mark { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; max-width: 26ch; }
+    .mark-desc {
+      margin-top: 0.3rem;
+      font-size: 0.82rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--muted);
+    }
     .mark .name {
       font-size: clamp(1rem, 2.4vw, 1.3rem);
       font-weight: 300;
@@ -495,8 +502,8 @@
       </div>
       <div class="stair-caption">
         <div class="pane-hud"><span class="idx">01</span><span class="tick"></span><span>The Ascent</span></div>
-        <h2 class="statement" id="ascent-h">Progress is a climb, <span class="accent">not a leap.</span></h2>
-        <p class="subline">Keep scrolling. Turn by turn, the standard rises.</p>
+        <h2 class="statement" id="ascent-h">Good becomes great here. <span class="accent">Great keeps climbing.</span></h2>
+        <p class="subline">APX exists for distance athletes who have found their ceiling and refuse to accept it. Turn by turn, the standard rises.</p>
       </div>
     </div>
   </section>
@@ -511,8 +518,9 @@
           Potential needs the right <span class="accent">environment</span> to become performance.
         </h2>
         <p class="subline">
-          A private distance group. Measured, not guessed. Built for the few who
-          are serious about how far this goes.
+          The environment is the group. Same standards, same discipline away
+          from the track, same intent on it — training shoulder to shoulder
+          until that becomes normal.
         </p>
       </article>
      </div>
@@ -527,8 +535,9 @@
           The roster is kept small <span class="accent">on purpose.</span>
         </h2>
         <p class="subline">
-          Every athlete is known. Every plan is their own. Admission is reviewed
-          on merit and fit — and it closes when the room is full.
+          Our focus is the individual — every athlete known, every plan built
+          for one person. That level of attention doesn't scale, so we don't
+          ask it to.
         </p>
       </article>
      </div>
@@ -543,11 +552,20 @@
           Every stride measured. Every race <span class="accent">read.</span>
         </h2>
         <div class="marks">
-          <div class="mark"><span class="name">RSLTS</span><span class="role">Progression</span></div>
-          <div class="mark"><span class="name">AlphaPeak</span><span class="role">Form</span></div>
+          <div class="mark">
+            <span class="name">Progression</span>
+            <span class="role">Tracked</span>
+            <span class="mark-desc">Every session and every race, held against the plan.</span>
+          </div>
+          <div class="mark">
+            <span class="name">Mechanics</span>
+            <span class="role">Measured</span>
+            <span class="mark-desc">Movement read frame by frame, corrected by name.</span>
+          </div>
         </div>
         <p class="subline">
-          Nothing generic. What we build for an athlete is built from their own numbers.
+          We work at the edge of what technology can measure, so nothing is left
+          to guesswork. Progress is engineered, not hoped for.
         </p>
       </article>
      </div>
@@ -559,8 +577,12 @@
       <article class="pane" data-tilt data-dir="-1">
         <div class="pane-hud"><span class="idx">05</span><span class="tick"></span><span>The Invitation</span></div>
         <h2 class="statement" id="invite-h">
-          Admission is <span class="accent">considered,</span> not sold.
+          Membership is considered, <span class="accent">never assumed.</span>
         </h2>
+        <p class="subline">
+          Selection is objective. If training with APX will raise you, and you
+          will raise the group, membership will be considered.
+        </p>
         <a class="request" href="/apply">Request Consideration <span class="arrow" aria-hidden="true">→</span></a>
       </article>
      </div>
@@ -572,6 +594,6 @@
     <p class="foot-line">APX Training Group</p>
   </footer>
 
-  <script src="/assets/app.js?v=2" defer></script>
+  <script src="/assets/app.js?v=3" defer></script>
 </body>
 </html>

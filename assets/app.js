@@ -180,7 +180,7 @@
       var pt = trackAt(window.scrollY * kk + elapsed * 16);
       trackField.style.transform =
         'translate(' + (-pt.x).toFixed(1) + 'px, ' + (-pt.y).toFixed(1) + 'px)';
-      trackRotor.style.transform = 'rotate(' + pt.a.toFixed(2) + 'deg) scale(1.7)';
+      trackRotor.style.transform = 'rotate(' + pt.a.toFixed(2) + 'deg) scale(2.05)';
     }
 
     /* ── Frosted panes: turn + weave + recede as they cross the view ── */
