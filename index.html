@@ -6,7 +6,7 @@
   <title>APX — Training Group</title>
   <meta name="description" content="APX Training Group — a private distance training group. A small roster, individual focus, and an environment built to produce high-performance athletes.">
   <link rel="canonical" href="https://runapx.com/">
-  <meta name="theme-color" content="#f5f7fa">
+  <meta name="theme-color" content="#f1f2f4">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="/assets/apx-mark.png">
   <link rel="apple-touch-icon" href="/assets/apx-mark.png">
@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=2">
+  <link rel="stylesheet" href="/assets/site.css?v=3">
   <!-- Flip no-js → js before paint so 3D panes only transform when JS can drive them. -->
   <script>document.documentElement.classList.remove('no-js');</script>
   <style>
@@ -85,17 +85,17 @@
     }
     .orb.a {
       width: 46vw; height: 46vw; left: -8vw; top: 8vh;
-      background: radial-gradient(circle at 40% 40%, rgba(0, 163, 255, 0.30), transparent 66%);
+      background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.55), transparent 66%);
       animation: float1 26s ease-in-out infinite;
     }
     .orb.b {
       width: 40vw; height: 40vw; right: -6vw; top: 44vh;
-      background: radial-gradient(circle at 55% 45%, rgba(60, 190, 255, 0.24), transparent 66%);
+      background: radial-gradient(circle at 55% 45%, rgba(214, 220, 228, 0.42), transparent 66%);
       animation: float2 32s ease-in-out infinite;
     }
     .orb.c {
       width: 34vw; height: 34vw; left: 28vw; bottom: -8vh;
-      background: radial-gradient(circle at 50% 50%, rgba(0, 130, 230, 0.20), transparent 66%);
+      background: radial-gradient(circle at 50% 50%, rgba(232, 236, 242, 0.38), transparent 66%);
       animation: float3 38s ease-in-out infinite;
     }
     @keyframes float1 { 50% { transform: translate(8vw, 6vh) scale(1.12); } }
@@ -286,7 +286,7 @@
       letter-spacing: -0.01em;
       color: var(--ink);
     }
-    .statement .accent { color: var(--accent-ink); }
+    /* .accent is styled globally in site.css (brushed-platinum shimmer) */
     .subline {
       margin: 1.8rem auto 0;
       max-width: 46ch;
@@ -365,11 +365,11 @@
       width: 190px; height: 52px;
       margin: -26px 0 0 -95px;
       border-radius: 13px;
-      background: linear-gradient(135deg, rgba(223, 242, 255, 0.55), rgba(255, 255, 255, 0.12));
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: linear-gradient(135deg, rgba(238, 241, 245, 0.55), rgba(255, 255, 255, 0.12));
+      border: 1px solid rgba(255, 255, 255, 0.7);
       box-shadow:
-        0 14px 34px -10px rgba(0, 92, 175, 0.34),
-        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        0 14px 34px -10px rgba(40, 46, 54, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
       /* transform set per-tread by app.js (responsive); this is the fallback */
       transform:
         rotateY(var(--a)) translateZ(190px)
@@ -380,7 +380,7 @@
       content: '';
       position: absolute; inset: 0;
       border-radius: 13px;
-      background: linear-gradient(90deg, transparent, rgba(0, 163, 255, 0.16), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
     }
     /* the glowing newel post the treads wind around */
     .stair-stage::after {
@@ -403,7 +403,7 @@
       pointer-events: none;
     }
     .stair-caption .pane-hud { margin-bottom: 1.8rem; justify-content: center; }
-    .stair-caption .accent { color: var(--accent-ink); }
+    /* .accent styled globally in site.css */
 
     /* ── Invitation / close ── */
     .invite .pane { text-align: center; }
@@ -413,7 +413,7 @@
       gap: 0.9rem;
       margin-top: 2.4rem;
       padding: 1.05rem 2.4rem;
-      border: 1px solid rgba(0, 114, 216, 0.4);
+      border: 1px solid rgba(84, 92, 102, 0.45);
       border-radius: 999px;
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -595,6 +595,6 @@
     <p class="foot-line">APX Training Group</p>
   </footer>
 
-  <script src="/assets/app.js?v=4" defer></script>
+  <script src="/assets/app.js?v=5" defer></script>
 </body>
 </html>

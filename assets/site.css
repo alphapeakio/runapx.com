@@ -13,14 +13,22 @@
 }
 
 :root {
-  --bg: #f5f7fa;          /* bright off-white canvas */
+  --bg: #f1f2f4;          /* cool platinum-white canvas */
   --bg-sheen: #ffffff;    /* pure white bloom in the centre */
-  --ink: #0a0e13;         /* near-black for headings */
-  --muted: #3d4650;       /* body/tagline — deliberately high contrast */
-  --dim: #8b96a3;
-  --accent: #0099ff;      /* brand blue — used for glows/fills */
-  --accent-ink: #0072d8;  /* deeper blue that holds contrast on white (4.6:1) */
-  --accent-glow: rgba(0, 163, 255, 0.38);
+  --ink: #0c0e11;         /* neutral near-black for headings */
+  --muted: #474b50;       /* body/tagline — neutral graphite */
+  --dim: #979ba1;         /* silver-grey for subtle detail */
+  --accent: #8b929c;      /* platinum silver — glints / line ends */
+  --accent-ink: #545c66;  /* graphite — small labels, holds on white */
+  --accent-glow: rgba(150, 162, 178, 0.45); /* cool silver glow */
+
+  /* brushed platinum used to fill accent words (readable on light,
+     shimmers when the background-position animates) */
+  --metal: linear-gradient(
+    100deg,
+    #767e8a 0%, #363d46 24%, #9aa1ac 42%, #2b323a 54%,
+    #868e99 70%, #3f4650 86%, #767e8a 100%
+  );
 
   /* brushed silver used to fill the wordmark mask */
   --silver: linear-gradient(
@@ -67,7 +75,7 @@ body::before {
   background:
     radial-gradient(ellipse 46% 40% at var(--mx) var(--my), var(--bg-sheen) 0%, rgba(255, 255, 255, 0) 72%),
     radial-gradient(ellipse 58% 48% at 50% 40%, var(--bg-sheen) 0%, rgba(255, 255, 255, 0) 72%),
-    radial-gradient(ellipse 72% 60% at 50% 46%, rgba(0, 153, 255, 0.05) 0%, transparent 74%);
+    radial-gradient(ellipse 72% 60% at 50% 46%, rgba(196, 202, 212, 0.12) 0%, transparent 74%);
   pointer-events: none;
   transition: background-position 0.3s ease-out;
 }
@@ -96,12 +104,12 @@ body::after {
   inset: -85% -35%;
   background:
     radial-gradient(ellipse 50% 55% at 50% 50%,
-      rgba(0, 163, 255, 0.16) 0%,
-      rgba(0, 163, 255, 0.09) 30%,
-      rgba(0, 163, 255, 0.03) 52%,
+      rgba(210, 216, 224, 0.30) 0%,
+      rgba(200, 207, 216, 0.16) 30%,
+      rgba(200, 207, 216, 0.05) 52%,
       transparent 72%),
     radial-gradient(ellipse 34% 42% at 50% 47%,
-      rgba(70, 180, 255, 0.10) 0%,
+      rgba(230, 234, 240, 0.20) 0%,
       transparent 62%);
   filter: blur(18px);
   pointer-events: none;
@@ -144,6 +152,22 @@ body::after {
   width: 1px;
   height: 48px;
   background: linear-gradient(to bottom, transparent, var(--dim), var(--accent), var(--dim), transparent);
+}
+
+/* ── Accent words: brushed-platinum text with a slow shimmer ── */
+.accent {
+  background: var(--metal);
+  background-size: 240% auto;
+  background-position: 0% center;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+          color: transparent;
+  animation: shimmer 7s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: -240% center; }
 }
 
 /* ── Race: light beams that sprint across the track ──

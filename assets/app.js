@@ -104,7 +104,7 @@
     var lanes = [195, 225, 255, 285, 315, 345, 375, 405];
     for (var li = 0; li < lanes.length; li++) {
       trackField.appendChild(stadium(lanes[li], {
-        fill: 'none', stroke: 'rgba(10,160,255,0.5)', 'stroke-width': 2
+        fill: 'none', stroke: 'rgba(120,131,146,0.5)', 'stroke-width': 2
       }));
     }
     trackField.style.transform = 'translate(-300px, -280px)';        /* static pose */
