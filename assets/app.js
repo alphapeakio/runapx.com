@@ -149,7 +149,7 @@
       var heroP = clamp(window.scrollY / (vh * 0.85), 0, 1);
       var kk = LAP / (vh * 5);
       var pt = trackAt(window.scrollY * kk + elapsed * 14);
-      var sc = 2.05 - heroP * 1.1;                    /* zoom out past the hero: 2.05 → 0.95 */
+      var sc = 2.05 - heroP * 0.78;                   /* gentle zoom out past the hero: 2.05 → 1.27 */
       trackField.style.transform =
         'translate(' + (-pt.x).toFixed(1) + 'px,' + (-pt.y).toFixed(1) + 'px)';
       trackRotor.style.transform = 'rotate(' + pt.a.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
