@@ -22,8 +22,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=3">
-  <script>document.documentElement.classList.remove('no-js');</script>
+  <link rel="stylesheet" href="/assets/site.css?v=4">
+  <script>
+    document.documentElement.classList.remove('no-js');
+    /* glass reveal on arrival (skipped for reduced motion) */
+    try { if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) document.documentElement.classList.add('entering'); } catch (e) {}
+  </script>
   <style>
     body { overflow-x: hidden; }
 
@@ -298,6 +302,8 @@
   </style>
 </head>
 <body>
+  <div class="glass-veil" aria-hidden="true"></div>
+
   <a class="backlink" href="/"><span class="arrow">←</span> APX</a>
 
   <div class="wrap" id="formWrap">

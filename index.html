@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=3">
+  <link rel="stylesheet" href="/assets/site.css?v=4">
   <!-- Flip no-js → js before paint so 3D panes only transform when JS can drive them. -->
   <script>document.documentElement.classList.remove('no-js');</script>
   <style>
@@ -394,6 +394,8 @@
   </style>
 </head>
 <body>
+  <div class="glass-veil" aria-hidden="true"></div>
+
   <div class="track-view" aria-hidden="true">
     <div class="track-rotor" id="trackRotor">
       <svg class="track-field" id="trackField" viewBox="-450 -720 900 1440" xmlns="http://www.w3.org/2000/svg"></svg>
@@ -515,5 +517,6 @@
   </footer>
 
   <script src="/assets/app.js?v=8" defer></script>
+  <script src="/assets/transition.js?v=1" defer></script>
 </body>
 </html>

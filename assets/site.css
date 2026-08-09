@@ -170,6 +170,51 @@ body::after {
   100% { background-position: -240% center; }
 }
 
+/* ── Glass page-transition veil ──
+   A frosted sheet that blurs in over the page on the way to /apply, and
+   clears away (with a shine sweep) as the apply page loads. */
+.glass-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.50), rgba(224, 230, 239, 0.40));
+  -webkit-backdrop-filter: blur(0px);
+          backdrop-filter: blur(0px);
+  overflow: hidden;
+}
+.glass-veil::after {
+  content: '';
+  position: absolute;
+  top: -30%; bottom: -30%; left: -50%;
+  width: 50%;
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.85) 50%, transparent 100%);
+  transform: skewX(-16deg);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+/* outgoing — glass frosts over the page before we navigate */
+.glass-veil--covering { animation: veilCover 0.52s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.glass-veil--covering::after { animation: veilShine 0.6s ease-out both; }
+/* incoming — glass clears to reveal the loaded page */
+.entering .glass-veil { animation: veilReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.entering .glass-veil::after { animation: veilShine 0.8s ease-out both; }
+
+@keyframes veilCover {
+  from { opacity: 0; -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px); }
+  to   { opacity: 1; -webkit-backdrop-filter: blur(26px) saturate(1.3); backdrop-filter: blur(26px) saturate(1.3); }
+}
+@keyframes veilReveal {
+  from { opacity: 1; -webkit-backdrop-filter: blur(26px) saturate(1.3); backdrop-filter: blur(26px) saturate(1.3); }
+  to   { opacity: 0; -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px); }
+}
+@keyframes veilShine {
+  0%   { left: -50%; opacity: 0; }
+  25%  { opacity: 1; }
+  100% { left: 130%; opacity: 0; }
+}
+
 /* ── Race: light beams that sprint across the track ──
    Each streak has a bright leading head and a motion-blur tail,
    accelerating left→right at its own pace so they overtake. */
@@ -272,7 +317,8 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .logo::after,
-  .track { display: none; }
+  .track,
+  .glass-veil { display: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   body::before { transition: none; }
   *, *::before, *::after { animation: none !important; }
