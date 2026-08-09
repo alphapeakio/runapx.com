@@ -25,9 +25,8 @@ SECTION 01 — THE ASCENT  (the spiral staircase / intro)
 EYEBROW:       The Ascent
 HEADLINE:      Good becomes great here. Great keeps climbing.
 ACCENT:        Great keeps climbing.
-SUBLINE:       APX exists for distance athletes who have found their
-               ceiling and refuse to accept it. Turn by turn, the
-               standard rises.
+SUBLINE:       APX exists for distance athletes with more in them —
+               and the will to find it. Turn by turn, the standard rises.
 
 
 --------------------------------------------------------------

@@ -37,22 +37,37 @@
      seamless. We set a static pose here (used when motion is off) and
      drive it per-frame below when motion is on. */
   var helix = document.getElementById('helix');
-  var N = 26;             /* treads */
-  var RISE = 46;          /* px of climb per tread → a much taller column */
-  var RADIUS = 300;       /* px from the newel post → a wider helix */
+  var N = 26;             /* treads → a taller column */
+  var RISE = 38;          /* px of climb per tread */
+  var RADIUS = 190;       /* px from the newel post (original good width) */
   var STEP = 360 / N;     /* degrees between treads → seamless wrap */
   var TILT = 66;          /* how flat each tread lies */
   var H = N * RISE;       /* full helix height */
   var treads = [];
 
+  /* Responsive scale so the helix fits small screens — full size on
+     desktop, shrinking down toward mobile. */
+  function helixScale() {
+    var w = window.innerWidth || 1000;
+    return Math.max(0.5, Math.min(1, w / 960));
+  }
+
+  /* Transform for a tread whose base is at height y (px up the column). */
+  function treadTransform(y, hs) {
+    return 'rotateY(' + ((y / RISE) * STEP).toFixed(2) + 'deg) ' +
+           'translateZ(' + (RADIUS * hs).toFixed(1) + 'px) ' +
+           'translateY(' + ((H / 2 - y) * hs).toFixed(1) + 'px) ' +
+           'rotateX(' + TILT + 'deg) scale(' + hs.toFixed(3) + ')';
+  }
+
   if (helix) {
+    var hs0 = helixScale();
     var frag = document.createDocumentFragment();
     for (var i = 0; i < N; i++) {
       var t = document.createElement('span');
       t.className = 'tread';
       var y0 = i * RISE;
-      t.style.setProperty('--a', (i * STEP) + 'deg');
-      t.style.setProperty('--y', (H / 2 - y0).toFixed(1) + 'px');
+      t.style.transform = treadTransform(y0, hs0);
       t.style.opacity = (0.14 + 0.86 * Math.sin(Math.PI * (y0 / H))).toFixed(3);
       frag.appendChild(t);
       treads.push(t);
@@ -157,13 +172,11 @@
        no scroll-linked acceleration. ── */
     if (helix && treads.length) {
       var climb = elapsed * 16;                        /* steady, gentle climb */
+      var hs = helixScale();                           /* responsive size */
       for (var k = 0; k < treads.length; k++) {
         var y = mod(k * RISE + climb, H);              /* rises, wraps seamlessly */
-        var ang = (y / RISE) * STEP;
         var op = Math.sin(Math.PI * (y / H));          /* fade at the wrap points */
-        treads[k].style.transform =
-          'rotateY(' + ang.toFixed(2) + 'deg) translateZ(' + RADIUS + 'px) ' +
-          'translateY(' + (H / 2 - y).toFixed(1) + 'px) rotateX(' + TILT + 'deg)';
+        treads[k].style.transform = treadTransform(y, hs);
         treads[k].style.opacity = (0.10 + 0.90 * op).toFixed(3);
       }
     }
