@@ -56,12 +56,15 @@
       z-index: 0;
       overflow: hidden;
       pointer-events: none;
-      /* weighted toward the bottom so the track begins at the foot of the
-         hero (inviting the scroll) and runs beneath the panes below */
-      -webkit-mask: radial-gradient(ellipse 140% 62% at 50% 100%, #000 34%, transparent 82%);
-              mask: radial-gradient(ellipse 140% 62% at 50% 100%, #000 34%, transparent 82%);
+      /* Mask is animated by app.js: bottom-weighted at the hero (the
+         track begins at its foot), opening to the full frame past the
+         hero so the complete oval shows. */
+      --tmy: 100%;
+      --tmh: 62%;
+      -webkit-mask: radial-gradient(ellipse 140% var(--tmh) at 50% var(--tmy), #000 34%, transparent 82%);
+              mask: radial-gradient(ellipse 140% var(--tmh) at 50% var(--tmy), #000 34%, transparent 82%);
       /* a soft gleam so the polished lanes catch the light */
-      filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.5));
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.28));
     }
     .track-rotor {
       position: absolute;
@@ -511,6 +514,6 @@
     <p class="foot-line">APX Training Group</p>
   </footer>
 
-  <script src="/assets/app.js?v=6" defer></script>
+  <script src="/assets/app.js?v=7" defer></script>
 </body>
 </html>

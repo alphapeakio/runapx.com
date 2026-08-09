@@ -63,11 +63,11 @@
     grad.setAttribute('x1', '0'); grad.setAttribute('y1', '0');
     grad.setAttribute('x2', '1'); grad.setAttribute('y2', '1');
     [
-      ['0%',   'rgba(150,160,174,0.55)'],
-      ['36%',  'rgba(220,228,238,0.90)'],
-      ['50%',  'rgba(255,255,255,0.98)'],
-      ['64%',  'rgba(220,228,238,0.90)'],
-      ['100%', 'rgba(140,151,166,0.55)']
+      ['0%',   'rgba(150,160,174,0.48)'],
+      ['40%',  'rgba(198,206,218,0.62)'],
+      ['50%',  'rgba(230,235,242,0.70)'],
+      ['60%',  'rgba(198,206,218,0.62)'],
+      ['100%', 'rgba(140,151,166,0.48)']
     ].forEach(function (s) {
       var st = document.createElementNS(SVGNS, 'stop');
       st.setAttribute('offset', s[0]);
@@ -80,7 +80,7 @@
     var lanes = [195, 225, 255, 285, 315, 345, 375, 405];
     for (var li = 0; li < lanes.length; li++) {
       trackField.appendChild(stadium(lanes[li], {
-        fill: 'none', stroke: 'url(#laneShine)', 'stroke-width': 2.5
+        fill: 'none', stroke: 'url(#laneShine)', 'stroke-width': 2
       }));
     }
     trackField.style.transform = 'translate(-300px, -280px)';        /* static pose */
@@ -110,6 +110,7 @@
   if (reduce) return; /* everything below is pure motion */
 
   var panes = Array.prototype.slice.call(document.querySelectorAll('[data-tilt]'));
+  var trackView = document.querySelector('.track-view');
 
   /* cursor light target + eased current, in % */
   var mx = 50, my = 40, cmx = 50, cmy = 40;
@@ -140,13 +141,23 @@
 
     var center = vh / 2;
 
-    /* ── Aerial track: scrolling runs the lap underfoot ── */
+    /* ── Aerial track ──
+       At the hero it's zoomed in, banking at the foot of the screen.
+       As you scroll past the hero it zooms out to reveal the COMPLETE
+       oval, which then drifts slowly as the backdrop for the content. */
     if (trackField && trackRotor) {
-      var kk = LAP / (vh * 5);               /* ~one lap per 5 viewports */
-      var pt = trackAt(window.scrollY * kk + elapsed * 16);
+      var heroP = clamp(window.scrollY / (vh * 0.85), 0, 1);
+      var kk = LAP / (vh * 5);
+      var pt = trackAt(window.scrollY * kk + elapsed * 14);
+      var sc = 2.05 - heroP * 1.1;                    /* zoom out past the hero: 2.05 → 0.95 */
       trackField.style.transform =
-        'translate(' + (-pt.x).toFixed(1) + 'px, ' + (-pt.y).toFixed(1) + 'px)';
-      trackRotor.style.transform = 'rotate(' + pt.a.toFixed(2) + 'deg) scale(2.05)';
+        'translate(' + (-pt.x).toFixed(1) + 'px,' + (-pt.y).toFixed(1) + 'px)';
+      trackRotor.style.transform = 'rotate(' + pt.a.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+      if (trackView) {
+        /* open the mask from foot-of-hero to the full frame */
+        trackView.style.setProperty('--tmy', (100 - heroP * 50).toFixed(1) + '%'); /* 100% → 50% */
+        trackView.style.setProperty('--tmh', (62 + heroP * 88).toFixed(1) + '%');  /* 62% → 150% */
+      }
     }
 
     /* ── Frosted panes: turn + weave + recede as they cross the view ── */
