@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=5">
+  <link rel="stylesheet" href="/assets/site.css?v=6">
   <script>
     document.documentElement.classList.remove('no-js');
     /* glass reveal on arrival (skipped for reduced motion) */
@@ -140,10 +140,16 @@
       font-size: 0.95rem;
       font-weight: 300;
       color: var(--ink);
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(139, 150, 163, 0.4);
-      border-radius: 10px;
-      padding: 0.8rem 0.95rem;
+      /* frosted glass fields */
+      background: rgba(255, 255, 255, 0.30);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      -webkit-backdrop-filter: blur(10px) saturate(1.3);
+              backdrop-filter: blur(10px) saturate(1.3);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 3px 14px -8px rgba(6, 44, 88, 0.18);
       transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
       -webkit-appearance: none;
       appearance: none;
@@ -159,9 +165,12 @@
     input::placeholder, textarea::placeholder { color: var(--dim); font-weight: 200; }
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: var(--accent);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 0 0 3px rgba(120, 131, 146, 0.20);
+      border-color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.85),
+        0 0 0 3px rgba(150, 162, 178, 0.22),
+        0 6px 20px -10px rgba(6, 44, 88, 0.22);
     }
     .hint {
       font-size: 0.74rem;

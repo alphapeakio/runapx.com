@@ -203,16 +203,32 @@ body::after {
 .entering .glass-veil { animation: veilReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .entering .glass-veil::after { animation: veilShine 0.9s ease-out both; }
 
-/* ── In-place application overlay (opened from the home page) ── */
+/* ── In-place application overlay (opened from the home page) ──
+   A frosted glass panel that materialises over the blurred home. */
 .apply-overlay {
   position: fixed;
   inset: 0;
   z-index: 150;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: var(--bg);
+  background: rgba(241, 242, 244, 0.72);
+  -webkit-backdrop-filter: blur(30px) saturate(1.4);
+          backdrop-filter: blur(30px) saturate(1.4);
+  animation: overlayIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.apply-overlay--out { animation: overlayOut 0.4s ease both; }
+@keyframes overlayIn {
+  from { opacity: 0; transform: scale(1.03) translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes overlayOut {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: scale(1.02) translateY(6px); }
 }
 html.apply-open, html.apply-open body { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .apply-overlay { animation: none; }
+}
 
 @keyframes veilCover {
   from { opacity: 0; -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px); }
