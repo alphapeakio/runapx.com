@@ -1,0 +1,4 @@
+# Always revalidate CSS/JS so updated assets are never served stale.
+# (etag makes this cheap — a 304 when nothing changed.)
+/assets/*
+  Cache-Control: public, max-age=0, must-revalidate
