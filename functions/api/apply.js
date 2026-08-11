@@ -6,7 +6,7 @@
    Environment (set in the Cloudflare Pages dashboard):
      RESEND_API_KEY   secret — your Resend API key
      APPLY_TO         where applications are sent (default m@alphapeak.io)
-     APPLY_FROM       verified sender (default "APX Applications <apply@runapx.com>")
+     APPLY_FROM       verified sender (default "APEX Applications <apply@runapx.com>")
    ───────────────────────────────────────────────────────────── */
 
 const REQUIRED = [
@@ -34,13 +34,13 @@ const SECTIONS = [
     ['years_running', 'Years training'], ['other_sports', 'Other sports']
   ]],
   ['Commitment & Fit', [
-    ['why', 'Why APX?'], ['goals', 'Goals'], ['college', 'Run in college?'],
+    ['why', 'Why APEX?'], ['goals', 'Goals'], ['college', 'Run in college?'],
     ['commit', 'Year-round commitment'], ['travel', 'Willing to travel'],
     ['format', 'Training preference'], ['constraints', 'Possible limits']
   ]],
   ['Verification & References', [
     ['coach_name', 'Coach'], ['coach_contact', 'Coach contact'],
-    ['video_link', 'Race footage'], ['referral', 'Heard about APX via']
+    ['video_link', 'Race footage'], ['referral', 'Heard about APEX via']
   ]]
 ];
 
@@ -100,12 +100,12 @@ export async function onRequest({ request, env }) {
 
   // ── Build the email ──
   const to = env.APPLY_TO || 'm@alphapeak.io';
-  const from = env.APPLY_FROM || 'APX Applications <apply@runapx.com>';
-  const subject = `APX Application — ${data.athlete_name} (${data.gender}, ${data.grad_year})`;
+  const from = env.APPLY_FROM || 'APEX Applications <apply@runapx.com>';
+  const subject = `APEX Application — ${data.athlete_name} (${data.gender}, ${data.grad_year})`;
 
   let html = `<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;color:#0a0e13">
-    <h2 style="font-weight:400;letter-spacing:.02em">New APX Application</h2>`;
-  let text = 'New APX Application\n==================\n';
+    <h2 style="font-weight:400;letter-spacing:.02em">New APEX Application</h2>`;
+  let text = 'New APEX Application\n==================\n';
 
   for (const [title, fields] of SECTIONS) {
     html += `<h3 style="margin:24px 0 8px;color:#0072d8;font-size:13px;letter-spacing:.12em;text-transform:uppercase">${esc(title)}</h3>

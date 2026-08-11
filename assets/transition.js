@@ -68,7 +68,7 @@
     document.documentElement.classList.add('apply-open');
     ov.scrollTop = 0;
     if (push !== false) history.pushState({ apply: 1 }, '', '/apply');
-    document.title = 'APX — Request Consideration';
+    document.title = 'APEX — Request Consideration';
     if (window.APXApplyInit) window.APXApplyInit();
     open = true;
     busy = false;

@@ -48,7 +48,7 @@ submit-timing), formats the application, and emails it via
    - `RESEND_API_KEY` — the key (mark as a **secret**)
    - `APPLY_TO` — where applications go, e.g. `m@alphapeak.io`
    - `APPLY_FROM` *(optional)* — sender, defaults to
-     `APX Applications <apply@runapx.com>` (the address must be on the verified domain)
+     `APEX Applications <apply@runapx.com>` (the address must be on the verified domain)
 
 Without `RESEND_API_KEY` the endpoint returns a 503 and the form shows a polite
 error, so nothing breaks before setup is complete.
