@@ -1,6 +1,6 @@
-# APX — Brand Assets
+# APEX — Brand Assets
 
-Logo kit for **APX Training Group**. Two marks — the **wordmark** (APX) and the
+Logo kit for **APEX Training Group**. Two marks — the **wordmark** (APEX) and the
 **A-mark** (icon) — rendered in every core color on transparent, black, white,
 and blue backgrounds, plus ready-made app icons and social sizes.
 
@@ -22,7 +22,7 @@ value range inverted. Pick by background, not by taste.
 
 ## Folders
 
-- **`wordmark/`** — the APX wordmark.
+- **`wordmark/`** — the APEX wordmark.
   - Transparent PNGs: `white`, `black`, `blue`, `metallic`, `graphite`,
     `blue-steel`.
   - Lockups on solid backgrounds: `…-on-black`, `…-on-white`, `…-on-blue`,

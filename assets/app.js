@@ -39,7 +39,7 @@
   var trackField = document.getElementById('trackField');
   var trackRotor = document.getElementById('trackRotor');
   var RR = 300;                       /* running-line radius   */
-  var LL = 560;                       /* straight length       */
+  var LL = 840;                       /* straight length (50% longer) */
   var CURVE = Math.PI * RR;           /* one turn's arc length  */
   var LAP = 2 * LL + 2 * CURVE;       /* full perimeter         */
   var SVGNS = 'http://www.w3.org/2000/svg';
@@ -77,13 +77,15 @@
     defs.appendChild(grad);
     trackField.appendChild(defs);
 
-    var lanes = [195, 225, 255, 285, 315, 345, 375, 405];
+    /* Lane band centred on the running line (RR=300); spacing widened
+       from 30 → 45 so the track reads ~50% wider across the page. */
+    var lanes = [142.5, 187.5, 232.5, 277.5, 322.5, 367.5, 412.5, 457.5];
     for (var li = 0; li < lanes.length; li++) {
       trackField.appendChild(stadium(lanes[li], {
         fill: 'none', stroke: 'url(#laneShine)', 'stroke-width': 2
       }));
     }
-    trackField.style.transform = 'translate(-300px, -280px)';        /* static pose */
+    trackField.style.transform = 'translate(-300px, -420px)';        /* static pose */
   }
 
   /* Position + bank angle at distance s along the running line. */

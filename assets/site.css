@@ -118,10 +118,10 @@ body::after {
 .logo {
   position: relative;
   display: block;
-  width: min(420px, 80vw);
-  aspect-ratio: 1212 / 316;
-  -webkit-mask: url("/assets/apx-logo.png") center / contain no-repeat;
-          mask: url("/assets/apx-logo.png") center / contain no-repeat;
+  width: min(460px, 82vw);
+  aspect-ratio: 1602 / 316;
+  -webkit-mask: url("/assets/apx-logo.png?v=3") center / contain no-repeat;
+          mask: url("/assets/apx-logo.png?v=3") center / contain no-repeat;
   background: #0a0e13;   /* black branding */
   overflow: hidden;
 }
