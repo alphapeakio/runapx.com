@@ -244,57 +244,6 @@ html.apply-open, html.apply-open body { overflow: hidden; }
   100% { left: 130%; opacity: 0; }
 }
 
-/* ── Race: light beams that sprint across the track ──
-   Each streak has a bright leading head and a motion-blur tail,
-   accelerating left→right at its own pace so they overtake. */
-.track {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.track.back  { z-index: 0; }  /* ambient depth, behind the content */
-.track.front { z-index: 2; }  /* hero lasers, over the content     */
-
-.streak {
-  position: absolute;
-  left: 0;
-  top: var(--top, 50%);
-  width: var(--w, 36vw);
-  height: var(--h, 2px);
-  border-radius: 999px;
-  transform-origin: right center;
-  transform: translateX(-55vw);
-  opacity: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 163, 255, 0.05) 38%,
-    rgba(0, 163, 255, 0.38) 68%,
-    var(--core, rgba(0, 158, 255, 0.88)) 88%,
-    var(--head, #0099ff) 100%
-  );
-  filter:
-    drop-shadow(0 0 var(--g, 4px) var(--accent-glow))
-    drop-shadow(0 0 calc(var(--g, 4px) * 2.4) rgba(0, 163, 255, 0.22));
-  animation: race var(--dur, 3s) cubic-bezier(0.5, 0, 0.82, 0.3) var(--delay, 0s) infinite;
-  will-change: transform, opacity;
-}
-
-/* Bright pin-point at the leading edge of each hero beam. */
-.track.front .streak::after {
-  content: '';
-  position: absolute;
-  right: -2px;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  margin-top: -3px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 10px 2px rgba(0, 163, 255, 0.65), 0 0 22px 6px var(--accent-glow);
-}
-
 /* ── Scroll-reveal utility (enhanced by app.js) ──
    Elements start hidden; app.js adds .in-view when they enter the
    viewport. With no JS, the .no-js body rule keeps everything visible. */
@@ -317,13 +266,6 @@ html.apply-open, html.apply-open body { overflow: hidden; }
 }
 
 /* ── Shared keyframes ── */
-@keyframes race {
-  0%   { transform: translateX(-55vw) scaleX(0.65); opacity: 0; }
-  10%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { transform: translateX(160vw) scaleX(1.25); opacity: 0; }
-}
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -346,7 +288,6 @@ html.apply-open, html.apply-open body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .logo::after,
-  .track,
   .glass-veil { display: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   body::before { transition: none; }
