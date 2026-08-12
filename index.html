@@ -183,6 +183,46 @@
       pointer-events: none;
     }
 
+    /* ── Scene 02: convergence (JS-built runner-marks) ── */
+    #ideaStage {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    #ideaStage.is-active { opacity: 1; }
+    .idea-field { position: absolute; left: 50%; top: 46%; width: 0; height: 0; }
+    .idea-mark {
+      position: absolute; left: -1.5px; top: -13px;
+      width: 3px; height: 26px;
+      border-radius: 3px;
+      background: linear-gradient(180deg, rgba(150, 160, 174, 0.7), rgba(90, 100, 114, 0.55));
+      box-shadow: 0 0 8px rgba(150, 162, 178, 0.35);
+    }
+
+    /* ── Scene 03: thinning field (JS-built dots) ── */
+    #standardStage {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    #standardStage.is-active { opacity: 1; }
+    .std-field { position: absolute; left: 50%; top: 48%; width: 0; height: 0; }
+    .std-dot {
+      position: absolute; left: -5px; top: -5px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 38%, rgba(214, 220, 228, 0.95), rgba(120, 130, 144, 0.75));
+    }
+
+    /* ── Scene 04: precision HUD (JS-built SVG) ── */
+    #methodStage {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.7s ease;
+      -webkit-mask: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+              mask: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    }
+    #methodStage.is-active { opacity: 1; }
+    #methodSvg { width: min(1060px, 90vw); height: auto; overflow: visible; }
+
     /* ── Persistent corner CTA ── */
     .corner-cta {
       position: fixed;

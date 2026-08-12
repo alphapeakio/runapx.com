@@ -30,6 +30,10 @@
   var root = document.documentElement;
 
   function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+  function easeInOut(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  /* deterministic 0..1 hash so scattered layouts are stable frame-to-frame */
+  function hash(n) { var s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); }
 
   /* ── Corner CTA reveal ── (independent of the motion loop) */
   var corner = document.querySelector('.corner-cta');
@@ -261,12 +265,220 @@
   }
 
   /* ─────────────────────────────────────────────────────────────
+     SCENE 02 — The Idea (the group). Scattered runner-marks converge
+     into a synchronized pack that then bobs in unison — "training
+     shoulder to shoulder until that becomes normal."
+     ───────────────────────────────────────────────────────────── */
+  function makeIdeaScene() {
+    var COLS = 7, ROWS = 4, N = COLS * ROWS;   /* 28 marks */
+    var GX = 150, GY = 156;                      /* formation spacing —
+       a wide, even grid that fills the field (visible around the pane)
+       so convergence reads as chaos → order, not a collapse to centre. */
+    var stage = null, marks = [], sx = [], sy = [], srot = [];
+
+    function poseTransform(i, e, elapsed) {
+      var col = i % COLS, row = (i / COLS) | 0;
+      var fx = (col - (COLS - 1) / 2) * GX;
+      var fy = (row - (ROWS - 1) / 2) * GY;
+      var x = lerp(sx[i], fx, e);
+      var y = lerp(sy[i], fy, e);
+      var rot = lerp(srot[i], 0, e);
+      var bob = elapsed ? Math.sin(elapsed * 1.8) * 6 * e : 0;   /* unison cadence */
+      return 'translate(' + x.toFixed(1) + 'px,' + (y + bob).toFixed(1) + 'px) rotate(' + rot.toFixed(1) + 'deg)';
+    }
+
+    return {
+      id: '02', built: false, root: null, section: null,
+      build: function () {
+        if (this.built) return;
+        stage = document.createElement('div');
+        stage.id = 'ideaStage';
+        stage.setAttribute('aria-hidden', 'true');
+        var field = document.createElement('div');
+        field.className = 'idea-field';
+        for (var i = 0; i < N; i++) {
+          sx[i] = (hash(i + 1) - 0.5) * 1180;
+          sy[i] = (hash(i + 7) - 0.5) * 720;
+          srot[i] = (hash(i + 13) - 0.5) * 95;
+          var m = document.createElement('span');
+          m.className = 'idea-mark';
+          m.style.transform = poseTransform(i, 0.6, 0);   /* static mid pose */
+          field.appendChild(m);
+          marks.push(m);
+        }
+        stage.appendChild(field);
+        document.body.appendChild(stage);
+        this.root = stage;
+        this.built = true;
+      },
+      activate: function () { if (stage) stage.classList.add('is-active'); },
+      deactivate: function () { if (stage) stage.classList.remove('is-active'); },
+      update: function (p, ctx) {
+        var e = easeInOut(p);
+        for (var i = 0; i < marks.length; i++) {
+          marks[i].style.transform = poseTransform(i, e, ctx.elapsed);
+          marks[i].style.opacity = (0.22 + 0.6 * e).toFixed(3);
+        }
+      }
+    };
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SCENE 03 — The Standard (small roster). A full field of marks;
+     as you scroll most fade away and a chosen few brighten under a
+     growing ring — "the roster is kept small on purpose."
+     ───────────────────────────────────────────────────────────── */
+  function makeStandardScene() {
+    var N = 44, KEEP = 5;
+    var stage = null, dots = [], dx = [], dy = [], sel = [];
+
+    function apply(i, e) {
+      var d = dots[i];
+      if (sel[i]) {
+        d.style.opacity = (0.5 + 0.5 * e).toFixed(3);
+        d.style.transform = 'translate(' + dx[i].toFixed(1) + 'px,' + dy[i].toFixed(1) + 'px) scale(' + (1 + 0.6 * e).toFixed(3) + ')';
+        var g = (6 + 16 * e), sp = (2 + 3 * e);
+        d.style.boxShadow = '0 0 ' + g.toFixed(1) + 'px ' + sp.toFixed(1) + 'px rgba(150,162,178,' + (0.3 + 0.45 * e).toFixed(3) + ')';
+      } else {
+        d.style.opacity = (0.4 * (1 - e)).toFixed(3);
+        d.style.transform = 'translate(' + dx[i].toFixed(1) + 'px,' + dy[i].toFixed(1) + 'px) scale(' + (1 - 0.25 * e).toFixed(3) + ')';
+      }
+    }
+
+    return {
+      id: '03', built: false, root: null, section: null,
+      build: function () {
+        if (this.built) return;
+        stage = document.createElement('div');
+        stage.id = 'standardStage';
+        stage.setAttribute('aria-hidden', 'true');
+        var field = document.createElement('div');
+        field.className = 'std-field';
+        var order = [];
+        for (var i = 0; i < N; i++) {
+          dx[i] = (hash(i + 3) - 0.5) * 1200;
+          dy[i] = (hash(i + 21) - 0.5) * 700;
+          order.push(i);
+        }
+        /* keep the outermost marks — they sit in the margins, visible
+           around the pane once the crowd thins out. */
+        order.sort(function (a, b) {
+          return (dx[b] * dx[b] + dy[b] * dy[b]) - (dx[a] * dx[a] + dy[a] * dy[a]);
+        });
+        for (var k = 0; k < N; k++) sel[k] = false;
+        for (var s = 0; s < KEEP; s++) sel[order[s]] = true;
+        for (var j = 0; j < N; j++) {
+          var el = document.createElement('span');
+          el.className = 'std-dot';
+          dots.push(el);
+          field.appendChild(el);
+          apply(j, 0.55);   /* static mid pose */
+        }
+        stage.appendChild(field);
+        document.body.appendChild(stage);
+        this.root = stage;
+        this.built = true;
+      },
+      activate: function () { if (stage) stage.classList.add('is-active'); },
+      deactivate: function () { if (stage) stage.classList.remove('is-active'); },
+      update: function (p) {
+        var e = easeInOut(p);
+        for (var i = 0; i < dots.length; i++) apply(i, e);
+      }
+    };
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SCENE 04 — The Method (measured). A fine measurement grid with a
+     gait waveform that draws in behind a sweeping readout line as you
+     scroll — "every stride measured, every race read."
+     ───────────────────────────────────────────────────────────── */
+  function makeMethodScene() {
+    var VBW = 1040, VBH = 460, BASE = 232, CYC = 4.5, AMP = 62, AMP2 = 18;
+    var stage = null, wave = null, waveLen = 0, scan = null, readout = null, ticks = [], tickX = [];
+
+    function waveY(x) {
+      var t = x / VBW;
+      return BASE - (Math.sin(t * 2 * Math.PI * CYC) * AMP + Math.sin(t * 2 * Math.PI * CYC * 2 + 0.6) * AMP2);
+    }
+    function el(name, attrs) {
+      var e = document.createElementNS(SVGNS, name);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      return e;
+    }
+    function apply(e) {
+      wave.style.strokeDashoffset = (waveLen * (1 - e)).toFixed(1);
+      var sx = 20 + e * (VBW - 40);
+      scan.setAttribute('transform', 'translate(' + sx.toFixed(1) + ',0)');
+      readout.setAttribute('cx', sx.toFixed(1));
+      readout.setAttribute('cy', waveY(sx).toFixed(1));
+      readout.setAttribute('opacity', (0.85 * Math.min(1, e * 6)).toFixed(3));
+      for (var i = 0; i < ticks.length; i++) {
+        ticks[i].setAttribute('opacity', (clamp((sx - tickX[i]) / 46, 0, 1) * 0.5).toFixed(3));
+      }
+    }
+
+    return {
+      id: '04', built: false, root: null, section: null,
+      build: function () {
+        if (this.built) return;
+        stage = document.createElement('div');
+        stage.id = 'methodStage';
+        stage.setAttribute('aria-hidden', 'true');
+        var svg = el('svg', { id: 'methodSvg', viewBox: '0 0 ' + VBW + ' ' + VBH, preserveAspectRatio: 'xMidYMid meet' });
+
+        var grid = el('g', { stroke: 'rgba(150,160,174,0.13)', 'stroke-width': '1' });
+        for (var gx = 0; gx <= VBW; gx += 52) grid.appendChild(el('line', { x1: gx, y1: 0, x2: gx, y2: VBH }));
+        for (var gy = 0; gy <= VBH; gy += 46) grid.appendChild(el('line', { x1: 0, y1: gy, x2: VBW, y2: gy }));
+        svg.appendChild(grid);
+        svg.appendChild(el('line', { x1: 0, y1: BASE, x2: VBW, y2: BASE, stroke: 'rgba(120,130,144,0.28)', 'stroke-width': '1' }));
+
+        /* measurement ticks along the baseline */
+        for (var tk = 130; tk < VBW; tk += 130) {
+          var tick = el('line', { x1: tk, y1: BASE - 9, x2: tk, y2: BASE + 9, stroke: 'rgba(120,130,144,0.9)', 'stroke-width': '1.5', opacity: '0' });
+          tickX.push(tk); ticks.push(tick); svg.appendChild(tick);
+        }
+
+        /* the gait trace */
+        var d = 'M';
+        for (var x = 0; x <= VBW; x += 8) d += ' ' + x + ' ' + waveY(x).toFixed(1);
+        wave = el('path', { d: d, fill: 'none', stroke: 'rgba(120,131,146,0.85)', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+        svg.appendChild(wave);
+
+        /* sweeping readout line + point */
+        scan = el('g', {});
+        scan.appendChild(el('line', { x1: 0, y1: 8, x2: 0, y2: VBH - 8, stroke: 'rgba(150,162,178,0.55)', 'stroke-width': '1.5' }));
+        svg.appendChild(scan);
+        readout = el('circle', { r: '5', fill: '#e6ebf2', stroke: 'rgba(120,131,146,0.9)', 'stroke-width': '1.5', opacity: '0' });
+        svg.appendChild(readout);
+
+        stage.appendChild(svg);
+        document.body.appendChild(stage);
+        waveLen = wave.getTotalLength();
+        wave.style.strokeDasharray = waveLen;
+        apply(0.62);   /* static mid pose */
+        this.root = stage;
+        this.built = true;
+      },
+      activate: function () { if (stage) stage.classList.add('is-active'); },
+      deactivate: function () { if (stage) stage.classList.remove('is-active'); },
+      update: function (p) { apply(easeInOut(p)); }
+    };
+  }
+
+  /* ─────────────────────────────────────────────────────────────
      Scene director — maps sections to scenes, activates on scroll
      via IntersectionObserver, and keeps a `live` set the rAF loop
      drives. Runs (build/activate) even under reduced motion so each
      scene's static pose is shown; only the loop below is gated.
      ───────────────────────────────────────────────────────────── */
-  var SCENES = { '01': makeTrackScene(), '05': makeHelixScene() };
+  var SCENES = {
+    '01': makeTrackScene(),
+    '02': makeIdeaScene(),
+    '03': makeStandardScene(),
+    '04': makeMethodScene(),
+    '05': makeHelixScene()
+  };
   var FADE_MS = 700;                  /* must match the CSS opacity transition */
   var live = [];                      /* scenes currently rendering */
   var dropTimers = {};                /* scene id → fade-out drop timer */
