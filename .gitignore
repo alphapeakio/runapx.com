@@ -2,3 +2,11 @@ node_modules/
 .wrangler/
 .dev.vars
 .DS_Store
+
+# Safety: never let private business/legal/financial files be published with the site.
+# The whole repo root is the public web root (wrangler pages deploy .), so keep these out.
+registration/
+business/
+*.pdf
+!assets/**/*.pdf
+!media/**/*.pdf
