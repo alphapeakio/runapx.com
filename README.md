@@ -1,6 +1,6 @@
 # runapx.com
 
-The site for **APX Training Group** (pronounced *Apex*) — a private distance
+The site for **APEX Training Group** — a private distance
 training group. Two pages by design:
 
 - `index.html` — an interactive, low-information scroll journey built to convey

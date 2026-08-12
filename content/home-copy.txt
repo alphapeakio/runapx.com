@@ -1,5 +1,5 @@
 ==============================================================
-APX — HOME PAGE COPY  (working doc for editing the language)
+APEX — HOME PAGE COPY  (working doc for editing the language)
 ==============================================================
 
 How to use this file:
@@ -15,7 +15,7 @@ How to use this file:
 --------------------------------------------------------------
 HERO  (the landing screen)
 --------------------------------------------------------------
-WORDMARK:      APX Training Group        (rendered as the logo)
+WORDMARK:      APEX Training Group        (rendered as the logo)
 TAGLINE:       Performance · Precision · Ascent
 
 
@@ -23,9 +23,9 @@ TAGLINE:       Performance · Precision · Ascent
 SECTION 01 — THE ASCENT  (opening pane, over the track)
 --------------------------------------------------------------
 EYEBROW:       The Ascent
-HEADLINE:      Good becomes great here. Great keeps climbing.
-ACCENT:        Great keeps climbing.
-SUBLINE:       APX exists for distance athletes with more in them —
+HEADLINE:      You didn't come here to plateau.
+ACCENT:        plateau.
+SUBLINE:       APEX exists for distance athletes with more in them —
                and the will to find it. Turn by turn, the standard rises.
 
 
@@ -33,7 +33,7 @@ SUBLINE:       APX exists for distance athletes with more in them —
 SECTION 02 — THE IDEA
 --------------------------------------------------------------
 EYEBROW:       The Idea
-HEADLINE:      Potential needs the right environment to become performance.
+HEADLINE:      Talent is common. The environment that sharpens it isn't.
 ACCENT:        environment
 SUBLINE:       The environment is the group. Same standards, same
                discipline away from the track, same intent on it —
@@ -59,7 +59,7 @@ HEADLINE:      Every stride measured. Every race read.
 ACCENT:        read.
 CAPABILITY 1:  Progression   (label:) Tracked
 CAPABILITY 2:  Mechanics     (label:) Measured
-SUBLINE:       Nothing is left to guesswork.
+SUBLINE:       Individual by name. Rebuilt by the numbers.
 
 
 --------------------------------------------------------------
@@ -68,7 +68,7 @@ SECTION 05 — THE INVITATION  (closing)
 EYEBROW:       The Invitation
 HEADLINE:      Membership is considered, never assumed.
 ACCENT:        never assumed.
-SUBLINE:       Selection is objective. If training with APX will raise
+SUBLINE:       Selection is deliberate. If training with APEX will raise
                you, and you will raise the group, membership will be
                considered.
 BUTTON:        Request Consideration
@@ -77,7 +77,7 @@ BUTTON:        Request Consideration
 --------------------------------------------------------------
 FOOTER
 --------------------------------------------------------------
-WORDMARK:      APX Training Group        (rendered as the logo)
+WORDMARK:      APEX Training Group        (rendered as the logo)
 
 
 --------------------------------------------------------------
@@ -89,12 +89,12 @@ LINK:          Request Consideration
 ==============================================================
 LINK-PREVIEW / SEO COPY  (shows in browser tab, iMessage, Slack, etc.)
 ==============================================================
-BROWSER TAB TITLE:   APX — Training Group
-META DESCRIPTION:    APX Training Group — a private distance training
-                     group. A small roster, individual focus, and an
-                     environment built to produce high-performance
-                     athletes.
-SHARE TITLE:         APX Training Group
+BROWSER TAB TITLE:   APEX — Training Group
+META DESCRIPTION:    APEX Training Group — a private distance program
+                     built on individual attention and measured
+                     precision. A small roster. Membership by
+                     consideration.
+SHARE TITLE:         APEX Training Group
 SHARE DESCRIPTION:   Performance · Precision · Ascent. A team, a
                      culture, and a standard. Membership by
                      consideration.
