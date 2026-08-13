@@ -412,9 +412,29 @@
         </div>
       </fieldset>
 
-      <!-- 3 · Performance -->
+      <!-- 3 · Academics -->
       <fieldset>
-        <legend>03 · Performance</legend>
+        <legend>03 · Academics</legend>
+        <p class="legend-note">Running in college is an academic commitment too — grades open doors that times can't. Approximate is fine.</p>
+        <div class="grid">
+          <div class="field">
+            <label for="gpa">Unweighted GPA <span class="req">*</span></label>
+            <input type="text" id="gpa" name="gpa" inputmode="decimal" placeholder="e.g. 3.7 / 4.0" required>
+          </div>
+          <div class="field">
+            <label for="test_scores">SAT / ACT <span class="opt">(if taken)</span></label>
+            <input type="text" id="test_scores" name="test_scores" placeholder="e.g. SAT 1320 or ACT 28">
+          </div>
+          <div class="field full">
+            <label for="study">Intended field of study <span class="opt">(optional)</span></label>
+            <input type="text" id="study" name="study" placeholder="Even a direction helps — e.g. engineering, or undecided">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 4 · Training & Performance -->
+      <fieldset>
+        <legend>04 · Training &amp; Performance</legend>
         <p class="legend-note">Give us marks we can look up. A verifiable time tells us far more than a rounded one.</p>
         <div class="grid">
           <div class="field full">
@@ -442,12 +462,17 @@
             <label for="other_sports">Other sports <span class="opt">(optional)</span></label>
             <input type="text" id="other_sports" name="other_sports">
           </div>
+          <div class="field full">
+            <label for="injury_history">Injury history &amp; current health <span class="req">*</span></label>
+            <textarea id="injury_history" name="injury_history" placeholder="Any significant injuries in the last two years, time missed, and how you feel now. If none, say so." required></textarea>
+            <span class="hint">Durability matters as much as speed — an honest history helps us plan, and never disqualifies.</span>
+          </div>
         </div>
       </fieldset>
 
-      <!-- 4 · Commitment & Fit -->
+      <!-- 5 · Commitment & Fit -->
       <fieldset>
-        <legend>04 · Commitment &amp; Fit</legend>
+        <legend>05 · Commitment &amp; Fit</legend>
         <p class="legend-note">There are no right answers here — only honest ones.</p>
         <div class="grid">
           <div class="field full">
@@ -458,6 +483,10 @@
             <label for="goals">Your goals — this season and beyond <span class="req">*</span></label>
             <textarea id="goals" name="goals" required></textarea>
           </div>
+          <div class="field full">
+            <label for="setback">A setback — and how you responded <span class="req">*</span></label>
+            <textarea id="setback" name="setback" placeholder="An injury, a bad race, a hard season — what happened, and what you did next." required></textarea>
+          </div>
           <div class="field">
             <label for="college">Intend to run in college? <span class="req">*</span></label>
             <select id="college" name="college" required>
@@ -465,6 +494,18 @@
               <option>Yes</option>
               <option>Undecided</option>
               <option>No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="college_level">Target level <span class="req">*</span></label>
+            <select id="college_level" name="college_level" required>
+              <option value="" selected disabled>Select</option>
+              <option>NCAA D1</option>
+              <option>NCAA D2</option>
+              <option>NCAA D3</option>
+              <option>NAIA</option>
+              <option>NJCAA (Juco)</option>
+              <option>Undecided</option>
             </select>
           </div>
           <div class="field">
@@ -501,9 +542,9 @@
         </div>
       </fieldset>
 
-      <!-- 5 · Verification & References -->
+      <!-- 6 · Verification & References -->
       <fieldset>
-        <legend>05 · Verification &amp; References</legend>
+        <legend>06 · Verification &amp; References</legend>
         <div class="grid">
           <div class="field">
             <label for="coach_name">Current / former coach <span class="req">*</span></label>
@@ -524,9 +565,9 @@
         </div>
       </fieldset>
 
-      <!-- 6 · Consent -->
+      <!-- 7 · Consent -->
       <fieldset>
-        <legend>06 · Consent</legend>
+        <legend>07 · Consent</legend>
         <div class="consent">
           <input type="checkbox" id="consent" name="consent" required>
           <label for="consent">

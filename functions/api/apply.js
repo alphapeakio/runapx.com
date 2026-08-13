@@ -11,9 +11,10 @@
 
 const REQUIRED = [
   'athlete_name', 'grad_year', 'grade', 'gender', 'school', 'city', 'state',
-  'athlete_email', 'guardian_name', 'guardian_relation', 'guardian_email',
-  'guardian_phone', 'events', 'best_marks', 'results_link', 'why', 'goals',
-  'college', 'commit', 'travel', 'format', 'coach_name', 'coach_contact', 'consent'
+  'athlete_email', 'gpa', 'guardian_name', 'guardian_relation', 'guardian_email',
+  'guardian_phone', 'events', 'best_marks', 'results_link', 'injury_history',
+  'why', 'goals', 'setback', 'college', 'college_level', 'commit', 'travel',
+  'format', 'coach_name', 'coach_contact', 'consent'
 ];
 
 /* Human-readable labels + section grouping for the email body. */
@@ -28,13 +29,19 @@ const SECTIONS = [
     ['guardian_name', 'Name'], ['guardian_relation', 'Relationship'],
     ['guardian_email', 'Email'], ['guardian_phone', 'Phone']
   ]],
-  ['Performance', [
+  ['Academics', [
+    ['gpa', 'Unweighted GPA'], ['test_scores', 'SAT / ACT'],
+    ['study', 'Intended field of study']
+  ]],
+  ['Training & Performance', [
     ['events', 'Primary event(s)'], ['best_marks', 'Best verified marks'],
     ['results_link', 'Results / profile'], ['weekly_volume', 'Weekly volume'],
-    ['years_running', 'Years training'], ['other_sports', 'Other sports']
+    ['years_running', 'Years training'], ['other_sports', 'Other sports'],
+    ['injury_history', 'Injury history & health']
   ]],
   ['Commitment & Fit', [
-    ['why', 'Why APEX?'], ['goals', 'Goals'], ['college', 'Run in college?'],
+    ['why', 'Why APEX?'], ['goals', 'Goals'], ['setback', 'Setback & response'],
+    ['college', 'Run in college?'], ['college_level', 'Target level'],
     ['commit', 'Year-round commitment'], ['travel', 'Willing to travel'],
     ['format', 'Training preference'], ['constraints', 'Possible limits']
   ]],
