@@ -38,8 +38,8 @@
      frame. Drawn now so it also shows (static) under reduced motion. */
   var trackField = document.getElementById('trackField');
   var trackRotor = document.getElementById('trackRotor');
-  var RR = 300;                       /* running-line radius   */
-  var LL = 840;                       /* straight length (50% longer) */
+  var RR = 450;                       /* running-line radius (50% wider) */
+  var LL = 1260;                      /* straight length (50% longer)    */
   var CURVE = Math.PI * RR;           /* one turn's arc length  */
   var LAP = 2 * LL + 2 * CURVE;       /* full perimeter         */
   var SVGNS = 'http://www.w3.org/2000/svg';
@@ -77,15 +77,15 @@
     defs.appendChild(grad);
     trackField.appendChild(defs);
 
-    /* Lane band centred on the running line (RR=300); spacing widened
-       from 30 → 45 so the track reads ~50% wider across the page. */
-    var lanes = [142.5, 187.5, 232.5, 277.5, 322.5, 367.5, 412.5, 457.5];
+    /* Lane band centred on the running line (RR=450). Radii scaled 1.5×
+       so the whole oval reads 50% wider; stroke stays 2px (thin lanes). */
+    var lanes = [213.75, 281.25, 348.75, 416.25, 483.75, 551.25, 618.75, 686.25];
     for (var li = 0; li < lanes.length; li++) {
       trackField.appendChild(stadium(lanes[li], {
         fill: 'none', stroke: 'url(#laneShine)', 'stroke-width': 2
       }));
     }
-    trackField.style.transform = 'translate(-300px, -420px)';        /* static pose */
+    trackField.style.transform = 'translate(-450px, -630px)';        /* static pose */
   }
 
   /* Position + bank angle at distance s along the running line. */
@@ -149,7 +149,7 @@
        oval, which then drifts slowly as the backdrop for the content. */
     if (trackField && trackRotor) {
       var heroP = clamp(window.scrollY / (vh * 0.85), 0, 1);
-      var kk = LAP / (vh * 5);
+      var kk = LAP / (vh * 7);   /* one lap per 7 viewports — slower scroll progression */
       var pt = trackAt(window.scrollY * kk + elapsed * 14);
       var sc = 2.05 - heroP * 0.78;                   /* gentle zoom out past the hero: 2.05 → 1.27 */
       trackField.style.transform =
