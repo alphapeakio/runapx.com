@@ -66,12 +66,21 @@
       color: var(--muted);
     }
 
+    /* Two destinations, so two buttons. Manage carries the filled
+       treatment — most visitors are current members changing a card. */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2.6rem;
+    }
+
     .portal {
       display: inline-flex;
       align-items: center;
       gap: 0.9rem;
       max-width: 100%;
-      margin-top: 2.6rem;
       padding: 1.05rem 2.4rem;
       border: 1px solid rgba(84, 92, 102, 0.45);
       border-radius: 999px;
@@ -89,6 +98,12 @@
       border-color: var(--accent);
       background: rgba(255, 255, 255, 0.8);
       box-shadow: 0 10px 30px -12px var(--accent-glow);
+    }
+
+    .portal--alt {
+      background: transparent;
+      border-color: rgba(84, 92, 102, 0.26);
+      color: var(--muted);
     }
 
     /* ── How access works ── */
@@ -170,6 +185,11 @@
       outline-offset: 3px;
     }
 
+    /* Side by side while they fit; stacked once they'd crowd. */
+    @media (max-width: 520px) {
+      .actions { flex-direction: column; align-items: center; }
+    }
+
     @media (max-width: 400px) {
       .wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
       .portal {
@@ -190,17 +210,23 @@
       <h1>Manage your <span class="accent-word">membership.</span></h1>
       <p class="lede">
         Update your card, see your invoices, or cancel your membership.
-        All of it lives in one place, behind the link below.
       </p>
-      <a class="portal"
-         href="https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00"
-         target="_blank" rel="noopener">
-        Open billing portal <span class="arrow" aria-hidden="true">→</span>
-      </a>
+      <div class="actions">
+        <a class="portal"
+           href="https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00"
+           target="_blank" rel="noopener">
+          Manage subscription <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="portal portal--alt"
+           href="https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01"
+           target="_blank" rel="noopener">
+          Subscribe <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
     </header>
 
     <section class="how" aria-labelledby="how-h">
-      <h2 id="how-h">How you get in</h2>
+      <h2 id="how-h">Signing in to manage</h2>
       <ol class="steps">
         <li>Enter the email address you used when you enrolled.</li>
         <li>Stripe sends a one-time code to that address.</li>
