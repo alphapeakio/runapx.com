@@ -218,6 +218,8 @@
       color: var(--muted);
       cursor: pointer;
     }
+    .consent label a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
+    .consent label a:hover { color: var(--accent); }
 
     .actions {
       margin-top: 3rem;
@@ -573,7 +575,8 @@
           <label for="consent">
             I confirm this information is accurate, and — as the athlete or their
             parent/guardian — I consent to APEX Training Group reviewing this
-            application and contacting me about it. <span class="req">*</span>
+            application and contacting me about it, as described in the
+            <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>. <span class="req">*</span>
           </label>
         </div>
       </fieldset>

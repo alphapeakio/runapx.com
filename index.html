@@ -387,6 +387,17 @@
       text-transform: uppercase;
       color: var(--dim);
     }
+    .foot .foot-legal {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: color 0.3s ease, opacity 0.3s ease;
+    }
+    .foot .foot-legal:hover { color: var(--accent-ink); opacity: 1; }
 
     /* No-JS / reduced-motion: static, readable, flat panes */
     .no-js .pane { transform: none !important; opacity: 1 !important; }
@@ -538,6 +549,7 @@
   <footer class="foot">
     <div class="logo" role="img" aria-label="APEX"></div>
     <p class="foot-line">APEX Training Group</p>
+    <a class="foot-legal" href="/privacy">Privacy Policy</a>
   </footer>
 
   <script src="/assets/app.js?v=13" defer></script>
