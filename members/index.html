@@ -212,14 +212,13 @@
         Update your card, see your invoices, or cancel your membership.
       </p>
       <div class="actions">
-        <a class="portal"
-           href="https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00"
-           target="_blank" rel="noopener">
+        <!-- Both point at the /_redirects entries, not at Stripe directly:
+             when a payment link is archived and replaced, one file changes
+             instead of two. -->
+        <a class="portal" href="/manage" target="_blank" rel="noopener">
           Manage subscription <span class="arrow" aria-hidden="true">→</span>
         </a>
-        <a class="portal portal--alt"
-           href="https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01"
-           target="_blank" rel="noopener">
+        <a class="portal portal--alt" href="/subscribe" target="_blank" rel="noopener">
           Subscribe <span class="arrow" aria-hidden="true">→</span>
         </a>
       </div>

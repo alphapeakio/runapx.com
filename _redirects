@@ -11,6 +11,10 @@
 
 /subscribe   https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01            302
 /subscribe/  https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01            302
+/Subscribe   https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01            302
+/Subscribe/  https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01            302
 
 /manage      https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00  302
 /manage/     https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00  302
+/Manage      https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00  302
+/Manage/     https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00  302
