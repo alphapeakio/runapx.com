@@ -213,9 +213,13 @@
       </p>
     </section>
 
+    <!-- email_off: Cloudflare's Email Address Obfuscation rewrites mailto
+         links into a /cdn-cgi/l/email-protection stub and injects a decoder
+         script. With JavaScript off that leaves "[email protected]" and a
+         dead link — on the one page where reaching us is the fallback. -->
     <p class="help">
       Trouble getting in? Email
-      <a href="mailto:runapx@gmail.com">runapx@gmail.com</a>.
+      <!--email_off--><a href="mailto:runapx@gmail.com">runapx@gmail.com</a><!--/email_off-->.
     </p>
 
     <footer class="foot"><a href="/">← Return to APEX</a></footer>
