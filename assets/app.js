@@ -178,10 +178,17 @@
       var tz = (-Math.abs(p) * 170).toFixed(0);
       var op2 = (1 - Math.abs(p) * 0.4).toFixed(3);
 
+      /* Fill strength: full while the pane is pinned in the centre (the
+         dwell, where the copy is being read), thinning back to frost once
+         it is half a screen away and travelling. */
+      var settle = 1 - clamp(Math.abs(p) / 0.5, 0, 1);
+
       el.style.transform =
         'translateX(' + tx + 'vw) translateZ(' + tz + 'px) ' +
         'rotateY(' + rotY + 'deg) rotateX(' + rotX + 'deg)';
       el.style.opacity = op2;
+      el.style.setProperty('--glass-a1', (0.26 + settle * 0.36).toFixed(3));
+      el.style.setProperty('--glass-a2', (0.08 + settle * 0.34).toFixed(3));
     }
 
     requestAnimationFrame(frame);

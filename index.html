@@ -235,9 +235,16 @@
       padding: clamp(2.4rem, 5vw, 4rem);
       text-align: center;
       border-radius: 30px;
-      /* barely-there fill so it reads as frost, not a white card */
+      /* Fill strength is driven by app.js: solid enough to read while the
+         pane is pinned/dwelling, thinning back to frost as it travels off
+         centre. These defaults are the settled (most opaque) values so
+         no-JS and reduced-motion readers get the legible state. */
+      --glass-a1: 0.62;
+      --glass-a2: 0.42;
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.08));
+        linear-gradient(135deg,
+          rgba(255, 255, 255, var(--glass-a1)),
+          rgba(255, 255, 255, var(--glass-a2)));
       /* no outer border — the edge is a soft highlight + shadow only */
       box-shadow:
         0 44px 110px -44px rgba(6, 44, 88, 0.30),
