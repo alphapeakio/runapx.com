@@ -1,0 +1,16 @@
+# Short, shareable links for the Stripe destinations — the raw Stripe URLs
+# are unreadable in a text message. Nothing on the public site links here;
+# these travel by text, email, or the /members buttons.
+#
+# 302, deliberately: Stripe payment links get archived and replaced, and a
+# 301 would sit in browser caches long after we repointed it.
+#
+# Keep these in sync with the buttons on /members — or better, leave those
+# buttons pointing at /subscribe and /manage so this file stays the only
+# place the Stripe URLs appear.
+
+/subscribe   https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01            302
+/subscribe/  https://buy.stripe.com/8x25kF77B9Ti5bkblW67S01            302
+
+/manage      https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00  302
+/manage/     https://billing.stripe.com/p/login/5kQ7sNajN6H61Z8fCc67S00  302

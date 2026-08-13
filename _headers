@@ -2,3 +2,10 @@
 # (etag makes this cheap — a 304 when nothing changed.)
 /assets/*
   Cache-Control: public, max-age=0, must-revalidate
+
+# The share links are unlisted — nothing on the public site points at them.
+# A redirect carries no HTML, so there is nowhere to put a robots meta tag.
+/subscribe
+  X-Robots-Tag: noindex, nofollow
+/manage
+  X-Robots-Tag: noindex, nofollow
