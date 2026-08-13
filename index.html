@@ -387,6 +387,21 @@
       text-transform: uppercase;
       color: var(--dim);
     }
+    /* A safety net, not a marketing surface: families normally arrive at
+       /members from a link we sent them. */
+    .foot .foot-member {
+      margin-top: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .foot .foot-member:hover { color: var(--ink); }
+    .foot .foot-member:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 4px; }
+
     .foot .foot-legal {
       position: absolute;
       bottom: 1.6rem;
@@ -552,6 +567,7 @@
   <footer class="foot">
     <div class="logo" role="img" aria-label="APEX"></div>
     <p class="foot-line">APEX Training Group</p>
+    <a class="foot-member" href="/members">Member access</a>
     <a class="foot-legal" href="/privacy">Privacy Policy</a>
   </footer>
 
