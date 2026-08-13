@@ -235,12 +235,12 @@
       padding: clamp(2.4rem, 5vw, 4rem);
       text-align: center;
       border-radius: 30px;
-      /* Fill strength is driven by app.js: solid enough to read while the
-         pane is pinned/dwelling, thinning back to frost as it travels off
+      /* Fill strength is driven by app.js: essentially solid while the pane
+         is pinned/dwelling, easing back only slightly as it travels off
          centre. These defaults are the settled (most opaque) values so
          no-JS and reduced-motion readers get the legible state. */
-      --glass-a1: 0.62;
-      --glass-a2: 0.42;
+      --glass-a1: 0.97;
+      --glass-a2: 0.93;
       background:
         linear-gradient(135deg,
           rgba(255, 255, 255, var(--glass-a1)),
@@ -564,7 +564,7 @@
     <a class="foot-legal" href="/privacy">Privacy Policy</a>
   </footer>
 
-  <script src="/assets/app.js?v=13" defer></script>
+  <script src="/assets/app.js?v=14" defer></script>
   <script src="/assets/apply.js?v=3" defer></script>
   <script src="/assets/transition.js?v=3" defer></script>
 </body>
