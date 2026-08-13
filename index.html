@@ -39,10 +39,10 @@
   <script>document.documentElement.classList.remove('no-js');</script>
   <style>
     /* Clip horizontal overflow at the root too: the full-bleed fixed
-       backdrops (track, helix) are wider than a phone viewport, and
-       body-only clipping still let the document scroll sideways.
-       `clip` (not hidden/auto) does not create a scroll container, so
-       the sticky scroll-journey panes are unaffected. */
+       track backdrop is wider than a phone viewport, and body-only
+       clipping still let the document scroll sideways. `clip` (not
+       hidden/auto) does not create a scroll container, so the sticky
+       scroll-journey panes are unaffected. */
     html { overflow-x: clip; }
     body { overflow-x: clip; }
 
@@ -71,24 +71,19 @@
               mask: radial-gradient(ellipse 140% var(--tmh) at 50% var(--tmy), #000 34%, transparent 82%);
       /* a soft gleam so the polished lanes catch the light */
       filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.28));
-      /* Cross-fade between scenes: the director toggles .is-active. */
-      opacity: 0;
-      transition: opacity 0.7s ease;
     }
-    .track-view.is-active { opacity: 1; }
     .track-rotor {
       position: absolute;
       left: 50%; top: 50%;
       width: 0; height: 0;
       transform: scale(2.05);
-      /* will-change is applied by app.js only while scene 01 is active
-         (see makeTrackScene activate/idle), so the compositor layer is
-         freed when the track is off-screen. */
+      will-change: transform;
     }
     .track-field {
       position: absolute;
       left: -490px; top: -900px;
       width: 980px; height: 1800px;
+      will-change: transform;
     }
 
     .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -117,111 +112,6 @@
     @keyframes float1 { 50% { transform: translate(8vw, 6vh) scale(1.12); } }
     @keyframes float2 { 50% { transform: translate(-7vw, -5vh) scale(1.1); } }
     @keyframes float3 { 50% { transform: translate(5vw, -8vh) scale(1.15); } }
-
-    /* ── Scene 05: the glass helix staircase ──
-       Built by app.js on first activation (see makeHelixScene). A
-       preserve-3d column of frosted blades that rotates and lifts
-       toward the summit light as you scroll the final section.
-       Blades use a cheap gradient+shadow frost — deliberately NO
-       backdrop-filter (24 stacked blurs jank badly, esp. Safari);
-       real blur is reserved for the single content pane in front. */
-    #helixStage {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      perspective: 1000px;
-      perspective-origin: 50% 34%;
-      opacity: 0;
-      transition: opacity 0.7s ease;
-      /* soften the top/bottom clip instead of a hard viewport edge */
-      -webkit-mask: linear-gradient(to bottom, transparent 0%, #000 7%, #000 93%, transparent 100%);
-              mask: linear-gradient(to bottom, transparent 0%, #000 7%, #000 93%, transparent 100%);
-    }
-    #helixStage.is-active { opacity: 1; }
-    #helixLight {
-      position: absolute;
-      left: 50%; top: 1%;
-      width: 54vw; height: 54vw;
-      max-width: 760px; max-height: 760px;
-      transform: translateX(-50%);
-      border-radius: 50%;
-      background: radial-gradient(circle at 50% 50%, var(--glass-edge), rgba(255, 255, 255, 0) 68%);
-      filter: blur(6px);
-      opacity: 0.5;
-    }
-    #helixAxis {
-      position: absolute;
-      left: 50%; top: 50%;
-      width: 0; height: 0;
-      transform-style: preserve-3d;
-      transform: rotateX(10deg);
-    }
-    .helix-step {
-      position: absolute;
-      left: -120px; top: -64px;          /* centre the 240×128 blade on the axis point */
-      width: 240px; height: 128px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.12));
-      border: 1px solid rgba(255, 255, 255, 0.50);
-      box-shadow:
-        0 30px 70px -28px rgba(12, 14, 17, 0.50),
-        inset 0 1px 0 rgba(255, 255, 255, 0.70);
-      overflow: hidden;
-    }
-    /* static skewed sheen — the blade's own rotation sweeps it through
-       the fixed light, so no keyframe is needed (and none would survive
-       the reduced-motion animation kill in site.css). */
-    .helix-step::before {
-      content: '';
-      position: absolute;
-      top: -40%; left: -30%;
-      width: 55%; height: 180%;
-      background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.42) 50%, transparent 100%);
-      transform: skewX(-16deg);
-      mix-blend-mode: screen;
-      pointer-events: none;
-    }
-
-    /* ── Scene 02: convergence (JS-built runner-marks) ── */
-    #ideaStage {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      opacity: 0; transition: opacity 0.7s ease;
-    }
-    #ideaStage.is-active { opacity: 1; }
-    .idea-field { position: absolute; left: 50%; top: 46%; width: 0; height: 0; }
-    .idea-mark {
-      position: absolute; left: -1.5px; top: -13px;
-      width: 3px; height: 26px;
-      border-radius: 3px;
-      background: linear-gradient(180deg, rgba(150, 160, 174, 0.7), rgba(90, 100, 114, 0.55));
-      box-shadow: 0 0 8px rgba(150, 162, 178, 0.35);
-    }
-
-    /* ── Scene 03: thinning field (JS-built dots) ── */
-    #standardStage {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      opacity: 0; transition: opacity 0.7s ease;
-    }
-    #standardStage.is-active { opacity: 1; }
-    .std-field { position: absolute; left: 50%; top: 48%; width: 0; height: 0; }
-    .std-dot {
-      position: absolute; left: -5px; top: -5px;
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 38%, rgba(214, 220, 228, 0.95), rgba(120, 130, 144, 0.75));
-    }
-
-    /* ── Scene 04: precision HUD (JS-built SVG) ── */
-    #methodStage {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity 0.7s ease;
-      -webkit-mask: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
-              mask: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
-    }
-    #methodStage.is-active { opacity: 1; }
-    #methodSvg { width: min(1060px, 90vw); height: auto; overflow: visible; }
 
     /* ── Persistent corner CTA ── */
     .corner-cta {
@@ -500,13 +390,6 @@
 
     /* No-JS / reduced-motion: static, readable, flat panes */
     .no-js .pane { transform: none !important; opacity: 1 !important; }
-    /* No-JS: the glass helix can't build (it's JS-drawn), so give the
-       closing invitation a soft vertical light column — the ascent
-       metaphor survives without any script. */
-    .no-js .invite .pane-hold {
-      background: radial-gradient(ellipse 34% 78% at 50% 44%,
-        rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 72%);
-    }
     @media (prefers-reduced-motion: reduce) {
       .orb, .pane::before { animation: none !important; }
       .pane { transform: none !important; opacity: 1 !important; }
@@ -546,7 +429,7 @@
 
   <main>
     <!-- ── The Ascent ── -->
-    <section class="section" data-scene="01" aria-labelledby="ascent-h">
+    <section class="section" aria-labelledby="ascent-h">
      <div class="pane-hold">
       <article class="pane" data-tilt data-dir="-1">
         <div class="pane-hud"><span class="idx">01</span><span class="tick"></span><span>The Ascent</span></div>
@@ -559,11 +442,29 @@
      </div>
     </section>
 
-    <!-- ── Ethos ── -->
-    <section class="section" data-scene="02" aria-labelledby="ethos-h">
+    <!-- ── The Aim — collegiate preparation ── -->
+    <section class="section" aria-labelledby="aim-h">
      <div class="pane-hold">
       <article class="pane" data-tilt data-dir="1">
-        <div class="pane-hud"><span class="idx">02</span><span class="tick"></span><span>The Idea</span></div>
+        <div class="pane-hud"><span class="idx">02</span><span class="tick"></span><span>The Aim</span></div>
+        <h2 class="statement" id="aim-h">
+          Built to arrive at college <span class="accent">race-ready.</span>
+        </h2>
+        <p class="subline">
+          APEX is a preparation group for the collegiate leap — the mileage,
+          the racing instinct, and the day-in discipline a program assumes you
+          already have. You won't show up hoping to keep up. You'll show up an
+          athlete a coach can build on, not one they have to rebuild.
+        </p>
+      </article>
+     </div>
+    </section>
+
+    <!-- ── Ethos ── -->
+    <section class="section" aria-labelledby="ethos-h">
+     <div class="pane-hold">
+      <article class="pane" data-tilt data-dir="-1">
+        <div class="pane-hud"><span class="idx">03</span><span class="tick"></span><span>The Idea</span></div>
         <h2 class="statement" id="ethos-h">
           Talent is common. The <span class="accent">environment</span> that sharpens it isn't.
         </h2>
@@ -577,10 +478,10 @@
     </section>
 
     <!-- ── The Standard ── -->
-    <section class="section" data-scene="03" aria-labelledby="standard-h">
+    <section class="section" aria-labelledby="standard-h">
      <div class="pane-hold">
-      <article class="pane" data-tilt data-dir="-1">
-        <div class="pane-hud"><span class="idx">03</span><span class="tick"></span><span>The Standard</span></div>
+      <article class="pane" data-tilt data-dir="1">
+        <div class="pane-hud"><span class="idx">04</span><span class="tick"></span><span>The Standard</span></div>
         <h2 class="statement" id="standard-h">
           The roster is kept small <span class="accent">on purpose.</span>
         </h2>
@@ -594,10 +495,10 @@
     </section>
 
     <!-- ── The Method ── -->
-    <section class="section" data-scene="04" aria-labelledby="method-h">
+    <section class="section" aria-labelledby="method-h">
      <div class="pane-hold">
-      <article class="pane" data-tilt data-dir="1">
-        <div class="pane-hud"><span class="idx">04</span><span class="tick"></span><span>The Method</span></div>
+      <article class="pane" data-tilt data-dir="-1">
+        <div class="pane-hud"><span class="idx">05</span><span class="tick"></span><span>The Method</span></div>
         <h2 class="statement" id="method-h">
           Every stride measured. Every race <span class="accent">read.</span>
         </h2>
@@ -617,10 +518,10 @@
     </section>
 
     <!-- ── Invitation / close ── -->
-    <section class="section invite" data-scene="05" aria-labelledby="invite-h">
+    <section class="section invite" aria-labelledby="invite-h">
      <div class="pane-hold">
-      <article class="pane" data-tilt data-dir="-1">
-        <div class="pane-hud"><span class="idx">05</span><span class="tick"></span><span>The Invitation</span></div>
+      <article class="pane" data-tilt data-dir="1">
+        <div class="pane-hud"><span class="idx">06</span><span class="tick"></span><span>The Invitation</span></div>
         <h2 class="statement" id="invite-h">
           Membership is considered, <span class="accent">never assumed.</span>
         </h2>
@@ -639,7 +540,7 @@
     <p class="foot-line">APEX Training Group</p>
   </footer>
 
-  <script src="/assets/app.js?v=11" defer></script>
+  <script src="/assets/app.js?v=12" defer></script>
   <script src="/assets/apply.js?v=3" defer></script>
   <script src="/assets/transition.js?v=3" defer></script>
 </body>
